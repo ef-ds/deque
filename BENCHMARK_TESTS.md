@@ -81,13 +81,12 @@ type testValue struct {
 
 Besides deque, the tests also probe a few high quality open source queue implementations as well as a experimental queue implementation, impl7, alongside the standard list package as well as using simple slice as a deque.
 
+- List based queue: uses the standard [list](https://github.com/golang/go/tree/master/src/container/list) package as a FIFO queue as well as a LIFO stack.
+- [CustomSliceQueue](testdata_test.go): uses a simple, dynamically growing slice as its underlying data structure.
 - [impl7](https://github.com/christianrpetrin/queue-tests/tree/master/queueimpl7/queueimpl7.go): experimental queue implementation that stores the values in linked slices. This implementation tests the queue performance when performing lazy creation of the internal slice as well as starting with a 1-sized slice, allowing it to grow up to 16 by using the built in append function. Subsequent slices are created with 128 fixed size.
 - [phf](https://github.com/phf/go-queue): slice, ring based queue implementation. Interesting to note the author did a pretty good job researching and probing other queue implementations as well.
 - [gammazero](https://github.com/gammazero/deque): the deque implemented in this package is also a slice, ring based queue implementation.
 - [cookiejar](https://github.com/karalabe/cookiejar/blob/master/collections/deque/deque.go): the deque implemented in this package uses a circular slice of blocks to store the elements. Interesting to note the queue uses a block size of 4096, suggesting it is optimized for large data sets.
-- List based queue: uses the standard [list](https://github.com/golang/go/tree/master/src/container/list) package as a FIFO queue as well
-as a LIFO stack.
-- [CustomSliceQueue](testdata_test.go): uses a simple, dynamically growing slice as its underlying data structure.
 
 
 ## Results

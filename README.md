@@ -120,7 +120,7 @@ with a variety of high quality open source deque implementations. See the [bench
 
 ## Performance
 
-Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized as it is in most [slice based deques](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) because it never copies data around and when it expands or grow, it never does so by more than 256 (maxInternalArraySize) items.
+Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [slice based deques](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) because it never copies more than 8 (maxFirstSliceSize/2) items and when it expands or grow, it never does so by more than 256 (maxInternalArraySize) items in a single operation.
 
 Deque, either used as a FIFO queue or LIFO stack, offers either the best or very competetive performance across all test sets, batteries and ranges.
 
