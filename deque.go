@@ -167,8 +167,14 @@ func (d *Deque) PushFront(v interface{}) {
 			if d.head == d.tail {
 				d.tp++
 				if d.tp >= len(d.head.v) && len(d.head.v) < maxFirstSliceSize {
-					d.head.v = resize(d.head.v)
-					copy(d.head.v[d.hp+1:], d.head.v[d.hp:])
+					l := len(d.head.v)
+					nl := l * sliceGrowthFactor
+					n := make([]interface{}, nl)
+					d.hp = nl - l
+					d.tp = nl - 1
+					copy(n[d.hp:], d.head.v)
+					d.head.v = n
+					d.hp--
 				} else if d.tp > d.lastTailPosition {
 					n := &node{v: make([]interface{}, maxInternalSliceSize)}
 					n.n = d.head
@@ -226,7 +232,9 @@ func (d *Deque) PushBack(v interface{}) {
 	} else {
 		d.tp++
 		if d.tp >= len(d.tail.v) {
-			d.tail.v = resize(d.tail.v)
+			n := make([]interface{}, len(d.tail.v)*sliceGrowthFactor)
+			copy(n, d.tail.v)
+			d.tail.v = n
 		}
 	}
 
@@ -286,10 +294,4 @@ func (d *Deque) PopBack() (interface{}, bool) {
 		d.tp = len(d.tail.v) - 1
 	}
 	return v, true
-}
-
-func resize(s []interface{}) []interface{} {
-	n := make([]interface{}, len(s)*sliceGrowthFactor)
-	copy(n, s)
-	return n
 }
