@@ -790,8 +790,6 @@ func TestStableQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 	}
 }
 
-// *******************************************************************************************************
-
 func TestFillStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 	d := New()
 
@@ -910,6 +908,32 @@ func TestStableStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 	}
 	if d.Len() != 0 {
 		t.Errorf("Expected: %d; Got: %d", 0, d.Len())
+	}
+}
+
+func TestPushFrontShouldReuseSpareLinks(t *testing.T) {
+	d := New()
+	count := maxInternalSliceSize * 3
+	// Fills the deque
+	for i := 0; i < count; i++ {
+		d.PushBack(i)
+	}
+	// Pop the items to generate spare links
+	for i := 0; i < maxInternalSliceSize; i++ {
+		d.PopBack()
+	}
+	if d.spareLinks != 1 {
+		t.Errorf("Expected: %d; Got: %d", 1, d.spareLinks)
+	}
+
+	// Push the items back using PushFront
+	for i := 0; i < count; i++ {
+		d.PushFront(i)
+	}
+
+	// The spare links should've been used up
+	if d.spareLinks != 0 {
+		t.Errorf("Expected: %d; Got: %d", 0, d.spareLinks)
 	}
 }
 
