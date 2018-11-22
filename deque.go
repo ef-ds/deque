@@ -175,7 +175,7 @@ func (d *Deque) PushFront(v interface{}) {
 					copy(n[d.hp:], d.head.v)
 					d.head.v = n
 					d.hp--
-				} else if d.tp > d.lastTailPosition {
+				} else {
 					n := &node{v: make([]interface{}, maxInternalSliceSize)}
 					n.n = d.head
 					n.p = d.tail
@@ -185,8 +185,6 @@ func (d *Deque) PushFront(v interface{}) {
 					d.hp = internalSliceLastPosition
 					d.tp = len(d.tail.v) - 1
 					d.lastTailPosition = internalSliceLastPosition
-				} else {
-					copy(d.head.v[d.hp+1:], d.head.v[d.hp:])
 				}
 			} else {
 				n := &node{v: make([]interface{}, maxInternalSliceSize)}
