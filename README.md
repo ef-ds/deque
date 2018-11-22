@@ -112,8 +112,9 @@ which can be tricky to use as the ideal, most optimized moment to shrink is not 
 
 ## Performance
 
-Deque, either used as a FIFO queue or LIFO stack, offers either the best or very competetive performance across
-all test sets, batteries and ranges.
+Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized as it is in most [slice based deques](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) because it never copies data around and when it expands or grow, it never does so by more than 256 (maxInternalArraySize) items.
+
+Deque, either used as a FIFO queue or LIFO stack, offers either the best or very competetive performance across all test sets, batteries and ranges.
 
 As a general purpose FIFO deque or LIFO stack, deque offers, by far, the most balanced and consistent performance of all tested data structures.
 

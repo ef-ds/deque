@@ -26,22 +26,40 @@ const (
 	// firstSliceSize holds the size of the first slice.
 	firstSliceSize = 1
 
-	// sliceGrowthFactor ...
+	// sliceGrowthFactor determines by how much and how fast the first internal
+	// slice should grow. A growth factor of 4, firstSliceSize = 1 and maxFirstSliceSize = 16,
+	// the first slice will start with size 1, then 4 (1*4), then 16 (4*4).
+	// The growth factor should be tweaked together with firstSliceSize and specially,
+	// maxFirstSliceSize for maximum efficiency.
+	// sliceGrowthFactor only applies to the very first slice created. All other
+	// subsequent slices are created with fixed size of maxInternalSliceSize.
 	sliceGrowthFactor = 4
 
-	// firstSliceLastPosition ...
+	// firstSliceLastPosition points to the last position inside the first slice.
 	firstSliceLastPosition = 15
 
 	// maxFirstSliceSize holds the maximum size of the first slice.
 	maxFirstSliceSize = 16
 
-	// maxInternalSliceSize holds the maximum size of each internal slice.
+	// internalSliceLastPosition points to the last position inside the internal slices.
 	internalSliceLastPosition = 255
 
 	// maxInternalSliceSize holds the maximum size of each internal slice.
 	maxInternalSliceSize = 256
 
-	// maxSpareLinks ...
+	// maxSpareLinks holds the maximum number of spare slices the deque will keep
+	// when shrinking (items are being removed from the deque).
+	// 4 means a maximum of 4 slices will be kept as spares, meaning, they
+	// have been used before to store data, but are now no longer used.
+	// Spare slices are useful in refill situations, when the deque was filled
+	// with items and emptied. When the same instance is used to push new items,
+	// the spare slices from the previous pushes are already allocated and ready
+	// to be used. So the first pushes will push the data into these slices,
+	// improving the performance dramatically.
+	// A higher spare links numer means the refills will have a better performance
+	// for larger number of items (as now there's more spare slices ready to be used).
+	// The downside is the extra memory usage when the deque shrinks and is
+	// holding a small amount of items.
 	maxSpareLinks = 4
 )
 

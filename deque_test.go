@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	pushCount = maxInternalSliceSize * 3 // Forces at least 3 internal slices
+	pushCount = maxInternalSliceSize * 3 // Push to fill at least 3 internal slices
 )
 
 // Unit tests ---------------------------------------------
