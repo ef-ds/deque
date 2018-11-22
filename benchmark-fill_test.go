@@ -31,8 +31,6 @@ import (
 	cookiejar "gopkg.in/karalabe/cookiejar.v2/collections/deque"
 )
 
-// egonelbre "github.com/egonelbre/exp/queue/blockqueue"
-
 func BenchmarkFillListQueue(b *testing.B) {
 	var l *list.List
 	benchmarkFill(

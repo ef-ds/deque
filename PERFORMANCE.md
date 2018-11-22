@@ -18,7 +18,7 @@ do a proper comparison, elimating test variations, I recommend you to run the te
 ## Bottom Line
 As a general purpose double-ended queue, deque is the queue that displays the most balanced performance, performing either very competitively or besting all other queues in all the different test scenarios.
 
-Having said that, the tests show there's some room for improvement. I'm constantly actively working on the deque. I expect to release better performant deque versions futurely,
+Having said that, the tests show there's some room for improvements. I'm constantly actively working on the deque. I expect to release better performant deque versions in the near future.
 
 ## Recommendations
 Using a double-ended queue as a stack is possible and works very well. However, given the stack inverted properties (LIFO) when comparing to a FIFO queue, using a deque as a stack is not the most efficient solution.
@@ -103,9 +103,7 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     7.02M ± 0%     7.00M ± 0%   -0.28%  (p=0.000 n=10+10)
 ```
 
-The gammazero deque performs really well with very small data sets (<= 10), beating
-deque by ~30%. However, it is considerably slower with larger data sets.
-However, the biggest difference is in the deque's considerably lower memory footprint.
+The gammazero deque performs really well with very small data sets (<= 10), beating deque by ~30%. However, it is considerably slower with larger data sets and uses considerably more memory than deque.
 
 
 deque vs gammazero - LIFO stack - [microservice tests](benchmark-microservice_test.go)
@@ -139,8 +137,8 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     7.01M ± 0%     7.00M ± 0%    -0.11%  (p=0.000 n=10+10)
 ```
 
-The gammazero deque, when used as a stack, doen't seem to hold on to its better
-performance with very small data sets.
+The gammazero deque, when used as a stack, doesn't seem to hold on to its better
+performance, when used as a queue, with very small data sets.
 The biggest difference, again here, is in the deque's considerably lower memory footprint.
 
 
@@ -175,8 +173,7 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     7.02M ± 0%     7.00M ± 0%   -0.28%  (p=0.000 n=10+10)
 ```
 
-phf deque seems to perform very similarlt to gammazero's deque. This is not a surprise
-as both deques use a similar design: ring around a slice.
+phf deque seems to perform very similarly to gammazero's deque. This is not a surprise as both deques use a similar design: ring around a slice.
 The biggest difference, again, is in the deque's considerably lower memory footprint.
 
 
@@ -249,12 +246,10 @@ name        old allocs/op  new allocs/op  delta
 For very high load scenarios, the cookiejar deque actually performs a bit better than deque. This is expected as the coookiejar queue was clearly optimized for dealing with
 very large data sets, as its internal block size (4096) indicates. It also implements a very interesting circular slice of blocks and its implementation is higly optimized for performance and efficiency.
 
-The downside, however, of using cookiejar deque is it is much slower when dealing with small data sets. Having said that, In the era of [Microservices](https://en.wikipedia.org/wiki/Microservices) and [serverless computing](https://en.wikipedia.org/wiki/Serverless_computing), the cookiejar deque, being much slower with small data sets, would
-incur a comnsiderable penalty on the application startup time. Remember, even for handling large data sets, a small amount 
-of items has to be pushed initially into the deque. The slowdown happens on the first 100 to 1000 items pushed into the queue.
-Only after that, cookiejar manages to perform well. So even for very large data sets, I still recommend using the deque over cookiejar deque.
+In the era of [Microservices](https://en.wikipedia.org/wiki/Microservices) and [serverless computing](https://en.wikipedia.org/wiki/Serverless_computing), the cookiejar deque, being orders of magnitude slower with small data sets (<= 100), would incur a comnsiderable penalty on the application startup time. Remember, even for handling large data sets, a small amount 
+of items has to be pushed initially into the deque. The slowdown happens on the first 100 to 1000 items pushed into the queue. Only after that, cookiejar manages to perform well. So even for very large data sets, I still recommend using the deque over cookiejar deque, unless the performance of pushing the first 1000 items or so is not really a factor.
 
-A word of caution if you decide to use cookiejar's deque: the implementation is highly optimized for performance and so it doesn't perform even basic bound checks on its pop methods. Some care has to be taken when using the cookiejar deque.
+A word of caution if you decide to use cookiejar's deque: the implementation is highly optimized for performance and so it doesn't perform even basic bound checks on its pop methods. So some care has to be taken when using the cookiejar deque. Deque, on the other hand, makes no concessions on the security side for gains on performance.
 
 
 deque vs [cookiejar](https://github.com/karalabe/cookiejar/blob/master/collections/deque/deque.go) - LIFO stack - [microservice tests](benchmark-microservice_test.go)
@@ -324,8 +319,8 @@ name        old allocs/op  new allocs/op  delta
 ```
 
 The standlist list package can be used as a deque. However, using it either
-as a FIFO queue or LIFO stack is highly discoraged as seem by the performance
-and memory footprint above.
+as a FIFO queue or LIFO stack is highly discouraged as seem by the performance
+and memory footprint.
 
 
 deque vs [list](https://github.com/golang/go/tree/master/src/container/list) - LIFO stack - [microservice tests](benchmark-microservice_test.go)
@@ -430,13 +425,8 @@ name        old allocs/op  new allocs/op  delta
 
 This is the only scenario where deque doesn't perform particularly well against
 a specific data structure. A simple slice based stack manages to perform
-considerably better than deque for data sets up to 10.000. Past that,
+considerably better than deque for data sets up to 10.000 items. Past that,
 deque performs better.
-
-I feel like the only way to beat slice performance when used as a stack, is to
-build a specialized stack data structure. This work is already being done and
-is in the brain storming and design phase.
-
 
 
 ### Other Test Results

@@ -110,6 +110,14 @@ implementations: once inflated, the data structure either never shrinks or requi
 which can be tricky to use as the ideal, most optimized moment to shrink is not always clear and well defined. However, a data structure that completely shrinks after use, when it is used again, it means it has to expand again to accomodate the new values, hindering performance on refill scenarios (where a number of items is added and removed from the queue successively). To address this scenario, deque keeps a configurable number of internal, empty, slices in its ring. This way in refill, scenarios, deque is able to scale out very quickly, still managing to keep the memory footprint very low.
 
 
+## Tests
+
+Besides having 100% code coverage, deque has a extensive set of unit, integration and API tests covering all happy, sad and edge cases. The tests can be found [here](deque_test.go).
+
+Performance and efficiency is a major concern, so deque has a extensive set of benchmark tests as well comparing the deque performance
+with a variety of high quality open source deque implementations. See the [benchmark tests](BENCHMARK_TESTS.md) for details.
+
+
 ## Performance
 
 Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized as it is in most [slice based deques](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) because it never copies data around and when it expands or grow, it never does so by more than 256 (maxInternalArraySize) items.
@@ -120,17 +128,6 @@ As a general purpose FIFO deque or LIFO stack, deque offers, by far, the most ba
 
 See [performance](PERFORMANCE.md) for details.
 
-
-## Tests
-
-Besides having 100% code coverage, deque has a extensive set of unit, integration and API tests covering all happy, sad and edge cases.
-
-The tests can be found [here](deque_test.go).
-
-Performance and efficiency is a major concern, so deque has a extensive set of benchmark tests as well comparing the deque performance
-with a variety of high quality open source deque implementations.
-
-See the [benchmark tests](BENCHMARK_TESTS.md) for details.
 
 
 ## Support

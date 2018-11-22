@@ -45,22 +45,6 @@ package deque
 // 	}
 // }
 
-// func BenchmarkFillEgonelbreQueueDirect(b *testing.B) {
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				q := egonelbre.New()
-// 				for i := 0; i < test.count; i++ {
-// 					q.Push(getTestValue(i))
-// 				}
-// 				for q.Len() > 0 {
-// 					tmp, tmp2 = q.Pop()
-// 				}
-// 			}
-// 		})
-// 	}
-// }
-
 // func BenchmarkFillDequeStackDirect(b *testing.B) {
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
@@ -94,30 +78,6 @@ package deque
 // 					}
 // 					for q.Len() > 0 {
 // 						tmp, tmp2 = q.PopFront()
-// 					}
-// 				}
-// 			}
-// 		})
-// 	}
-// }
-
-// func BenchmarkRefillEgonelbreQueueDirect(b *testing.B) {
-// 	for i, test := range tests {
-// 		// Doesn't run the first (0 items) and last (1mi) items tests
-// 		// as 0 items makes no sense for this test and 1mi is too slow.
-// 		if i == 0 || i > 6 {
-// 			continue
-// 		}
-
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			q := egonelbre.New()
-// 			for n := 0; n < b.N; n++ {
-// 				for n := 0; n < refillCount; n++ {
-// 					for i := 0; i < test.count; i++ {
-// 						q.Push(getTestValue(i))
-// 					}
-// 					for q.Len() > 0 {
-// 						tmp, tmp2 = q.Pop()
 // 					}
 // 				}
 // 			}
@@ -175,38 +135,6 @@ package deque
 // 	}
 // }
 
-// func BenchmarkRefillFullEgonelbreQueueDirect(b *testing.B) {
-// 	d := egonelbre.New()
-// 	for i := 0; i < fillCount; i++ {
-// 		d.Push(getTestValue(i))
-// 	}
-
-// 	for i, test := range tests {
-// 		// Doesn't run the first (0 items) and last (1mi) items tests
-// 		// as 0 items makes no sense for this test and 1mi is too slow.
-// 		if i == 0 || i > 6 {
-// 			continue
-// 		}
-
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				for k := 0; k < refillCount; k++ {
-// 					for i := 0; i < test.count; i++ {
-// 						d.Push(getTestValue(i))
-// 					}
-// 					for i := 0; i < test.count; i++ {
-// 						tmp, tmp2 = d.Pop()
-// 					}
-// 				}
-// 			}
-// 		})
-// 	}
-
-// 	for d.Len() > 0 {
-// 		tmp, tmp2 = d.Pop()
-// 	}
-// }
-
 // func BenchmarkRefillFullDequeStackDirect(b *testing.B) {
 // 	d := New()
 // 	for i := 0; i < fillCount; i++ {
@@ -255,28 +183,6 @@ package deque
 // 	}
 // }
 
-// func BenchmarkStableEgonelbreQueueDirect(b *testing.B) {
-// 	d := egonelbre.New()
-// 	for i := 0; i < fillCount; i++ {
-// 		d.Push(getTestValue(i))
-// 	}
-
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				for i := 0; i < test.count; i++ {
-// 					d.Push(getTestValue(i))
-// 					tmp, tmp2 = d.Pop()
-// 				}
-// 			}
-// 		})
-// 	}
-
-// 	for d.Len() > 0 {
-// 		tmp, tmp2 = d.Pop()
-// 	}
-// }
-
 // func BenchmarkStableDequeStackDirect(b *testing.B) {
 // 	d := New()
 // 	for i := 0; i < fillCount; i++ {
@@ -311,24 +217,6 @@ package deque
 // 				}
 // 				for d.Len() > 0 {
 // 					tmp, tmp2 = d.PopFront()
-// 				}
-// 			}
-// 		})
-// 	}
-// }
-
-// func BenchmarkSlowIncreaseEgonelbreQueueDirect(b *testing.B) {
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				d := egonelbre.New()
-// 				for i := 0; i < test.count && d.Len() > 0; i++ {
-// 					d.Push(getTestValue(i))
-// 					d.Push(getTestValue(i))
-// 					tmp, tmp2 = d.Pop()
-// 				}
-// 				for d.Len() > 0 {
-// 					tmp, tmp2 = d.Pop()
 // 				}
 // 			}
 // 		})
@@ -376,32 +264,6 @@ package deque
 
 // 	for d.Len() > 0 {
 // 		tmp, tmp2 = d.PopFront()
-// 	}
-// }
-
-// func BenchmarkSlowDecreaseEgonelbreQueueDirect(b *testing.B) {
-// 	d := egonelbre.New()
-// 	for _, test := range tests {
-// 		items := test.count / 2
-// 		for i := 0; i <= items; i++ {
-// 			d.Push(getTestValue(i))
-// 		}
-// 	}
-
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				for i := 0; i < test.count; i++ {
-// 					d.Push(getTestValue(i))
-// 					tmp, tmp2 = d.Pop()
-// 					tmp, tmp2 = d.Pop()
-// 				}
-// 			}
-// 		})
-// 	}
-
-// 	for d.Len() > 0 {
-// 		tmp, tmp2 = d.Pop()
 // 	}
 // }
 
