@@ -124,9 +124,9 @@ func (d *Deque) Init() *Deque {
 // The complexity is O(1).
 func (d *Deque) Len() int { return d.len }
 
-// Front returns the first element of deque q or nil if the deque is empty.
+// Front returns the first element of deque d or nil if the deque is empty.
 // The second, bool result indicates whether a valid value was returned;
-//   if the deque is empty, false will be returned.
+// if the deque is empty, false will be returned.
 // The complexity is O(1).
 func (d *Deque) Front() (interface{}, bool) {
 	if d.len == 0 {
@@ -135,9 +135,9 @@ func (d *Deque) Front() (interface{}, bool) {
 	return d.head.v[d.hp], true
 }
 
-// Back returns the last element of deque q or nil if the deque is empty.
+// Back returns the last element of deque d or nil if the deque is empty.
 // The second, bool result indicates whether a valid value was returned;
-//   if the deque is empty, false will be returned.
+// if the deque is empty, false will be returned.
 // The complexity is O(1).
 func (d *Deque) Back() (interface{}, bool) {
 	if d.len == 0 {
@@ -242,7 +242,7 @@ func (d *Deque) PushBack(v interface{}) {
 
 // PopFront retrieves and removes the current element from the front of the deque.
 // The second, bool result indicates whether a valid value was returned;
-// 	if the deque is empty, false will be returned.
+// if the deque is empty, false will be returned.
 // The complexity is O(1).
 func (d *Deque) PopFront() (interface{}, bool) {
 	if d.len == 0 {
@@ -270,7 +270,7 @@ func (d *Deque) PopFront() (interface{}, bool) {
 
 // PopBack retrieves and removes the current element from the back of the deque.
 // The second, bool result indicates whether a valid value was returned;
-// 	if the deque is empty, false will be returned.
+// if the deque is empty, false will be returned.
 // The complexity is O(1).
 func (d *Deque) PopBack() (interface{}, bool) {
 	if d.len == 0 {

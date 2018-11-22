@@ -7,14 +7,14 @@ import (
 )
 
 func Example() {
-	q := deque.New()
+	d := deque.New()
 
 	for i := 0; i < 5; i++ {
-		q.PushBack(i)
+		d.PushBack(i)
 	}
 
-	for q.Len() > 0 {
-		v, _ := q.PopFront()
+	for d.Len() > 0 {
+		v, _ := d.PopFront()
 		fmt.Print(v)
 	}
 
