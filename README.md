@@ -179,3 +179,4 @@ MIT, see [LICENSE](LICENSE).
 
 ## Contributions
 See [contributing.md](https://github.com/ef-ds/docs/blob/master/contributing.md).
+
