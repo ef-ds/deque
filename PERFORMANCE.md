@@ -8,7 +8,7 @@ In the "testdata" directory, we have included the result of local test runs for 
 To run the tests locally, close the deque repo, cd to the deque main directory and run below command.
 
 ```
-go test -benchmem -bench=. -run=^$
+go test -benchmem -timeout 60m -bench=. -run=^$
 ```
 
 This command will run all tests for all queues locally once. This should be good enouh to give you a sense of the queues performance, but to

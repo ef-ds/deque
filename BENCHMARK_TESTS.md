@@ -101,13 +101,13 @@ Refer [here](PERFORMANCE.md) for curated results.
 From the package main directory, the tests can be run with below command.
 
 ```
-go test -benchmem -bench=. -run=^$
+go test -benchmem -timeout 60m -bench=. -run=^$
 ```
 
 To run the test for a single queue, below command can be used.
 
 ```
-go test -benchmem -bench="QUEUE_NAME*" -run=^$
+go test -benchmem -timeout 60m -bench="QUEUE_NAME*" -run=^$
 ```
 
 Replace the QUEUE_NAME with the desired queue such as "List", "Slice", "Gammazero", "Phf", "Cookiejar", "Impl7", "Deque".
@@ -124,8 +124,6 @@ To run the tests multiple times, use the "go test" count parameter as below.
 ```
 go test -benchmem -count 10 -timeout 600m -bench=. -run=^$
 ```
-
-As the test set has a large number of tests, running the tests multiple times causes the test to exceed the default 30-minute timeout. Specify the timeout parameter as well to solve this problem as shown above.
 
 As the number of tests and now, test runs as well, is very large, it becomes very difficult to analyse and understand the results. In order to be able to analyse and compare the results between the different queues, the [benchstat](https://godoc.org/golang.org/x/perf/cmd/benchstat) tool can be used to aggregate the test results. But as benchstat was designed to compare the same set of tests, it is necessary to first split all the different tests into separate test files renaming each
 test with the same name, so benchstat will be able to match the different tests.
