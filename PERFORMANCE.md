@@ -3,7 +3,7 @@
 Below compares the deque [benchmark tests](BENCHMARK_TESTS.md) results with the other tested queues.
 
 ## Running the Tests
-In the "testdata" directory, I have included the result of local test runs for all queues. Below uses this run to compare the queues, but it's possible and I higly encourage you to run the tests youself to help validate the results.
+In the "testdata" directory, we have included the result of local test runs for all queues. Below uses this run to compare the queues, but it's possible and we higly encourage you to run the tests youself to help validate the results.
 
 To run the tests locally, close the deque repo, cd to the deque main directory and run below command.
 
@@ -12,25 +12,25 @@ go test -benchmem -bench=. -run=^$
 ```
 
 This command will run all tests for all queues locally once. This should be good enouh to give you a sense of the queues performance, but to
-do a proper comparison, elimating test variations, I recommend you to run the tests as detailed [here](BENCHMARK_TESTS.md) by running the tests with multiple counts, splitting the files with [test-splitter](https://github.com/ef-ds/tools/tree/master/testsplitter) and using the [benchstat](https://godoc.org/golang.org/x/perf/cmd/benchstat) tool to aggeegate the results.
+do a proper comparison, elimating test variations, we recommend you to run the tests as detailed [here](BENCHMARK_TESTS.md) by running the tests with multiple counts, splitting the files with [test-splitter](https://github.com/ef-ds/tools/tree/master/testsplitter) and using the [benchstat](https://godoc.org/golang.org/x/perf/cmd/benchstat) tool to aggeegate the results.
 
 
 ## Bottom Line
 As a general purpose double-ended queue, deque is the queue that displays the most balanced performance, performing either very competitively or besting all other queues in all the different test scenarios.
 
-Having said that, the tests show there's some room for improvements. I'm constantly actively working on the deque. I expect to release better performant deque versions in the near future.
+Having said that, the tests show there's some room for improvements. We're actively working on the deque. We expect to release better performant deque versions in the near future.
 
 ## Recommendations
 Using a double-ended queue as a stack is possible and works very well. However, given the stack inverted properties (LIFO) when comparing to a FIFO queue, using a deque as a stack is not the most efficient solution.
 
-For a stack solution, I recommend building a stack using a simple slice, such as the [CustomSliceQueue](testdata_test.go).
+For a stack solution, we recommend building a stack using a simple slice, such as the [CustomSliceQueue](testdata_test.go).
 
-For all other uses, I recommend using the deque as it performs very well on both low and high load scenarios on all test batteries.
+For all other uses, we recommend using the deque as it performs very well on both low and high load scenarios on all test batteries.
 
 
 ## Results
 
-Given the enoumous amount of test data, I'll focus the analysis here on the results
+Given the enormous amount of test data, I'll focus the analysis here on the results
 of the, arguably, the most important test: the Microservice test. All the other test results are posted here without comments.
 
 ### Microservice Test Results
@@ -169,7 +169,7 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     7.02M ± 0%     8.86M ± 0%   +26.25%  (p=0.000 n=10+10)
 ```
 
-Using a simple slice as a FIFO queue, performs marginally better than deque with very small data sets, but fall behind quite dramatically with large data sets, performance and memory wise. This happens because [CustomSliceQueue](testdata_test.go) is a naive approach to building queues, one that doesn't consider that the slice is ever expading, consuming considerably more memory as the number of items is pushed to the slice. Building a non-naive queue using simple slices requires much more effort.
+Using a simple slice as a FIFO queue, performs marginally better than deque with very small data sets, but fall behind quite dramatically with large data sets, performance and memory wise. This happens because [CustomSliceQueue](testdata_test.go) is a naive approach to building queues, one that doesn't consider that the slice is ever expanding, consuming considerably more memory as the number of items is pushed to the slice. Building a non-naive queue using simple slices requires much more effort.
 
 
 deque vs [CustomSliceQueue](testdata_test.go) - LIFO stack - [microservice tests](benchmark-microservice_test.go)
@@ -384,8 +384,8 @@ name        old allocs/op  new allocs/op  delta
 For very high load scenarios, the cookiejar deque actually performs a bit better than deque. This is expected as the coookiejar queue was clearly optimized for dealing with
 very large data sets, as its internal block size (4096) indicates. It also implements a very interesting circular slice of blocks and its implementation is higly optimized for performance and efficiency.
 
-In the era of [Microservices](https://en.wikipedia.org/wiki/Microservices) and [serverless computing](https://en.wikipedia.org/wiki/Serverless_computing), the cookiejar deque, being orders of magnitude slower with small data sets (<= 100), would incur a comnsiderable penalty on the application startup time. Remember, even for handling large data sets, a small amount 
-of items has to be pushed initially into the deque. The slowdown happens on the first 100 to 1000 items pushed into the queue. Only after that, cookiejar manages to perform well. So even for very large data sets, I still recommend using the deque over cookiejar deque, unless the performance of pushing the first 1000 items or so is not really a factor.
+In the era of [Microservices](https://en.wikipedia.org/wiki/Microservices) and [serverless computing](https://en.wikipedia.org/wiki/Serverless_computing), the cookiejar deque, being orders of magnitude slower with small data sets (<= 100), would incur a considerable penalty on the application startup time. Remember, even for handling large data sets, a small amount 
+of items has to be pushed initially into the deque. The slowdown happens on the first 100 to 1000 items pushed into the queue. Only after that, cookiejar manages to perform well. So even for very large data sets, we still recommend using the deque over cookiejar deque, unless the performance of pushing the first 1000 items or so is not really a factor.
 
 A word of caution if you decide to use cookiejar's deque: the implementation is highly optimized for performance and so it doesn't perform even basic bound checks on its pop methods. So some care has to be taken when using the cookiejar deque. Deque, on the other hand, makes no concessions on the security side for gains on performance.
 

@@ -1,7 +1,7 @@
 # Benchmark Tests
 
 ## Tests
-The benchmark tests are composed of test sets, batteries and ranges.
+The benchmark tests are composed of test sets, suites and ranges.
 
 ### Test Sets
 The two test sets, queue and stack, were designed to test the queues main usage patterns, being used as a FIFO queue and as a LIFO stack.
@@ -12,8 +12,8 @@ The two test sets, queue and stack, were designed to test the queues main usage 
 Note: a set of mixed tests (mixed push front and back; mixed pop front and back) will also be implemented.
 
 
-### Test Batteries
-The test batteries were designed to test the queues with different push/pop patterns under different scenarios such as low and high stress.
+### Test Suites
+The test suites were designed to test the queues with different push/pop patterns under different scenarios such as low and high stress.
 
 - [Fill](benchmark-fill_test.go): test the queues performance by sequentially adding n items to the queue and then removing all added items. Tests the queues
 ability for quickly expand and shrink.
@@ -26,7 +26,7 @@ ability to slowly expand while removing some elements from the queue.
 - [Stable](benchmark-stable_test.go): Add 1 item to the queue and remove it. Tests the queues ability to handle constant push/pop over n iterations.
 
 #### The Microservice Test
-It is very common on production Microservices to use more resources, be it memory or CPU, as the traffic it is serving increases. Keeping this fact in mind, this is a composite test designed to test the queues in a production like microservice scenario. The test idea is that every time the Microservice using the queue receives a request, it would push an item to the queue. As soon as the requeust is served, the Microservice removes an item from the queue.
+It is very common on production Microservices to use more resources, be it memory or CPU, as the traffic it is serving increases. Keeping this fact in mind, this is a composite test designed to test the queues in a production like microservice scenario. The test idea is that every time the Microservice using the queue receives a request, it would push an item to the queue. As soon as the request is served, the Microservice removes an item from the queue.
 
 The test start by running a stable test to simulate stable traffic (i.e. the system is able to handle the traffic without stress).
 
@@ -47,7 +47,7 @@ The Microservice test can be found [here.](benchmark-microservice_test.go)
 
 ### Test Ranges
 
-The test ranges are designed to test the queues with different loads. The tests will add and remove below number of items to the queues accodirng to each test battery pattern.
+The test ranges are designed to test the queues with different loads. The tests will add and remove below number of items to the queues according to each test suites pattern.
 
 - 0 items
 - 1 items
@@ -125,7 +125,7 @@ To run the tests multiple times, use the "go test" count parameter as below.
 go test -benchmem -count 10 -timeout 600m -bench=. -run=^$
 ```
 
-As the test set has a large number of tests, running the tests multiple times causes the test to exceeed the default 30-minute timeout. Specify the timeout parameter as well to solve this problem as shown above.
+As the test set has a large number of tests, running the tests multiple times causes the test to exceed the default 30-minute timeout. Specify the timeout parameter as well to solve this problem as shown above.
 
 As the number of tests and now, test runs as well, is very large, it becomes very difficult to analyse and understand the results. In order to be able to analyse and compare the results between the different queues, the [benchstat](https://godoc.org/golang.org/x/perf/cmd/benchstat) tool can be used to aggregate the test results. But as benchstat was designed to compare the same set of tests, it is necessary to first split all the different tests into separate test files renaming each
 test with the same name, so benchstat will be able to match the different tests.
@@ -266,7 +266,7 @@ go run *.go --file PATH_TO_TESTDATA/DEQUE.TXT --suffix 2
 ```
 
 Test-splitter should create each file with the "2" suffix, so now we have the test file for both, the old and this new
-test run. Use below commands to test the effect of the changes for each test battery.
+test run. Use below commands to test the effect of the changes for each test suite.
 
 ```
 benchstat testdata/BenchmarkFillDequeQueue.txt testdata/BenchmarkFillDequeQueue2.txt
