@@ -29,7 +29,8 @@ func main() {
 	for i := 1; i <= 5; i++ {
 		d.PushBack(i)
 	}
-	for v, ok := d.PopFront(); ok; v, ok = d.PopFront() {
+	for d.Len() > 0 {
+		v, _ := d.PopFront()
 		fmt.Println(v)
 	}
 }
@@ -115,6 +116,10 @@ Deque, either used as a FIFO queue or LIFO stack, offers either the best or very
 As a general purpose FIFO deque or LIFO stack, deque offers, by far, the most balanced and consistent performance of all tested data structures.
 
 See [performance](PERFORMANCE.md) for details.
+
+
+## Safe for Concurrent Use
+Deque is not safe for concurrent use. However, it's very easy to build a safe for concurrent use verion of the deque. Impl7 design document includes an example of how to make impl7 safe for concurrent use using a mutex. Impl7 design document can be found [here](https://github.com/golang/proposal/blob/master/design/27935-unbounded-queue-package.md).
 
 
 
