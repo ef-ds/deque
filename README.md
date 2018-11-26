@@ -58,8 +58,9 @@ The data types pushed into the deque can even be mixed, meaning, it's possible t
 ## Design
 The efficient data structures (ef-ds) deque employs a new, modern deque design: a ring shaped, auto shrinking, linked slices design.
 
-That means the deque is a doubly-linked list where each node value is a fixed size slice. It is ring in shape because the linked list is a circular one, where the tail always points to the head in the ring. It also auto shrinks as the values are popped off the deque, keeping itself as a lean and low memory footprint data structure even after heavy use.
+That means the [double-ended queue](https://en.wikipedia.org/wiki/Double-ended_queue) is a [doubly-linked list](https://en.wikipedia.org/wiki/Doubly_linked_list) where each node value is a fixed size slice. It is ring in shape because the linked list is a [circular one](https://en.wikipedia.org/wiki/Circular_buffer), where the last node always points to the first one in the ring. It also auto shrinks as the values are popped off the deque, keeping itself as a lean and low memory footprint data structure even after heavy use.
 
+![ns/op](testdata/deque.jpg?raw=true "Deque Design")
 
 ### Design Considerations
 
