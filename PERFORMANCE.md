@@ -381,13 +381,13 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     7.02M ± 0%     7.00M ± 0%      -0.27%  (p=0.000 n=10+10)
 ```
 
-For very high load scenarios, the cookiejar deque actually performs a bit better than deque. This is expected as the coookiejar queue was clearly optimized for dealing with
-very large data sets, as its internal block size (4096) indicates. It also implements a very interesting circular slice of blocks and its implementation is higly optimized for performance and efficiency.
+For very high load scenarios, the cookiejar deque actually performs a bit better than deque. This is expected as the coookiejar queue was clearly optimized for dealing with very large data sets, as its internal block size (4096) indicates. It also implements a very interesting circular slice of blocks and its implementation is higly optimized for performance and efficiency.
 
-In the era of [Microservices](https://en.wikipedia.org/wiki/Microservices) and [serverless computing](https://en.wikipedia.org/wiki/Serverless_computing), the cookiejar deque, being orders of magnitude slower with small data sets (<= 100), would incur a considerable penalty on the application startup time. Remember, even for handling large data sets, a small amount 
-of items has to be pushed initially into the deque. The slowdown happens on the first 100 to 1000 items pushed into the queue. Only after that, cookiejar manages to perform well. So even for very large data sets, we still recommend using the deque over cookiejar deque, unless the performance of pushing the first 1000 items or so is not really a factor.
+In the era of [Microservices](https://en.wikipedia.org/wiki/Microservices) and [serverless computing](https://en.wikipedia.org/wiki/Serverless_computing), 
+it is very important for the applications to remain lean and be able to start up (and shutdown) quickly as they are frequently deployed and moved around
+to different pods, nodes to answer to different demands. The cookiejar deque, being orders of magnitude slower with small data sets (<= 100), would incur a considerable penalty on the application startup time, making it not a particularly good option for microservice and serverless applications.
 
-A word of caution if you decide to use cookiejar's deque: the implementation is highly optimized for performance and so it doesn't perform even basic bound checks on its pop methods. So some care has to be taken when using the cookiejar deque. Deque, on the other hand, makes no concessions on the security side for gains on performance.
+A word of caution if you decide to use cookiejar's deque: the implementation is highly optimized for performance and so it doesn't perform even basic bound checks on its pop methods. So some care has to be taken when using the cookiejar deque. Deque, on the other hand, makes no concessions on security for performance gains.
 
 
 deque vs [cookiejar](https://github.com/karalabe/cookiejar/blob/master/collections/deque/deque.go) - LIFO stack - [microservice tests](benchmark-microservice_test.go)
