@@ -56,7 +56,7 @@ var (
 
 // Pure slice based test queue implementation-------------------------------------------------------
 
-// CustomSliceQueue represents an unbounded, dynamically growing FIFO queue customized
+// CustomSliceQueue represents an unbounded, dynamically growing deque customized
 // to operate on testVale struct.
 type CustomSliceQueue struct {
 	// The queue values.
