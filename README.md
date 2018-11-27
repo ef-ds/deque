@@ -125,10 +125,6 @@ See [performance](PERFORMANCE.md) for details.
 ## Safe for Concurrent Use
 Deque is not safe for concurrent use. However, it's very easy to build a safe for concurrent use version of the deque. Impl7 design document includes an example of how to make impl7 safe for concurrent use using a mutex. Deque can be made safe for concurret use using the same technique. Impl7 design document can be found [here](https://github.com/golang/proposal/blob/master/design/27935-unbounded-queue-package.md).
 
-## Contact
-
-Suggestions, bugs, new queues to benchmark, issues with the deque, please let us know at ef-ds@outlook.com.
-
 
 ## Support
 
@@ -172,3 +168,6 @@ MIT, see [LICENSE](LICENSE).
 ## Contributions
 See [contributing.md](https://github.com/ef-ds/docs/blob/master/contributing.md).
 
+
+## Contact
+Suggestions, bugs, new queues to benchmark, issues with the deque, please let us know at ef-ds@outlook.com.
