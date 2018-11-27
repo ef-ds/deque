@@ -35,14 +35,8 @@ const (
 	// subsequent slices are created with fixed size of maxInternalSliceSize.
 	sliceGrowthFactor = 4
 
-	// firstSliceLastPosition points to the last position inside the first slice.
-	firstSliceLastPosition = 15
-
 	// maxFirstSliceSize holds the maximum size of the first slice.
 	maxFirstSliceSize = 16
-
-	// internalSliceLastPosition points to the last position inside the internal slices.
-	internalSliceLastPosition = 255
 
 	// maxInternalSliceSize holds the maximum size of each internal slice.
 	maxInternalSliceSize = 256
@@ -149,55 +143,48 @@ func (d *Deque) Back() (interface{}, bool) {
 // PushFront adds value v to the the front of the deque.
 // The complexity is O(1).
 func (d *Deque) PushFront(v interface{}) {
-	if d.head == nil {
+	switch {
+	case d.head == nil:
 		h := &node{v: make([]interface{}, firstSliceSize)}
 		h.n = h
 		h.p = h
 		d.head = h
 		d.tail = h
-		d.lastTailPosition = firstSliceLastPosition
-	} else {
-		if d.hp > 0 {
-			d.hp--
-		} else if d.head.p != d.tail {
-			d.head = d.head.p
-			d.hp = len(d.head.v) - 1
-			d.spareLinks--
-		} else {
-			if d.head == d.tail {
-				d.tp++
-				if d.tp >= len(d.head.v) && len(d.head.v) < maxFirstSliceSize {
-					l := len(d.head.v)
-					nl := l * sliceGrowthFactor
-					n := make([]interface{}, nl)
-					d.hp = nl - l
-					d.tp = nl - 1
-					copy(n[d.hp:], d.head.v)
-					d.head.v = n
-					d.hp--
-				} else {
-					n := &node{v: make([]interface{}, maxInternalSliceSize)}
-					n.n = d.head
-					n.p = d.tail
-					d.head.p = n
-					d.tail.n = n
-					d.head = n
-					d.hp = internalSliceLastPosition
-					d.tp = len(d.tail.v) - 1
-					d.lastTailPosition = internalSliceLastPosition
-				}
-			} else {
-				n := &node{v: make([]interface{}, maxInternalSliceSize)}
-				n.n = d.head
-				n.p = d.tail
-				d.head.p = n
-				d.tail.n = n
-				d.head = n
-				d.hp = internalSliceLastPosition
-			}
-		}
+		d.lastTailPosition = maxFirstSliceSize - 1
+	case d.hp > 0:
+		d.hp--
+	case d.head.p != d.tail:
+		d.head = d.head.p
+		d.hp = len(d.head.v) - 1
+		d.spareLinks--
+	case d.head != d.tail:
+		n := &node{v: make([]interface{}, maxInternalSliceSize)}
+		n.n = d.head
+		n.p = d.tail
+		d.head.p = n
+		d.tail.n = n
+		d.head = n
+		d.hp = maxInternalSliceSize - 1
+	case d.tp >= len(d.head.v)-1 && len(d.head.v) < maxFirstSliceSize:
+		l := len(d.head.v)
+		nl := l * sliceGrowthFactor
+		n := make([]interface{}, nl)
+		d.hp = nl - l
+		d.tp = nl - 1
+		copy(n[d.hp:], d.head.v)
+		d.head.v = n
+		d.hp--
+	default:
+		n := &node{v: make([]interface{}, maxInternalSliceSize)}
+		n.n = d.head
+		n.p = d.tail
+		d.head.p = n
+		d.tail.n = n
+		d.head = n
+		d.hp = maxInternalSliceSize - 1
+		d.tp = len(d.tail.v) - 1
+		d.lastTailPosition = maxInternalSliceSize - 1
 	}
-
 	d.len++
 	d.head.v[d.hp] = v
 }
@@ -205,14 +192,15 @@ func (d *Deque) PushFront(v interface{}) {
 // PushBack adds value v to the the back of the deque.
 // The complexity is O(1).
 func (d *Deque) PushBack(v interface{}) {
-	if d.head == nil {
+	switch {
+	case d.head == nil:
 		h := &node{v: make([]interface{}, firstSliceSize)}
 		h.n = h
 		h.p = h
 		d.head = h
 		d.tail = h
-		d.lastTailPosition = firstSliceLastPosition
-	} else if d.tp >= d.lastTailPosition {
+		d.lastTailPosition = maxFirstSliceSize - 1
+	case d.tp >= d.lastTailPosition:
 		var n *node
 		if d.tail.n != d.head {
 			d.spareLinks--
@@ -223,11 +211,11 @@ func (d *Deque) PushBack(v interface{}) {
 			n.p = d.tail
 			d.tail.n = n
 			d.head.p = n
-			d.lastTailPosition = internalSliceLastPosition
+			d.lastTailPosition = maxInternalSliceSize - 1
 		}
 		d.tp = 0
 		d.tail = n
-	} else {
+	default:
 		d.tp++
 		if d.tp >= len(d.tail.v) {
 			n := make([]interface{}, len(d.tail.v)*sliceGrowthFactor)
@@ -235,7 +223,6 @@ func (d *Deque) PushBack(v interface{}) {
 			d.tail.v = n
 		}
 	}
-
 	d.len++
 	d.tail.v[d.tp] = v
 }
