@@ -25,7 +25,7 @@ Using a double-ended queue as a stack is possible and works very well. However, 
 
 For a stack solution, we recommend building a stack using a simple slice, such as the [CustomSliceQueue](testdata_test.go).
 
-For all other uses, we recommend using the deque as it performs very well on both low and high load scenarios on all test batteries.
+For all other uses, we recommend using the deque as it performs very well on both low and high load scenarios on all tests.
 
 
 ## Results
