@@ -421,9 +421,7 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     7.01M ± 0%     7.00M ± 0%      -0.10%  (p=0.000 n=10+10)
 ```
 
-Similarly to the other tested queues, when used as a LIFO stack, cookiejar's deque 
-performs very similarly to deque on all test loads.
-
+As a stack, deque outperforms cookiejar deque for small data sets quite dramatically and displays a pretty matched performance for large ones, even though cookiejar deque was specifically optimized for large data sets.
 
 
 
