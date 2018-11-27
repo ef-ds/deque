@@ -362,7 +362,7 @@ func pushPopFrontBackShouldRetrieveAllElementsInOrder(t *testing.T, popFunc, fro
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			d := deque.New()
+			d := new(deque.Deque)
 			lastPut := 0
 			lastGet := 0
 			var ok bool

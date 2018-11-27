@@ -246,7 +246,7 @@ func BenchmarkStableDequeQueue(b *testing.B) {
 	benchmarkStable(
 		b,
 		func() {
-			q = deque.New()
+			q = new(deque.Deque)
 		},
 		func(v interface{}) {
 			q.PushBack(v)
@@ -265,7 +265,7 @@ func BenchmarkStableDequeStack(b *testing.B) {
 	benchmarkStable(
 		b,
 		func() {
-			q = deque.New()
+			q = new(deque.Deque)
 		},
 		func(v interface{}) {
 			q.PushBack(v)
