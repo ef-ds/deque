@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package deque
+package deque_test
 
 import (
 	"container/list"
@@ -26,6 +26,7 @@ import (
 	"testing"
 
 	"github.com/christianrpetrin/queue-tests/queueimpl7"
+	"github.com/ef-ds/deque"
 	gammazero "github.com/gammazero/deque"
 	phf "github.com/phf/go-queue/queue"
 	cookiejar "gopkg.in/karalabe/cookiejar.v2/collections/deque"
@@ -241,11 +242,11 @@ func BenchmarkMicroserviceImpl7Queue(b *testing.B) {
 }
 
 func BenchmarkMicroserviceDequeQueue(b *testing.B) {
-	var q *Deque
+	var q *deque.Deque
 	benchmarkMicroservice(
 		b,
 		func() {
-			q = New()
+			q = deque.New()
 		},
 		func(v interface{}) {
 			q.PushBack(v)
@@ -260,11 +261,11 @@ func BenchmarkMicroserviceDequeQueue(b *testing.B) {
 }
 
 func BenchmarkMicroserviceDequeStack(b *testing.B) {
-	var q *Deque
+	var q *deque.Deque
 	benchmarkMicroservice(
 		b,
 		func() {
-			q = New()
+			q = deque.New()
 		},
 		func(v interface{}) {
 			q.PushBack(v)

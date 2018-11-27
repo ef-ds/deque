@@ -104,7 +104,7 @@ Having said that, a data structure that completely shrinks after use, when it is
 
 ## Tests
 
-Besides having 100% code coverage, deque has a extensive set of unit, integration and API tests covering all happy, sad and edge cases. The tests can be found [here](deque_test.go).
+Besides having 100% code coverage, deque has a extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
 
 Performance and efficiency is a major concern, so deque has a extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](BENCHMARK_TESTS.md) for details.
 

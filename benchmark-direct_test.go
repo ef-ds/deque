@@ -18,12 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package deque
+package deque_test
 
 // All benchmark tests use method expressions to call the different queue implementations,
 // which adds some overhead in terns of performance and memory. For comparison purposes, however, using
 // method expressions should be fine as all queues are subject to the same overhead.
-// Below are all the benchmark tests replicated using directly deque, so below tests
+// Below are all the benchmark tests replicated using deque directly, so below tests
 // are not subject to any additional overhead. Keeping below tests commented out
 // to avoid any confusion with the other tests.
 // If you are interested in checking the deque performance without the overhead,
@@ -33,7 +33,7 @@ package deque
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 // 			for n := 0; n < b.N; n++ {
-// 				q := New()
+// 				q := deque.New()
 // 				for i := 0; i < test.count; i++ {
 // 					q.PushBack(getTestValue(i))
 // 				}
@@ -49,7 +49,7 @@ package deque
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 // 			for n := 0; n < b.N; n++ {
-// 				q := New()
+// 				q := deque.New()
 // 				for i := 0; i < test.count; i++ {
 // 					q.PushBack(getTestValue(i))
 // 				}
@@ -70,7 +70,7 @@ package deque
 // 		}
 
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			q := New()
+// 			q := deque.New()
 // 			for n := 0; n < b.N; n++ {
 // 				for n := 0; n < refillCount; n++ {
 // 					for i := 0; i < test.count; i++ {
@@ -88,7 +88,7 @@ package deque
 // func BenchmarkRefillDequeStackDirect(b *testing.B) {
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			q := New()
+// 			q := deque.New()
 // 			for n := 0; n < b.N; n++ {
 // 				for n := 0; n < refillCount; n++ {
 // 					for i := 0; i < test.count; i++ {
@@ -104,7 +104,7 @@ package deque
 // }
 
 // func BenchmarkRefillFullDequeQueueDirect(b *testing.B) {
-// 	d := New()
+// 	d := deque.New()
 // 	for i := 0; i < fillCount; i++ {
 // 		d.PushBack(getTestValue(i))
 // 	}
@@ -136,7 +136,7 @@ package deque
 // }
 
 // func BenchmarkRefillFullDequeStackDirect(b *testing.B) {
-// 	d := New()
+// 	d := deque.New()
 // 	for i := 0; i < fillCount; i++ {
 // 		d.PushBack(getTestValue(i))
 // 	}
@@ -162,7 +162,7 @@ package deque
 // }
 
 // func BenchmarkStableDequeQueueDirect(b *testing.B) {
-// 	d := New()
+// 	d := deque.New()
 // 	for i := 0; i < fillCount; i++ {
 // 		d.PushBack(getTestValue(i))
 // 	}
@@ -184,7 +184,7 @@ package deque
 // }
 
 // func BenchmarkStableDequeStackDirect(b *testing.B) {
-// 	d := New()
+// 	d := deque.New()
 // 	for i := 0; i < fillCount; i++ {
 // 		d.PushBack(getTestValue(i))
 // 	}
@@ -209,8 +209,8 @@ package deque
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 // 			for n := 0; n < b.N; n++ {
-// 				d := New()
-// 				for i := 0; i < test.count && d.Len() > 0; i++ {
+// 				d := deque.New()
+// 				for i := 0; i < test.count; i++ {
 // 					d.PushBack(getTestValue(i))
 // 					d.PushBack(getTestValue(i))
 // 					tmp, tmp2 = d.PopFront()
@@ -227,8 +227,8 @@ package deque
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 // 			for n := 0; n < b.N; n++ {
-// 				d := New()
-// 				for i := 0; i < test.count && d.Len() > 0; i++ {
+// 				d := deque.New()
+// 				for i := 0; i < test.count; i++ {
 // 					d.PushBack(getTestValue(i))
 // 					d.PushBack(getTestValue(i))
 // 					tmp, tmp2 = d.PopBack()
@@ -242,7 +242,7 @@ package deque
 // }
 
 // func BenchmarkSlowDecreaseDequeQueueDirect(b *testing.B) {
-// 	d := New()
+// 	d := deque.New()
 // 	for _, test := range tests {
 // 		items := test.count / 2
 // 		for i := 0; i <= items; i++ {
@@ -256,7 +256,9 @@ package deque
 // 				for i := 0; i < test.count; i++ {
 // 					d.PushBack(getTestValue(i))
 // 					tmp, tmp2 = d.PopFront()
-// 					tmp, tmp2 = d.PopFront()
+// 					if d.Len() > 0 {
+// 						tmp, tmp2 = d.PopFront()
+// 					}
 // 				}
 // 			}
 // 		})
@@ -268,7 +270,7 @@ package deque
 // }
 
 // func BenchmarkSlowDecreaseDequeStackDirect(b *testing.B) {
-// 	d := New()
+// 	d := deque.New()
 // 	for _, test := range tests {
 // 		items := test.count / 2
 // 		for i := 0; i <= items; i++ {

@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package deque
+package deque_test
 
 // testData contains the number of items to add to the queues in each test.
 type testData struct {

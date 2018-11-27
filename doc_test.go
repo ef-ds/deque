@@ -12,11 +12,9 @@ func Example() {
 	for i := 0; i < 5; i++ {
 		d.PushBack(i)
 	}
-
 	for d.Len() > 0 {
 		v, _ := d.PopFront()
 		fmt.Print(v)
 	}
-
 	// Output: 01234
 }
