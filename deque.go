@@ -258,9 +258,10 @@ func (d *Deque) PopFront() (interface{}, bool) {
 		if d.head == d.tail {
 			d.tp = -1
 		} else {
-			d.spareLinks++
 			if d.spareLinks >= maxSpareLinks {
 				d.head.p.n = d.head.n // Eliminate this link
+			} else {
+				d.spareLinks++
 			}
 		}
 		d.head = d.head.n
@@ -283,9 +284,10 @@ func (d *Deque) PopBack() (interface{}, bool) {
 	d.tp--
 	if d.tp < 0 {
 		if d.head != d.tail {
-			d.spareLinks++
 			if d.spareLinks >= maxSpareLinks {
 				d.head.p.n = d.head.n // Eliminate this link
+			} else {
+				d.spareLinks++
 			}
 		}
 		d.tail = d.tail.p

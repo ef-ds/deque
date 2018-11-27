@@ -717,6 +717,19 @@ func TestPushBackShouldReuseSpareLinks(t *testing.T) {
 	}
 }
 
+func TestKeepMaxSpareLinks(t *testing.T) {
+	d := New()
+	for i := 0; i < maxInternalSliceSize*(maxSpareLinks+2); i++ {
+		d.PushBack(i)
+	}
+	for d.Len() > 0 {
+		d.PopFront()
+		if d.spareLinks > maxSpareLinks {
+			t.Fatalf("Too many spare links : got %d; want <= %d", d.spareLinks, maxSpareLinks)
+		}
+	}
+}
+
 // Helper methods-----------------------------------------------------------------------------------
 
 // Checks the internal slices and its links.
