@@ -48,7 +48,7 @@ Output:
 5
 ```
 
-Also refer to the tests at [deque_test.go](deque_test.go).
+Also refer to the [integration](integration_test.go) and [API](api_test.go).
 
 
 ## Supported Data Types
