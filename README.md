@@ -88,7 +88,6 @@ Also refer to the [integration](integration_test.go) and [API](api_test.go) test
 
 
 ## Why
-
 We feel like this world needs improving. Our goal is to change the world, for the better, for all citizens.
 
 As software engineers, we feel like the best way we can contribute to a better world is to build amazing systems,
@@ -101,14 +100,6 @@ What if we could build queues, stacks, lists, arrays, hash tables, etc that are 
 One sofware engineer can't change the world him/herself, but a whole bunch of us can! Please join us improving this world. All the work done here is made 100% transparent and is 100% free. No strings attached. We only require one thing in return: please consider benefiting from it; and if you do so, please let others know about it.
 
 
-
-## Supported Data Types
-Similarly to Go's standard library list, [list](https://github.com/golang/go/tree/master/src/container/list), 
-[ring](https://github.com/golang/go/tree/master/src/container/ring) and [heap](https://github.com/golang/go/blob/master/src/container/heap/heap.go) packages, deque supports "interface{}" as its data type. This means it can be used with any Go data types, including int, float, string and any user defined structs and pointers to interfaces.
-
-The data types pushed into the deque can even be mixed, meaning, it's possible to push ints, floats and struct instances into the same deque.
-
-
 ## Design
 The efficient data structures (ef-ds) deque employs a new, modern deque design: a ring shaped, auto shrinking, linked slices design.
 
@@ -116,8 +107,8 @@ That means the [double-ended queue](https://en.wikipedia.org/wiki/Double-ended_q
 
 ![ns/op](testdata/deque.jpg?raw=true "Deque Design")
 
-### Design Considerations
 
+### Design Considerations
 Deque uses linked slices as its underlying data structure. The reason for the choice comes from two main observations of slice based deques/queues/stacks:
 
 1. When the deque/queue/stack needs to expand to accommodate new values, [a new, larger slice needs to be allocated](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) and used
@@ -151,7 +142,6 @@ Having said that, a data structure that completely shrinks after use, when it is
 
 
 ## Tests
-
 Besides having 100% code coverage, deque has a extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
 
 Performance and efficiency is a major concern, so deque has a extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](BENCHMARK_TESTS.md) for details.
@@ -159,8 +149,8 @@ Performance and efficiency is a major concern, so deque has a extensive set of b
 When considering all tests, deque has over 10x more lines of testing code when compared to the actual, functional code.
 
 
-## Performance
 
+## Performance
 Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [slice based deques](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) because it never copies more than 8 (maxFirstSliceSize/2) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
 
 Deque, either used as a FIFO queue or LIFO stack, offers either the best or very competitive performance across all test sets, suites and ranges.
@@ -170,12 +160,19 @@ As a general purpose FIFO deque or LIFO stack, deque offers, by far, the most ba
 See [performance](PERFORMANCE.md) for details.
 
 
+## Supported Data Types
+Similarly to Go's standard library list, [list](https://github.com/golang/go/tree/master/src/container/list), 
+[ring](https://github.com/golang/go/tree/master/src/container/ring) and [heap](https://github.com/golang/go/blob/master/src/container/heap/heap.go) packages, deque supports "interface{}" as its data type. This means it can be used with any Go data types, including int, float, string and any user defined structs and pointers to interfaces.
+
+The data types pushed into the deque can even be mixed, meaning, it's possible to push ints, floats and struct instances into the same deque.
+
+
 ## Safe for Concurrent Use
 Deque is not safe for concurrent use. However, it's very easy to build a safe for concurrent use version of the deque. Impl7 design document includes an example of how to make impl7 safe for concurrent use using a mutex. Deque can be made safe for concurret use using the same technique. Impl7 design document can be found [here](https://github.com/golang/proposal/blob/master/design/27935-unbounded-queue-package.md).
 
 
-## Support
 
+## Support
 As the [CloudLogger](https://github.com/cloud-logger/docs) project needed a high performance unbounded queue and, given the fact that Go doesn't provide such queue in its standard library, we built a new queue and proposed it to be added to the standard library.
 
 The initial [proposal](https://github.com/golang/go/issues/27935) was to add [impl7](https://github.com/christianrpetrin/queue-tests/tree/master/queueimpl7/queueimpl7.go) to the standard library.
@@ -189,7 +186,6 @@ If you like deque, please help us support it by thumbing up the [proposal](https
 
 
 ## Competition
-
 We're extremely interested in improving the deque. Please let us know your suggestions for possible improvements and if you know of other high performance
 queues not tested here, let us know and we're very glad to benchmark them.
 
