@@ -21,11 +21,13 @@
 package deque
 
 import (
+	"fmt"
 	"testing"
 )
 
 const (
-	pushCount = maxInternalSliceSize * 3 // Push to fill at least 3 internal slices
+	refillCount = 3
+	pushCount   = maxInternalSliceSize * 3 // Push to fill at least 3 internal slices
 )
 
 func TestNewShouldReturnInitiazedInstanceOfDeque(t *testing.T) {
@@ -296,7 +298,7 @@ func TestPushFrontPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
 	}
 
 	// Pop maxFirstSliceSize-1 items to empty the head/tail (last) slice
-	for i := 1; i <= maxFirstSliceSize-1; i++ {
+	for i := 1; i <= maxFirstSliceSize; i++ {
 		if v, ok := d.PopFront(); !ok || v.(int) != popValue {
 			t.Errorf("Expected: %d; Got: %d", popValue, v)
 		}
@@ -318,20 +320,6 @@ func TestPushFrontPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
 		}
 	}
 
-	// Pop one extra item emptying the deque and making head move to next (first slice)
-	if v, ok := d.PopFront(); !ok || v.(int) != popValue {
-		t.Errorf("Expected: %d; Got: %d", popValue, v)
-	}
-	popValue--
-	checkLinks(t, d, popValue, maxInternalSliceSize, maxFirstSliceSize, spareLinks, d.tail.p, d.tail, d.head, d.head.n)
-	//Check middle  slice links
-	if d.head.n.n != d.tail {
-		t.Error("Expected: d.head.n.n == d.tail; Got: d.head.n.n != d.tail")
-	}
-	if d.head.n.p != d.tail.n {
-		t.Error("Expected: d.head.n.p == d.tail.n; Got: d.head.n.p != d.tail.n")
-	}
-
 	// The deque shoud be empty
 	if d.Len() != 0 {
 		t.Errorf("Expected: %d; Got: %d", 0, d.Len())
@@ -342,14 +330,14 @@ func TestPushFrontPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
 	if _, ok := d.Front(); ok {
 		t.Error("Expected: false; Got: true")
 	}
-	if len(d.head.v) != maxInternalSliceSize {
-		t.Errorf("Expected: %d; Got: %d", maxInternalSliceSize, len(d.head.v))
+	if len(d.head.v) != maxFirstSliceSize {
+		t.Errorf("Expected: %d; Got: %d", maxFirstSliceSize, len(d.head.v))
 	}
 	if len(d.tail.v) != maxFirstSliceSize {
 		t.Errorf("Expected: %d; Got: %d", maxFirstSliceSize, len(d.tail.v))
 	}
-	if d.head.p != d.tail {
-		t.Error("Expected: d.head.p == d.tail; Got: d.head.p != d.tail")
+	if d.head != d.tail {
+		t.Error("Expected: d.head == d.tail; Got: d.head != d.tail")
 	}
 	if d.tp != -1 {
 		t.Errorf("Expected: %d; Got: %d", -1, d.tp)
@@ -465,7 +453,7 @@ func TestPushBackPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 	}
 
 	// Pop maxFirstSliceSize-1 items to empty the head (first) slice
-	for i := 1; i <= maxFirstSliceSize-1; i++ {
+	for i := 1; i <= maxFirstSliceSize; i++ {
 		if v, ok := d.PopBack(); !ok || v.(int) != popValue {
 			t.Errorf("Expected: %d; Got: %d", popValue, v)
 		}
@@ -487,20 +475,6 @@ func TestPushBackPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 		}
 	}
 
-	// Pop one extra item emptying the deque, making tail move to the previous, last slice
-	if v, ok := d.PopBack(); !ok || v.(int) != popValue {
-		t.Errorf("Expected: %d; Got: %d", popValue, v)
-	}
-	popValue--
-	checkLinks(t, d, popValue, maxFirstSliceSize, maxInternalSliceSize, spareLinks, d.tail.p, d.tail, d.head, d.head.n)
-	/// Check middle links
-	if d.head.n.n != d.tail {
-		t.Error("Expected: d.head.n.n == d.tail; Got: d.head.n.n != d.tail")
-	}
-	if d.head.n.p != d.head {
-		t.Error("Expected: d.head.n.p == d.head; Got: d.head.n.p != d.head")
-	}
-
 	// The deque shoud be empty
 	if d.Len() != 0 {
 		t.Errorf("Expected: %d; Got: %d", 0, d.Len())
@@ -514,14 +488,14 @@ func TestPushBackPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 	if len(d.head.v) != maxFirstSliceSize {
 		t.Errorf("Expected: %d; Got: %d", maxFirstSliceSize, len(d.head.v))
 	}
-	if len(d.tail.v) != maxInternalSliceSize {
-		t.Errorf("Expected: %d; Got: %d", maxInternalSliceSize, len(d.tail.v))
+	if len(d.tail.v) != maxFirstSliceSize {
+		t.Errorf("Expected: %d; Got: %d", maxFirstSliceSize, len(d.tail.v))
 	}
-	if d.head.n != d.tail.p {
-		t.Error("Expected: d.head.n == d.tail.p; Got: d.head.n != d.tail.p")
+	if d.head.n == d.tail.p {
+		t.Error("Expected: d.head.n != d.tail.p; Got: d.head.n == d.tail.p")
 	}
-	if d.tp != maxInternalSliceSize-1 {
-		t.Errorf("Expected: %d; Got: %d", maxInternalSliceSize-1, d.tp)
+	if d.tp != -1 {
+		t.Errorf("Expected: %d; Got: %d", -1, d.tp)
 	}
 	if d.hp != 0 {
 		t.Errorf("Expected: %d; Got: %d", 0, d.hp)
@@ -717,15 +691,69 @@ func TestPushBackShouldReuseSpareLinks(t *testing.T) {
 	}
 }
 
-func TestKeepMaxSpareLinks(t *testing.T) {
+func TestPopFrontWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
 	d := New()
-	for i := 0; i < maxInternalSliceSize*(maxSpareLinks+2); i++ {
-		d.PushBack(i)
+	count := maxInternalSliceSize * (maxSpareLinks + 2)
+	for i := 0; i < refillCount; i++ {
+		for j := 0; j < count; j++ {
+			d.PushBack(j)
+		}
+		for j := 0; j < count; j++ {
+			if v, ok := d.PopFront(); !ok || v.(int) != j {
+				t.Errorf("Expected: %d; Got: %d", j, v)
+			}
+			if d.spareLinks > maxSpareLinks {
+				t.Fatalf("Too many spare links : got %d; want <= %d", d.spareLinks, maxSpareLinks)
+			}
+		}
+
+		// Count the actual number of spare links
+		actualSpareLinks := 0
+		tmp := d.head.n // Initially head and tail points to the same slice.
+		for tmp != nil {
+			if tmp != d.tail {
+				actualSpareLinks++
+			} else {
+				break
+			}
+			tmp = tmp.n
+		}
+		if actualSpareLinks != maxSpareLinks {
+			t.Errorf("Expected: %d; Got: %d", d.spareLinks, actualSpareLinks)
+		}
 	}
-	for d.Len() > 0 {
-		d.PopFront()
-		if d.spareLinks > maxSpareLinks {
-			t.Fatalf("Too many spare links : got %d; want <= %d", d.spareLinks, maxSpareLinks)
+}
+
+func TestPopBackWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
+	d := New()
+	count := maxInternalSliceSize * (maxSpareLinks + 2)
+	for i := 0; i < refillCount; i++ {
+		fmt.Print()
+		for j := 0; j < count; j++ {
+			d.PushFront(j)
+		}
+		for j := 0; j < count; j++ {
+			if v, ok := d.PopBack(); !ok || v.(int) != j {
+				t.Errorf("Expected: %d; Got: %d", j, v)
+			}
+			if d.spareLinks > maxSpareLinks {
+				t.Fatalf("Too many spare links : got %d; want <= %d", d.spareLinks, maxSpareLinks)
+			}
+		}
+
+		// Count the actual number of spare links
+		actualSpareLinks := 0
+		tmp := d.head.n // Initially head and tail points to the same slice.
+		for tmp != nil {
+			if tmp != d.tail {
+				actualSpareLinks++
+			} else {
+				break
+			}
+			tmp = tmp.n
+		}
+		if actualSpareLinks != maxSpareLinks {
+			t.Errorf("Expected: %d; Got: %d", d.spareLinks, actualSpareLinks)
 		}
 	}
 }
