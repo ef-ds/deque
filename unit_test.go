@@ -21,7 +21,6 @@
 package deque
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -728,7 +727,6 @@ func TestPopBackWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
 	d := New()
 	count := maxInternalSliceSize * (maxSpareLinks + 2)
 	for i := 0; i < refillCount; i++ {
-		fmt.Print()
 		for j := 0; j < count; j++ {
 			d.PushFront(j)
 		}
