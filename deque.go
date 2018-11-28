@@ -100,17 +100,12 @@ type node struct {
 
 // New returns an initialized deque.
 func New() *Deque {
-	return new(Deque).Init()
+	return new(Deque)
 }
 
 // Init initializes or clears deque d.
 func (d *Deque) Init() *Deque {
-	d.head = nil
-	d.tail = nil
-	d.hp = 0
-	d.tp = 0
-	d.len = 0
-	d.spareLinks = 0
+	*d = Deque{}
 	return d
 }
 
