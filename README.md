@@ -17,6 +17,8 @@ We recommend to target only released versions for production use.
 
 
 ## How to Use
+As a First-In-First-Out [queue](https://en.wikipedia.org/wiki/Queue_(abstract_data_type)).
+
 ```go
 package main
 
@@ -46,6 +48,40 @@ Output:
 3
 4
 5
+```
+
+
+As a Last-In-First-Out [stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)).
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/ef-ds/deque"
+)
+
+func main() {
+	d := deque.New()
+
+	for i := 1; i <= 5; i++ {
+		d.PushBack(i)
+	}
+	for d.Len() > 0 {
+		v, _ := d.PopBack()
+		fmt.Println(v)
+	}
+}
+```
+
+Output:
+```
+5
+4
+3
+2
+1
 ```
 
 Also refer to the [integration](integration_test.go) and [API](api_test.go).
