@@ -84,7 +84,7 @@ Output:
 1
 ```
 
-Also refer to the [integration](integration_test.go) and [API](api_test.go).
+Also refer to the [integration](integration_test.go) and [API](api_test.go) tests.
 
 
 ## Supported Data Types
