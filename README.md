@@ -1,6 +1,6 @@
 # deque [![Build Status](https://travis-ci.com/ef-ds/deque.svg?branch=master)](https://travis-ci.com/ef-ds/deque) [![codecov](https://codecov.io/gh/ef-ds/deque/branch/master/graph/badge.svg)](https://codecov.io/gh/ef-ds/deque) [![Go Report Card](https://goreportcard.com/badge/github.com/ef-ds/deque)](https://goreportcard.com/report/github.com/ef-ds/deque)  [![GoDoc](https://godoc.org/github.com/ef-ds/deque?status.svg)](https://godoc.org/github.com/ef-ds/deque)
 
-Package deque implements a dynamically growing, ring shaped, linked arrays double-ended queue. The deque is a general purpose deque data structure that performs under virtually all scenarios and is specifically optimized to perform when running in production-like traffic Microservice systems.
+Package deque implements a dynamically growing, ring shaped, linked arrays double-ended queue. The deque is a general purpose deque data structure that performs under virtually all scenarios and is specifically optimized to perform when used by Microservices and serverless services running in production environments.
 
 ## Install
 From a configured [Go environment](https://golang.org/doc/install#testing):
@@ -108,26 +108,23 @@ Deque uses linked slices as its underlying data structure. The reason for the ch
 1. When the deque/queue/stack needs to expand to accommodate new values, [a new, larger slice needs to be allocated](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) and used
 2. Allocating and managing large slices is expensive, especially in an overloaded system with little available physical memory
 
-To help clarify the scenario, below is what happens when a slice based deque that already holds, say 1bi items, needs to expand to accommodate a new item
+To help clarify the scenario, below is what happens when a slice based deque that already holds, say 1bi items, needs to expand to accommodate a new item.
 
-Slice based implementation
+Slice based implementation.
 
 - Allocate a new, twice the size of the previous allocated one, say 2 billion positions slice
 - Copy over all 1 billion items from the previous slice into the new one
-- Add the new value into the first unused position in the new slice, position 1000000001.
-- The same scenario for deque plays out like below.
+- Add the new value into the first unused position in the new slice, position 1000000001
 
-Deque
+The same scenario for deque plays out like below.
 
 - Allocate a new 256 size slice
-- Set the next pointer
+- Set the previous and next pointers
 - Add the value into the first position of the new slice, position 0
 
-Deque never copies data around, but slice based ones do, and if the data set is large, it doesn't matter how fast the copying algorithm is. The copying has to be done and will take some time.
+The decision to use linked slices was also the result of the observation that slices goes to great length to provide predictive, indexed positions. A hash table, for instance, absolutely need this property, but not a deque. So deque completely gives up this property and focus on what really matters: add and retrieve from the edges (front/back). No copying around and repositioning of elements is needed for that. So when a slice goes to great length to provide that functionality, the whole work of allocating new arrays, copying data around is all wasted work. None of that is necessary. And this work costs dearly for large data sets as observed in the tests.
 
-The decision to use linked slices was also the result of the observation that slices goes to great length to provide predictive, indexed positions. A hash table, for instance, absolutely need this property, but not a deque. So deque completely gives up this property and focus on what really matters: add to end, retrieve from head. No copying around and repositioning of elements is needed for that. So when a slice goes to great length to provide that functionality, the whole work of allocating new arrays, copying data around is all wasted work. None of that is necessary. And this work costs dearly for large data sets as observed in the tests.
-
-While linked slices design solve the slice expansion problem very effectively, it doesn't help with many real world usage scenarios such as in a stable processing environment where small amount of items are pushed and popped from the deque in a sequential way. This is a very common scenario for TCP/HTTP services, for instance, where the service is able to handle the current traffic without stress.
+While linked slices design solve the slice expansion problem very effectively, it doesn't help with many real world usage scenarios such as in a stable processing environment where small amount of items are pushed and popped from the deque in a sequential way. This is a very common scenario for [Microservices](https://en.wikipedia.org/wiki/Microservices) and [serverless](https://en.wikipedia.org/wiki/Serverless_computing) services, for instance, where the service is able to handle the current traffic without stress.
 
 To address the stable scenario in an effective way, deque keeps its internal linked arrays in a circular, ring shape. This way when items are pushed to the deque after some of them have been removed, the deque will automatically move over its tail slice back to the old head of the deque, effectively reusing the same already allocated slice. The result is a deque that will run through its ring reusing the ring to store the new values, instead of allocating new slices for the new values.
 
