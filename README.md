@@ -87,6 +87,21 @@ Output:
 Also refer to the [integration](integration_test.go) and [API](api_test.go) tests.
 
 
+## Why
+
+We feel like this world needs improving. Our goal is to change the world, for the better, for all citizens.
+
+As software engineers, we feel like the best way we can contribute to a better world is to build amazing systems,
+systems that solve real world problems, with unheard performance and efficiency.
+
+We believe in challenging the status-quo. We believe in thinking differently. We believe in progress.
+
+What if we could build queues, stacks, lists, arrays, hash tables, etc that are much faster than the current ones we have? What if we had a dynamic array data structure that offers near constant time deletion (anywhere in the array)? Or that could handle 1 million items data sets using only 1/3 of the memory when compared to all known current implementations? And still runs 2x as fast?
+
+One sofware engineer can't change the world him/herself, but a whole bunch of them can! Please join us improving this world. All the work done here is made 100% transparent and is 100% free. No strings attached. We only require one thing in return: please consider benefiting from it; and if you do so, please let others know about it.
+
+
+
 ## Supported Data Types
 Similarly to Go's standard library list, [list](https://github.com/golang/go/tree/master/src/container/list), 
 [ring](https://github.com/golang/go/tree/master/src/container/ring) and [heap](https://github.com/golang/go/blob/master/src/container/heap/heap.go) packages, deque supports "interface{}" as its data type. This means it can be used with any Go data types, including int, float, string and any user defined structs and pointers to interfaces.
@@ -177,7 +192,6 @@ If you like deque, please help us support it by thumbing up the [proposal](https
 
 We're extremely interested in improving the deque. Please let us know your suggestions for possible improvements and if you know of other high performance
 queues not tested here, let us know and we're very glad to benchmark them.
-
 
 
 ## Releases

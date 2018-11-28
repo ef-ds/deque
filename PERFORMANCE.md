@@ -33,6 +33,9 @@ For all other uses, we recommend using the deque as it performs very well on bot
 Given the enormous amount of test data, I'll focus the analysis here on the results
 of the, arguably, the most important test: the Microservice test. All the other test results are posted here without comments.
 
+Note: Below results is for deque v.1.0.0. We're working on building an automation to automatically refresh below results with the latest released version after each release. For a list of released versions and their impact on performance and efficiency, please refere to [CHANGELOG.md](CHANGELOG.md).
+
+
 ### Microservice Test Results
 
 deque vs [impl7](https://github.com/christianrpetrin/queue-tests/tree/master/queueimpl7/queueimpl7.go) - FIFO queue - [microservice tests](benchmark-microservice_test.go)
