@@ -26,7 +26,7 @@ ability to slowly expand while removing some elements from the queue.
 - [Stable](benchmark-stable_test.go): Add 1 item to the queue and remove it. Tests the queues ability to handle constant push/pop over n iterations.
 
 #### The Microservice Test
-It is very common on production Microservices to use more resources, be it memory or CPU, as the traffic it is serving increases. Keeping this fact in mind, this is a composite test designed to test the queues in a production like microservice scenario. The test idea is that every time the Microservice using the queue receives a request, it would push an item to the queue. As soon as the request is served, the Microservice removes an item from the queue.
+It is very common on production [Microservices](https://en.wikipedia.org/wiki/Microservices) and [serverless](https://en.wikipedia.org/wiki/Serverless_computing) systems to use more resources, be it memory or CPU, as the traffic it is serving increases. Keeping this fact in mind, this is a composite test designed to test the queues in a production like microservice scenario. The test idea is that every time the Microservice using the queue receives a request, it would push an item to the queue. As soon as the request is served, the Microservice removes an item from the queue.
 
 The test start by running a stable test to simulate stable traffic (i.e. the system is able to handle the traffic without stress).
 
@@ -62,8 +62,7 @@ The 0 items test runs only for the [Fill](benchmark-fill_test.go) test and is de
 
 
 ### Tests Type
-In order to try to simulate real world usage scenarios as much as possible, all tests create and push/pop below testValue struct to the queues, as structs
-being pushed into the queues should be the most common scenario.
+In order to try to simulate real world usage scenarios as much as possible, all tests create and push/pop below testValue struct to the queues, as structs being pushed into the queues should be the most common scenario.
 
 ```
 // testValue is used as the value added in each push call to the queues.
