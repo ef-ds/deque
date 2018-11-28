@@ -254,7 +254,7 @@ we suggest you run all the tests once as explained above. Then make the changes 
 just for deque using below command (notice the output file now is deque.txt).
 
 ```
-go test -benchmem -count 10 -bench="Deque*" -run=^$ > testdata/deque.txt
+go test -benchmem -count 10 -timeout 60m -bench="Deque*" -run=^$ > testdata/deque.txt
 ```
 
 Run the [test-splitter](https://github.com/ef-ds/tools/tree/master/testsplitter) tool as follow:
