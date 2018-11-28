@@ -23,8 +23,6 @@ package deque
 import (
 	"fmt"
 	"testing"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 const (
@@ -48,6 +46,20 @@ func TestInvariants(t *testing.T) {
 			return i
 		})
 	}
+}
+
+func TestInvariantsWhenEmptyInMiddleOfSlice(t *testing.T) {
+	d := new(Deque)
+	d.PushBack(0)
+	assertInvariants(t, d, nil)
+	d.PushBack(1)
+	assertInvariants(t, d, nil)
+	d.PopFront()
+	assertInvariants(t, d, nil)
+	d.PopFront()
+	// At this point, the queue is empty and hp will
+	// not be pointing at the start of the slice.
+	assertInvariants(t, d, nil)
 }
 
 func TestPushFrontPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
@@ -207,7 +219,7 @@ func TestPushFrontPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 	if d.head != d.tail {
 		t.Error("Expected: d.head == d.tail; Got: d.head != d.tail")
 	}
-	if d.tp != maxInternalSliceSize-2 {
+	if d.tp != maxInternalSliceSize-1 {
 		t.Errorf("Expected: %d; Got: %d", 0, d.tp)
 	}
 	if d.hp != maxInternalSliceSize-1 {
@@ -327,11 +339,11 @@ func TestPushFrontPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
 	if d.head != d.tail {
 		t.Error("Expected: d.head == d.tail; Got: d.head != d.tail")
 	}
-	if d.tp != -1 {
-		t.Errorf("Expected: %d; Got: %d", -1, d.tp)
+	if d.tp != maxFirstSliceSize-1 {
+		t.Errorf("Expected: %d; Got: %d", maxFirstSliceSize-1, d.tp)
 	}
-	if d.hp != 0 {
-		t.Errorf("Expected: %d; Got: %d", 0, d.hp)
+	if d.hp != maxFirstSliceSize-1 {
+		t.Errorf("Expected: %d; Got: %d", maxFirstSliceSize-1, d.hp)
 	}
 	if d.spareLinks != spareLinks {
 		t.Errorf("Expected: %d; Got: %d", spareLinks, d.spareLinks)
@@ -482,7 +494,7 @@ func TestPushBackPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 	if d.head.n == d.tail.p {
 		t.Error("Expected: d.head.n != d.tail.p; Got: d.head.n == d.tail.p")
 	}
-	if d.tp != -1 {
+	if d.tp != 0 {
 		t.Errorf("Expected: %d; Got: %d", -1, d.tp)
 	}
 	if d.hp != 0 {
@@ -616,7 +628,7 @@ func TestPushBackPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
 	if d.head.p != d.tail.p {
 		t.Error("Expected: d.head.p == d.tail.p; Got: d.head.p != d.tail.p")
 	}
-	if d.tp != 0 {
+	if d.tp != 1 {
 		t.Errorf("Expected: %d; Got: %d", 0, d.tp)
 	}
 	if d.hp != 1 {
@@ -785,7 +797,6 @@ func checkLinks(t *testing.T, d *Deque, length, headSliceSize, tailSliceSize, sp
 func assertInvariants(t *testing.T, d *Deque, val func(i int) interface{}) {
 	t.Helper()
 	fail := func(what string, got, want interface{}) {
-		t.Log(spew.Sdump(d))
 		t.Errorf("invariant fail: %s; got %v want %v", what, got, want)
 	}
 	if d == nil {
@@ -810,18 +821,22 @@ func assertInvariants(t *testing.T, d *Deque, val func(i int) interface{}) {
 		}
 		return
 	}
+	if d.hp < 0 {
+		fail("head index non-negative", d.hp, 0)
+	}
+	if d.hp > len(d.head.v) {
+		fail("head index out of range", d.hp, len(d.head.v))
+	}
+	if d.tp < 0 {
+		fail("tail index non-negative", d.tp, 0)
+	}
+	if d.tp > len(d.tail.v) {
+		fail("head index out of range", d.tp, len(d.tail.v))
+	}
+
 	if d.head == d.tail {
-		if d.len == 0 {
-			if d.tp != -1 {
-				fail("tail index == -1 when empty", d.tp, -1)
-			}
-			if d.hp != 0 {
-				fail("head index == 0 when empty", d.hp, 0)
-			}
-		} else {
-			if d.hp > d.tp {
-				fail("head index exceeds tail index", d.hp, d.tp)
-			}
+		if d.tp-d.hp != d.len {
+			fail("tail index - head index == len", d.tp-d.hp, d.len)
 		}
 	}
 	spareLinkCount := 0
@@ -853,11 +868,11 @@ func assertInvariants(t *testing.T, d *Deque, val func(i int) interface{}) {
 			elemInQueue := inQueue
 			switch {
 			case n == d.head && n == d.tail:
-				elemInQueue = i >= d.hp && i <= d.tp
+				elemInQueue = i >= d.hp && i < d.tp
 			case n == d.head:
 				elemInQueue = i >= d.hp
 			case n == d.tail:
-				elemInQueue = i <= d.tp
+				elemInQueue = i < d.tp
 			}
 			if elemInQueue {
 				if v == nil {
