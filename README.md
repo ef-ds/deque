@@ -29,7 +29,7 @@ import (
 )
 
 func main() {
-	d := deque.New()
+	var d deque.Deque
 
 	for i := 1; i <= 5; i++ {
 		d.PushBack(i)
@@ -63,7 +63,7 @@ import (
 )
 
 func main() {
-	d := deque.New()
+	var d deque.Deque
 
 	for i := 1; i <= 5; i++ {
 		d.PushBack(i)
