@@ -33,7 +33,7 @@ package deque_test
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 // 			for n := 0; n < b.N; n++ {
-// 				q := deque.New()
+// 				q := new(deque.Deque)
 // 				for i := 0; i < test.count; i++ {
 // 					q.PushBack(getTestValue(i))
 // 				}
@@ -49,7 +49,7 @@ package deque_test
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 // 			for n := 0; n < b.N; n++ {
-// 				q := deque.New()
+// 				q := new(deque.Deque)
 // 				for i := 0; i < test.count; i++ {
 // 					q.PushBack(getTestValue(i))
 // 				}
@@ -70,7 +70,7 @@ package deque_test
 // 		}
 
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			q := deque.New()
+// 			q := new(deque.Deque)
 // 			for n := 0; n < b.N; n++ {
 // 				for n := 0; n < refillCount; n++ {
 // 					for i := 0; i < test.count; i++ {
@@ -88,7 +88,7 @@ package deque_test
 // func BenchmarkRefillDequeStackDirect(b *testing.B) {
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			q := deque.New()
+// 			q := new(deque.Deque)
 // 			for n := 0; n < b.N; n++ {
 // 				for n := 0; n < refillCount; n++ {
 // 					for i := 0; i < test.count; i++ {
@@ -104,7 +104,7 @@ package deque_test
 // }
 
 // func BenchmarkRefillFullDequeQueueDirect(b *testing.B) {
-// 	d := deque.New()
+// 	d := new(deque.Deque)
 // 	for i := 0; i < fillCount; i++ {
 // 		d.PushBack(getTestValue(i))
 // 	}
@@ -136,7 +136,7 @@ package deque_test
 // }
 
 // func BenchmarkRefillFullDequeStackDirect(b *testing.B) {
-// 	d := deque.New()
+// 	d := new(deque.Deque)
 // 	for i := 0; i < fillCount; i++ {
 // 		d.PushBack(getTestValue(i))
 // 	}
@@ -162,7 +162,7 @@ package deque_test
 // }
 
 // func BenchmarkStableDequeQueueDirect(b *testing.B) {
-// 	d := deque.New()
+// 	d := new(deque.Deque)
 // 	for i := 0; i < fillCount; i++ {
 // 		d.PushBack(getTestValue(i))
 // 	}
@@ -184,7 +184,7 @@ package deque_test
 // }
 
 // func BenchmarkStableDequeStackDirect(b *testing.B) {
-// 	d := deque.New()
+// 	d := new(deque.Deque)
 // 	for i := 0; i < fillCount; i++ {
 // 		d.PushBack(getTestValue(i))
 // 	}
@@ -209,7 +209,7 @@ package deque_test
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 // 			for n := 0; n < b.N; n++ {
-// 				d := deque.New()
+// 				d := new(deque.Deque)
 // 				for i := 0; i < test.count; i++ {
 // 					d.PushBack(getTestValue(i))
 // 					d.PushBack(getTestValue(i))
@@ -227,7 +227,7 @@ package deque_test
 // 	for _, test := range tests {
 // 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 // 			for n := 0; n < b.N; n++ {
-// 				d := deque.New()
+// 				d := new(deque.Deque)
 // 				for i := 0; i < test.count; i++ {
 // 					d.PushBack(getTestValue(i))
 // 					d.PushBack(getTestValue(i))
@@ -242,7 +242,7 @@ package deque_test
 // }
 
 // func BenchmarkSlowDecreaseDequeQueueDirect(b *testing.B) {
-// 	d := deque.New()
+// 	d := new(deque.Deque)
 // 	for _, test := range tests {
 // 		items := test.count / 2
 // 		for i := 0; i <= items; i++ {
@@ -270,7 +270,7 @@ package deque_test
 // }
 
 // func BenchmarkSlowDecreaseDequeStackDirect(b *testing.B) {
-// 	d := deque.New()
+// 	d := new(deque.Deque)
 // 	for _, test := range tests {
 // 		items := test.count / 2
 // 		for i := 0; i <= items; i++ {

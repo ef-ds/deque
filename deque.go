@@ -95,17 +95,6 @@ type node struct {
 	p *node
 }
 
-// New returns an initialized deque.
-func New() *Deque {
-	return new(Deque)
-}
-
-// Init initializes or clears deque d.
-func (d *Deque) Init() *Deque {
-	*d = Deque{}
-	return d
-}
-
 // Len returns the number of elements of deque d.
 // The complexity is O(1).
 func (d *Deque) Len() int { return d.len }
