@@ -158,6 +158,26 @@ The data types pushed into the deque can even be mixed, meaning, it's possible t
 Deque is not safe for concurrent use. However, it's very easy to build a safe for concurrent use version of the deque. Impl7 design document includes an example of how to make impl7 safe for concurrent use using a mutex. Deque can be made safe for concurret use using the same technique. Impl7 design document can be found [here](https://github.com/golang/proposal/blob/master/design/27935-unbounded-queue-package.md).
 
 
+## Range Support
+Just like the current container data structures such as [list](https://github.com/golang/go/tree/master/src/container/list), 
+[ring](https://github.com/golang/go/tree/master/src/container/ring) and [heap](https://github.com/golang/go/blob/master/src/container/heap/heap.go), deque doesn't support the range keyword for navigation.
+
+However, the API offers two ways to iterate over the deque items. Either use "PopFront"/"PopBack" to retrieve the first current element and the second bool parameter to check for an empty queue.
+
+```go
+for v, ok := d.PopFront(); ok; v, ok = d.PopFront() {
+    // Do something with v
+}
+```
+
+Or use "Len" and "PopFront"/"PopBack" to check for an empty deque and retrieve the first current element.
+```go
+for d.Len() > 0 {
+    v, _ := d.PopFront()
+    // Do something with v
+}
+```
+
 
 ## Support
 As the [CloudLogger](https://github.com/cloud-logger/docs) project needed a high performance unbounded queue and, given the fact that Go doesn't provide such queue in its standard library, we built a new queue and proposed it to be added to the standard library.
