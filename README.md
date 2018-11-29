@@ -179,7 +179,7 @@ queues not tested here, let us know and we're very glad to benchmark them.
 ## Why
 We feel like this world needs improving. Our goal is to change the world, for the better, for all citizens.
 
-As software engineers, we feel like the best way we can contribute to a better world is to build amazing systems,
+As software engineers at ef-ds, we feel like the best way we can contribute to a better world is to build amazing systems,
 systems that solve real world problems, with unheard performance and efficiency.
 
 We believe in challenging the status-quo. We believe in thinking differently. We believe in progress.
