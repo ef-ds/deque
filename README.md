@@ -125,20 +125,20 @@ Another important real world scenario is when a service is subject to high and l
 
 To solve this problem, deque employs an automatically shrinking mechanism that will shrink, releasing the extra resources from memory, as the number of items in the deque decreases. This mechanism allows the queue to shrink when needed, keeping itself lean, but also solves a major problem of most ring based implementations: once inflated, the data structure either never shrinks or require manual "shrink" calls, which can be tricky to use as the ideal, most optimized moment to shrink is not always clear and well defined.
 
-Having said that, a data structure that completely shrinks after use, when it is used again, it means it has to expand again to accommodate the new values, hindering performance on refill scenarios (where a number of items is added and removed from the deque successively). To address this scenario, deque keeps a configurable number of internal, empty, slices in its ring. This way in refill, scenarios, deque is able to scale out very quickly, but still managing to keep the memory footprint very low.
+Having said that, a data structure that completely shrinks after use, when it is used again, it means it has to expand again to accommodate the new values, hindering performance on refill scenarios (where a number of items is added and removed from the deque successively). To address this scenario, deque keeps a configurable number of internal, empty, slices in its ring. This way in refill scenarios deque is able to scale out very quickly, but still managing to keep the memory footprint very low.
 
 
 ## Tests
-Besides having 100% code coverage, deque has a extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
+Besides having 100% code coverage, deque has an extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
 
-Performance and efficiency is a major concern, so deque has a extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](BENCHMARK_TESTS.md) for details.
+Performance and efficiency is a major concern, so deque has an extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](BENCHMARK_TESTS.md) for details.
 
 When considering all tests, deque has over 10x more lines of testing code when compared to the actual, functional code.
 
 
 
 ## Performance
-Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [slice based deques](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) because it never copies more than 8 (maxFirstSliceSize/2) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
+Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [slice based deques](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) because it never copies more than 4 (maxFirstSliceSize/sliceGrowthFactor) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
 
 Deque, either used as a FIFO queue or LIFO stack, offers either the best or very competitive performance across all test sets, suites and ranges.
 
