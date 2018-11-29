@@ -20,6 +20,32 @@
 
 package deque_test
 
+import (
+	"strconv"
+	"testing"
+
+	"github.com/ef-ds/deque"
+)
+
+var tests = []struct {
+	count int
+}{
+	{count: 0},
+	{count: 1},
+	{count: 10},
+	{count: 100},
+	{count: 1000},    // 1k
+	{count: 10000},   //10k
+	{count: 100000},  // 100k
+	{count: 1000000}, // 1mi
+}
+
+var (
+	// Used to store temp values, avoiding any compiler optimizations.
+	tmp  interface{}
+	tmp2 bool
+)
+
 // All benchmark tests use method expressions to call the different queue implementations,
 // which adds some overhead in terns of performance and memory. For comparison purposes, however, using
 // method expressions should be fine as all queues are subject to the same overhead.
@@ -29,270 +55,274 @@ package deque_test
 // If you are interested in checking the deque performance without the overhead,
 // uncommented and run below tests.
 
-// func BenchmarkFillDequeQueueDirect(b *testing.B) {
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				q := new(deque.Deque)
-// 				for i := 0; i < test.count; i++ {
-// 					q.PushBack(getTestValue(i))
-// 				}
-// 				for q.Len() > 0 {
-// 					tmp, tmp2 = q.PopFront()
-// 				}
-// 			}
-// 		})
-// 	}
-// }
+func BenchmarkFillDequeQueueDirect(b *testing.B) {
+	for _, test := range tests {
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				q := new(deque.Deque)
+				for i := 0; i < test.count; i++ {
+					q.PushBack(getTestValue(i))
+				}
+				for q.Len() > 0 {
+					tmp, tmp2 = q.PopFront()
+				}
+			}
+		})
+	}
+}
 
-// func BenchmarkFillDequeStackDirect(b *testing.B) {
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				q := new(deque.Deque)
-// 				for i := 0; i < test.count; i++ {
-// 					q.PushBack(getTestValue(i))
-// 				}
-// 				for q.Len() > 0 {
-// 					tmp, tmp2 = q.PopBack()
-// 				}
-// 			}
-// 		})
-// 	}
-// }
+func BenchmarkFillDequeStackDirect(b *testing.B) {
+	for _, test := range tests {
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				q := new(deque.Deque)
+				for i := 0; i < test.count; i++ {
+					q.PushBack(getTestValue(i))
+				}
+				for q.Len() > 0 {
+					tmp, tmp2 = q.PopBack()
+				}
+			}
+		})
+	}
+}
 
-// func BenchmarkRefillDequeQueueDirect(b *testing.B) {
-// 	for i, test := range tests {
-// 		// Doesn't run the first (0 items) and last (1mi) items tests
-// 		// as 0 items makes no sense for this test and 1mi is too slow.
-// 		if i == 0 || i > 6 {
-// 			continue
-// 		}
+func BenchmarkRefillDequeQueueDirect(b *testing.B) {
+	for i, test := range tests {
+		// Doesn't run the first (0 items) and last (1mi) items tests
+		// as 0 items makes no sense for this test and 1mi is too slow.
+		if i == 0 || i > 6 {
+			continue
+		}
 
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			q := new(deque.Deque)
-// 			for n := 0; n < b.N; n++ {
-// 				for n := 0; n < refillCount; n++ {
-// 					for i := 0; i < test.count; i++ {
-// 						q.PushBack(getTestValue(i))
-// 					}
-// 					for q.Len() > 0 {
-// 						tmp, tmp2 = q.PopFront()
-// 					}
-// 				}
-// 			}
-// 		})
-// 	}
-// }
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			q := new(deque.Deque)
+			for n := 0; n < b.N; n++ {
+				for n := 0; n < refillCount; n++ {
+					for i := 0; i < test.count; i++ {
+						q.PushBack(getTestValue(i))
+					}
+					for q.Len() > 0 {
+						tmp, tmp2 = q.PopFront()
+					}
+				}
+			}
+		})
+	}
+}
 
-// func BenchmarkRefillDequeStackDirect(b *testing.B) {
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			q := new(deque.Deque)
-// 			for n := 0; n < b.N; n++ {
-// 				for n := 0; n < refillCount; n++ {
-// 					for i := 0; i < test.count; i++ {
-// 						q.PushBack(getTestValue(i))
-// 					}
-// 					for q.Len() > 0 {
-// 						tmp, tmp2 = q.PopBack()
-// 					}
-// 				}
-// 			}
-// 		})
-// 	}
-// }
+func BenchmarkRefillDequeStackDirect(b *testing.B) {
+	for _, test := range tests {
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			q := new(deque.Deque)
+			for n := 0; n < b.N; n++ {
+				for n := 0; n < refillCount; n++ {
+					for i := 0; i < test.count; i++ {
+						q.PushBack(getTestValue(i))
+					}
+					for q.Len() > 0 {
+						tmp, tmp2 = q.PopBack()
+					}
+				}
+			}
+		})
+	}
+}
 
-// func BenchmarkRefillFullDequeQueueDirect(b *testing.B) {
-// 	d := new(deque.Deque)
-// 	for i := 0; i < fillCount; i++ {
-// 		d.PushBack(getTestValue(i))
-// 	}
+func BenchmarkRefillFullDequeQueueDirect(b *testing.B) {
+	d := new(deque.Deque)
+	for i := 0; i < fillCount; i++ {
+		d.PushBack(getTestValue(i))
+	}
 
-// 	for i, test := range tests {
-// 		// Doesn't run the first (0 items) and last (1mi) items tests
-// 		// as 0 items makes no sense for this test and 1mi is too slow.
-// 		if i == 0 || i > 6 {
-// 			continue
-// 		}
+	for i, test := range tests {
+		// Doesn't run the first (0 items) and last (1mi) items tests
+		// as 0 items makes no sense for this test and 1mi is too slow.
+		if i == 0 || i > 6 {
+			continue
+		}
 
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				for k := 0; k < refillCount; k++ {
-// 					for i := 0; i < test.count; i++ {
-// 						d.PushBack(getTestValue(i))
-// 					}
-// 					for i := 0; i < test.count; i++ {
-// 						tmp, tmp2 = d.PopFront()
-// 					}
-// 				}
-// 			}
-// 		})
-// 	}
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				for k := 0; k < refillCount; k++ {
+					for i := 0; i < test.count; i++ {
+						d.PushBack(getTestValue(i))
+					}
+					for i := 0; i < test.count; i++ {
+						tmp, tmp2 = d.PopFront()
+					}
+				}
+			}
+		})
+	}
 
-// 	for d.Len() > 0 {
-// 		tmp, tmp2 = d.PopFront()
-// 	}
-// }
+	for d.Len() > 0 {
+		tmp, tmp2 = d.PopFront()
+	}
+}
 
-// func BenchmarkRefillFullDequeStackDirect(b *testing.B) {
-// 	d := new(deque.Deque)
-// 	for i := 0; i < fillCount; i++ {
-// 		d.PushBack(getTestValue(i))
-// 	}
+func BenchmarkRefillFullDequeStackDirect(b *testing.B) {
+	d := new(deque.Deque)
+	for i := 0; i < fillCount; i++ {
+		d.PushBack(getTestValue(i))
+	}
 
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				for k := 0; k < refillCount; k++ {
-// 					for i := 0; i < test.count; i++ {
-// 						d.PushBack(getTestValue(i))
-// 					}
-// 					for i := 0; i < test.count; i++ {
-// 						tmp, tmp2 = d.PopBack()
-// 					}
-// 				}
-// 			}
-// 		})
-// 	}
+	for _, test := range tests {
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				for k := 0; k < refillCount; k++ {
+					for i := 0; i < test.count; i++ {
+						d.PushBack(getTestValue(i))
+					}
+					for i := 0; i < test.count; i++ {
+						tmp, tmp2 = d.PopBack()
+					}
+				}
+			}
+		})
+	}
 
-// 	for d.Len() > 0 {
-// 		tmp, tmp2 = d.PopBack()
-// 	}
-// }
+	for d.Len() > 0 {
+		tmp, tmp2 = d.PopBack()
+	}
+}
 
-// func BenchmarkStableDequeQueueDirect(b *testing.B) {
-// 	d := new(deque.Deque)
-// 	for i := 0; i < fillCount; i++ {
-// 		d.PushBack(getTestValue(i))
-// 	}
+func BenchmarkStableDequeQueueDirect(b *testing.B) {
+	d := new(deque.Deque)
+	for i := 0; i < fillCount; i++ {
+		d.PushBack(getTestValue(i))
+	}
 
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				for i := 0; i < test.count; i++ {
-// 					d.PushBack(getTestValue(i))
-// 					tmp, tmp2 = d.PopFront()
-// 				}
-// 			}
-// 		})
-// 	}
+	for _, test := range tests {
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				for i := 0; i < test.count; i++ {
+					d.PushBack(getTestValue(i))
+					tmp, tmp2 = d.PopFront()
+				}
+			}
+		})
+	}
 
-// 	for d.Len() > 0 {
-// 		tmp, tmp2 = d.PopFront()
-// 	}
-// }
+	for d.Len() > 0 {
+		tmp, tmp2 = d.PopFront()
+	}
+}
 
-// func BenchmarkStableDequeStackDirect(b *testing.B) {
-// 	d := new(deque.Deque)
-// 	for i := 0; i < fillCount; i++ {
-// 		d.PushBack(getTestValue(i))
-// 	}
+func BenchmarkStableDequeStackDirect(b *testing.B) {
+	d := new(deque.Deque)
+	for i := 0; i < fillCount; i++ {
+		d.PushBack(getTestValue(i))
+	}
 
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				for i := 0; i < test.count; i++ {
-// 					d.PushBack(getTestValue(i))
-// 					tmp, tmp2 = d.PopBack()
-// 				}
-// 			}
-// 		})
-// 	}
+	for _, test := range tests {
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				for i := 0; i < test.count; i++ {
+					d.PushBack(getTestValue(i))
+					tmp, tmp2 = d.PopBack()
+				}
+			}
+		})
+	}
 
-// 	for d.Len() > 0 {
-// 		tmp, tmp2 = d.PopBack()
-// 	}
-// }
+	for d.Len() > 0 {
+		tmp, tmp2 = d.PopBack()
+	}
+}
 
-// func BenchmarkSlowIncreaseDequeQueueDirect(b *testing.B) {
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				d := new(deque.Deque)
-// 				for i := 0; i < test.count; i++ {
-// 					d.PushBack(getTestValue(i))
-// 					d.PushBack(getTestValue(i))
-// 					tmp, tmp2 = d.PopFront()
-// 				}
-// 				for d.Len() > 0 {
-// 					tmp, tmp2 = d.PopFront()
-// 				}
-// 			}
-// 		})
-// 	}
-// }
+func BenchmarkSlowIncreaseDequeQueueDirect(b *testing.B) {
+	for _, test := range tests {
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				d := new(deque.Deque)
+				for i := 0; i < test.count; i++ {
+					d.PushBack(getTestValue(i))
+					d.PushBack(getTestValue(i))
+					tmp, tmp2 = d.PopFront()
+				}
+				for d.Len() > 0 {
+					tmp, tmp2 = d.PopFront()
+				}
+			}
+		})
+	}
+}
 
-// func BenchmarkSlowIncreaseDequeStackDirect(b *testing.B) {
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				d := new(deque.Deque)
-// 				for i := 0; i < test.count; i++ {
-// 					d.PushBack(getTestValue(i))
-// 					d.PushBack(getTestValue(i))
-// 					tmp, tmp2 = d.PopBack()
-// 				}
-// 				for d.Len() > 0 {
-// 					tmp, tmp2 = d.PopBack()
-// 				}
-// 			}
-// 		})
-// 	}
-// }
+func BenchmarkSlowIncreaseDequeStackDirect(b *testing.B) {
+	for _, test := range tests {
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				d := new(deque.Deque)
+				for i := 0; i < test.count; i++ {
+					d.PushBack(getTestValue(i))
+					d.PushBack(getTestValue(i))
+					tmp, tmp2 = d.PopBack()
+				}
+				for d.Len() > 0 {
+					tmp, tmp2 = d.PopBack()
+				}
+			}
+		})
+	}
+}
 
-// func BenchmarkSlowDecreaseDequeQueueDirect(b *testing.B) {
-// 	d := new(deque.Deque)
-// 	for _, test := range tests {
-// 		items := test.count / 2
-// 		for i := 0; i <= items; i++ {
-// 			d.PushBack(getTestValue(i))
-// 		}
-// 	}
+func BenchmarkSlowDecreaseDequeQueueDirect(b *testing.B) {
+	d := new(deque.Deque)
+	for _, test := range tests {
+		items := test.count / 2
+		for i := 0; i <= items; i++ {
+			d.PushBack(getTestValue(i))
+		}
+	}
 
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				for i := 0; i < test.count; i++ {
-// 					d.PushBack(getTestValue(i))
-// 					tmp, tmp2 = d.PopFront()
-// 					if d.Len() > 0 {
-// 						tmp, tmp2 = d.PopFront()
-// 					}
-// 				}
-// 			}
-// 		})
-// 	}
+	for _, test := range tests {
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				for i := 0; i < test.count; i++ {
+					d.PushBack(getTestValue(i))
+					tmp, tmp2 = d.PopFront()
+					if d.Len() > 0 {
+						tmp, tmp2 = d.PopFront()
+					}
+				}
+			}
+		})
+	}
 
-// 	for d.Len() > 0 {
-// 		tmp, tmp2 = d.PopFront()
-// 	}
-// }
+	for d.Len() > 0 {
+		tmp, tmp2 = d.PopFront()
+	}
+}
 
-// func BenchmarkSlowDecreaseDequeStackDirect(b *testing.B) {
-// 	d := new(deque.Deque)
-// 	for _, test := range tests {
-// 		items := test.count / 2
-// 		for i := 0; i <= items; i++ {
-// 			d.PushBack(getTestValue(i))
-// 		}
-// 	}
+func BenchmarkSlowDecreaseDequeStackDirect(b *testing.B) {
+	d := new(deque.Deque)
+	for _, test := range tests {
+		items := test.count / 2
+		for i := 0; i <= items; i++ {
+			d.PushBack(getTestValue(i))
+		}
+	}
 
-// 	for _, test := range tests {
-// 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-// 			for n := 0; n < b.N; n++ {
-// 				for i := 0; i < test.count; i++ {
-// 					d.PushBack(getTestValue(i))
-// 					tmp, tmp2 = d.PopFront()
-// 					if d.Len() > 0 {
-// 						tmp, tmp2 = d.PopBack()
-// 					}
-// 				}
-// 			}
-// 		})
-// 	}
+	for _, test := range tests {
+		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				for i := 0; i < test.count; i++ {
+					d.PushBack(getTestValue(i))
+					tmp, tmp2 = d.PopFront()
+					if d.Len() > 0 {
+						tmp, tmp2 = d.PopBack()
+					}
+				}
+			}
+		})
+	}
 
-// 	for d.Len() > 0 {
-// 		tmp, tmp2 = d.PopBack()
-// 	}
-// }
+	for d.Len() > 0 {
+		tmp, tmp2 = d.PopBack()
+	}
+}
+
+func getTestValue(i int) interface{} {
+	return struct{}{}
+}

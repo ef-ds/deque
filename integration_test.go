@@ -27,7 +27,9 @@ import (
 )
 
 const (
-	pushCount = 256 * 3 // Push to fill at least 3 internal slices
+	pushCount   = 256 * 3 // Push to fill at least 3 internal slices
+	refillCount = 100
+	fillCount   = 10000
 )
 
 func TestFillQueueShouldRetrieveAllElementsInOrder(t *testing.T) {

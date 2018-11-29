@@ -20,11 +20,6 @@
 
 package deque_test
 
-// testData contains the number of items to add to the queues in each test.
-type testData struct {
-	count int
-}
-
 // testValue is used as the value added in each push call to the queues.
 // A struct is being used as structs should be more representative of real
 // world uses of a queue. A second f2 field was added as the users structs
@@ -35,7 +30,9 @@ type testValue struct {
 }
 
 var (
-	tests = []testData{
+	tests = []struct {
+		count int
+	}{
 		{count: 0},
 		{count: 1},
 		{count: 10},
