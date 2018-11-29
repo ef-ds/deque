@@ -87,19 +87,6 @@ Output:
 Also refer to the [integration](integration_test.go) and [API](api_test.go) tests.
 
 
-## Why
-We feel like this world needs improving. Our goal is to change the world, for the better, for all citizens.
-
-As software engineers, we feel like the best way we can contribute to a better world is to build amazing systems,
-systems that solve real world problems, with unheard performance and efficiency.
-
-We believe in challenging the status-quo. We believe in thinking differently. We believe in progress.
-
-What if we could build queues, stacks, lists, arrays, hash tables, etc that are much faster than the current ones we have? What if we had a dynamic array data structure that offers near constant time deletion (anywhere in the array)? Or that could handle 1 million items data sets using only 1/3 of the memory when compared to all known current implementations? And still runs 2x as fast?
-
-One sofware engineer can't change the world him/herself, but a whole bunch of us can! Please join us improving this world. All the work done here is made 100% transparent and is 100% free. No strings attached. We only require one thing in return: please consider benefiting from it; and if you do so, please let others know about it.
-
-
 ## Design
 The efficient data structures (ef-ds) deque employs a new, modern deque design: a ring shaped, auto shrinking, linked slices design.
 
@@ -184,10 +171,22 @@ We truly believe in the deque and we believe it should have a place in the Go's 
 If you like deque, please help us support it by thumbing up the [proposal](https://github.com/golang/go/issues/27935) and leaving comments.
 
 
-
 ## Competition
 We're extremely interested in improving the deque. Please let us know your suggestions for possible improvements and if you know of other high performance
 queues not tested here, let us know and we're very glad to benchmark them.
+
+
+## Why
+We feel like this world needs improving. Our goal is to change the world, for the better, for all citizens.
+
+As software engineers, we feel like the best way we can contribute to a better world is to build amazing systems,
+systems that solve real world problems, with unheard performance and efficiency.
+
+We believe in challenging the status-quo. We believe in thinking differently. We believe in progress.
+
+What if we could build queues, stacks, lists, arrays, hash tables, etc that are much faster than the current ones we have? What if we had a dynamic array data structure that offers near constant time deletion (anywhere in the array)? Or that could handle 1 million items data sets using only 1/3 of the memory when compared to all known current implementations? And still runs 2x as fast?
+
+One sofware engineer can't change the world him/herself, but a whole bunch of us can! Please join us improving this world. All the work done here is made 100% transparent and is 100% free. No strings attached. We only require one thing in return: please consider benefiting from it; and if you do so, please let others know about it.
 
 
 ## Releases
