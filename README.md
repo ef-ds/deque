@@ -87,13 +87,6 @@ Output:
 Also refer to the [integration](integration_test.go) and [API](api_test.go) tests.
 
 
-## Supported Data Types
-Similarly to Go's standard library list, [list](https://github.com/golang/go/tree/master/src/container/list), 
-[ring](https://github.com/golang/go/tree/master/src/container/ring) and [heap](https://github.com/golang/go/blob/master/src/container/heap/heap.go) packages, deque supports "interface{}" as its data type. This means it can be used with any Go data types, including int, float, string and any user defined structs and pointers to interfaces.
-
-The data types pushed into the deque can even be mixed, meaning, it's possible to push ints, floats and struct instances into the same deque.
-
-
 ## Design
 The efficient data structures (ef-ds) deque employs a new, modern deque design: a ring shaped, auto shrinking, linked slices design.
 
@@ -101,8 +94,8 @@ That means the [double-ended queue](https://en.wikipedia.org/wiki/Double-ended_q
 
 ![ns/op](testdata/deque.jpg?raw=true "Deque Design")
 
-### Design Considerations
 
+### Design Considerations
 Deque uses linked slices as its underlying data structure. The reason for the choice comes from two main observations of slice based deques/queues/stacks:
 
 1. When the deque/queue/stack needs to expand to accommodate new values, [a new, larger slice needs to be allocated](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) and used
@@ -132,21 +125,20 @@ Another important real world scenario is when a service is subject to high and l
 
 To solve this problem, deque employs an automatically shrinking mechanism that will shrink, releasing the extra resources from memory, as the number of items in the deque decreases. This mechanism allows the queue to shrink when needed, keeping itself lean, but also solves a major problem of most ring based implementations: once inflated, the data structure either never shrinks or require manual "shrink" calls, which can be tricky to use as the ideal, most optimized moment to shrink is not always clear and well defined.
 
-Having said that, a data structure that completely shrinks after use, when it is used again, it means it has to expand again to accommodate the new values, hindering performance on refill scenarios (where a number of items is added and removed from the deque successively). To address this scenario, deque keeps a configurable number of internal, empty, slices in its ring. This way in refill, scenarios, deque is able to scale out very quickly, but still managing to keep the memory footprint very low.
+Having said that, a data structure that completely shrinks after use, when it is used again, it means it has to expand again to accommodate the new values, hindering performance on refill scenarios (where a number of items is added and removed from the deque successively). To address this scenario, deque keeps a configurable number of internal, empty, slices in its ring. This way in refill scenarios deque is able to scale out very quickly, but still managing to keep the memory footprint very low.
 
 
 ## Tests
+Besides having 100% code coverage, deque has an extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
 
-Besides having 100% code coverage, deque has a extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
-
-Performance and efficiency is a major concern, so deque has a extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](BENCHMARK_TESTS.md) for details.
+Performance and efficiency is a major concern, so deque has an extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](BENCHMARK_TESTS.md) for details.
 
 When considering all tests, deque has over 10x more lines of testing code when compared to the actual, functional code.
 
 
-## Performance
 
-Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [slice based deques](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) because it never copies more than 8 (maxFirstSliceSize/2) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
+## Performance
+Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [slice based deques](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) because it never copies more than 4 (maxFirstSliceSize/sliceGrowthFactor) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
 
 Deque, either used as a FIFO queue or LIFO stack, offers either the best or very competitive performance across all test sets, suites and ranges.
 
@@ -155,12 +147,39 @@ As a general purpose FIFO deque or LIFO stack, deque offers, by far, the most ba
 See [performance](PERFORMANCE.md) for details.
 
 
+## Supported Data Types
+Similarly to Go's standard library list, [list](https://github.com/golang/go/tree/master/src/container/list), 
+[ring](https://github.com/golang/go/tree/master/src/container/ring) and [heap](https://github.com/golang/go/blob/master/src/container/heap/heap.go) packages, deque supports "interface{}" as its data type. This means it can be used with any Go data types, including int, float, string and any user defined structs and pointers to interfaces.
+
+The data types pushed into the deque can even be mixed, meaning, it's possible to push ints, floats and struct instances into the same deque.
+
+
 ## Safe for Concurrent Use
 Deque is not safe for concurrent use. However, it's very easy to build a safe for concurrent use version of the deque. Impl7 design document includes an example of how to make impl7 safe for concurrent use using a mutex. Deque can be made safe for concurret use using the same technique. Impl7 design document can be found [here](https://github.com/golang/proposal/blob/master/design/27935-unbounded-queue-package.md).
 
 
-## Support
+## Range Support
+Just like the current container data structures such as [list](https://github.com/golang/go/tree/master/src/container/list), 
+[ring](https://github.com/golang/go/tree/master/src/container/ring) and [heap](https://github.com/golang/go/blob/master/src/container/heap/heap.go), deque doesn't support the range keyword for navigation.
 
+However, the API offers two ways to iterate over the deque items. Either use "PopFront"/"PopBack" to retrieve the first current element and the second bool parameter to check for an empty queue.
+
+```go
+for v, ok := d.PopFront(); ok; v, ok = d.PopFront() {
+    // Do something with v
+}
+```
+
+Or use "Len" and "PopFront"/"PopBack" to check for an empty deque and retrieve the first current element.
+```go
+for d.Len() > 0 {
+    v, _ := d.PopFront()
+    // Do something with v
+}
+```
+
+
+## Support
 As the [CloudLogger](https://github.com/cloud-logger/docs) project needed a high performance unbounded queue and, given the fact that Go doesn't provide such queue in its standard library, we built a new queue and proposed it to be added to the standard library.
 
 The initial [proposal](https://github.com/golang/go/issues/27935) was to add [impl7](https://github.com/christianrpetrin/queue-tests/tree/master/queueimpl7/queueimpl7.go) to the standard library.
@@ -172,12 +191,22 @@ We truly believe in the deque and we believe it should have a place in the Go's 
 If you like deque, please help us support it by thumbing up the [proposal](https://github.com/golang/go/issues/27935) and leaving comments.
 
 
-
 ## Competition
-
 We're extremely interested in improving the deque. Please let us know your suggestions for possible improvements and if you know of other high performance
 queues not tested here, let us know and we're very glad to benchmark them.
 
+
+## Why
+We feel like this world needs improving. Our goal is to change the world, for the better, for everyone.
+
+As software engineers at ef-ds, we feel like the best way we can contribute to a better world is to build amazing systems,
+systems that solve real world problems, with unheard performance and efficiency.
+
+We believe in challenging the status-quo. We believe in thinking differently. We believe in progress.
+
+What if we could build queues, stacks, lists, arrays, hash tables, etc that are much faster than the current ones we have? What if we had a dynamic array data structure that offers near constant time deletion (anywhere in the array)? Or that could handle 1 million items data sets using only 1/3 of the memory when compared to all known current implementations? And still runs 2x as fast?
+
+One sofware engineer can't change the world him/herself, but a whole bunch of us can! Please join us improving this world. All the work done here is made 100% transparent and is 100% free. No strings attached. We only require one thing in return: please consider benefiting from it; and if you do so, please let others know about it.
 
 
 ## Releases

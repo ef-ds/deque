@@ -78,9 +78,6 @@ type Deque struct {
 	// Len holds the current deque values length.
 	len int
 
-	// lastTailPosition holds the index pointing to the last tail position.
-	lastTailPosition int
-
 	// spareLinks holds the number of already used, but now empty, ready-to-be-reused, slices.
 	spareLinks int
 }
@@ -129,27 +126,22 @@ func (d *Deque) Back() (interface{}, bool) {
 func (d *Deque) PushFront(v interface{}) {
 	switch {
 	case d.head == nil:
+		// No nodes present yet.
 		h := &node{v: make([]interface{}, firstSliceSize)}
 		h.n = h
 		h.p = h
 		d.head = h
 		d.tail = h
-		d.lastTailPosition = maxFirstSliceSize - 1
 	case d.hp > 0:
+		// There's already room in the head slice.
 		d.hp--
 	case d.head.p != d.tail:
+		// There's at least one spare link between head and tail nodes.
 		d.head = d.head.p
 		d.hp = len(d.head.v) - 1
 		d.spareLinks--
-	case d.head != d.tail:
-		n := &node{v: make([]interface{}, maxInternalSliceSize)}
-		n.n = d.head
-		n.p = d.tail
-		d.head.p = n
-		d.tail.n = n
-		d.head = n
-		d.hp = maxInternalSliceSize - 1
-	case d.tp >= len(d.head.v)-1 && len(d.head.v) < maxFirstSliceSize:
+	case len(d.head.v) < maxFirstSliceSize:
+		// The first slice hasn't grown big enough yet.
 		l := len(d.head.v)
 		nl := l * sliceGrowthFactor
 		n := make([]interface{}, nl)
@@ -159,6 +151,7 @@ func (d *Deque) PushFront(v interface{}) {
 		d.head.v = n
 		d.hp--
 	default:
+		// No available nodes, so make one.
 		n := &node{v: make([]interface{}, maxInternalSliceSize)}
 		n.n = d.head
 		n.p = d.tail
@@ -166,8 +159,6 @@ func (d *Deque) PushFront(v interface{}) {
 		d.tail.n = n
 		d.head = n
 		d.hp = maxInternalSliceSize - 1
-		d.tp = len(d.tail.v) - 1
-		d.lastTailPosition = maxInternalSliceSize - 1
 	}
 	d.len++
 	d.head.v[d.hp] = v
@@ -178,34 +169,36 @@ func (d *Deque) PushFront(v interface{}) {
 func (d *Deque) PushBack(v interface{}) {
 	switch {
 	case d.head == nil:
+		// No nodes present yet.
 		h := &node{v: make([]interface{}, firstSliceSize)}
 		h.n = h
 		h.p = h
 		d.head = h
 		d.tail = h
-		d.lastTailPosition = maxFirstSliceSize - 1
-	case d.tp >= d.lastTailPosition:
-		var n *node
-		if d.tail.n != d.head {
-			d.spareLinks--
-			n = d.tail.n
-		} else {
-			n = &node{v: make([]interface{}, maxInternalSliceSize)}
-			n.n = d.head
-			n.p = d.tail
-			d.tail.n = n
-			d.head.p = n
-			d.lastTailPosition = maxInternalSliceSize - 1
-		}
+	case d.tp < len(d.tail.v)-1:
+		// There's room in the tail slice.
+		d.tp++
+	case d.tp < maxFirstSliceSize-1:
+		// We're on the first slice and it hasn't grown large enough yet.
+		nv := make([]interface{}, len(d.tail.v)*sliceGrowthFactor)
+		copy(nv, d.tail.v)
+		d.tail.v = nv
+		d.tp++
+	case d.tail.n != d.head:
+		// There's at least one spare link between head and tail nodes.
+		d.spareLinks--
+		n := d.tail.n
 		d.tp = 0
 		d.tail = n
 	default:
-		d.tp++
-		if d.tp >= len(d.tail.v) {
-			n := make([]interface{}, len(d.tail.v)*sliceGrowthFactor)
-			copy(n, d.tail.v)
-			d.tail.v = n
-		}
+		// No available nodes, so make one.
+		n := &node{v: make([]interface{}, maxInternalSliceSize)}
+		n.n = d.head
+		n.p = d.tail
+		d.tail.n = n
+		d.head.p = n
+		d.tp = 0
+		d.tail = n
 	}
 	d.len++
 	d.tail.v[d.tp] = v
