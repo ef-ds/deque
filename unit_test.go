@@ -33,7 +33,7 @@ const (
 )
 
 func TestInvariants(t *testing.T) {
-	d := New()
+	d := new(Deque)
 	assertInvariants(t, d, nil)
 	for i := 0; i < maxInternalSliceSize*10; i++ {
 		d.PushBack(i)
