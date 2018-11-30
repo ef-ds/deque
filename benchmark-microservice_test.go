@@ -246,7 +246,7 @@ func BenchmarkMicroserviceDequeQueue(b *testing.B) {
 	benchmarkMicroservice(
 		b,
 		func() {
-			q = new(deque.Deque)
+			q = deque.New()
 		},
 		func(v interface{}) {
 			q.PushBack(v)
@@ -265,7 +265,7 @@ func BenchmarkMicroserviceDequeStack(b *testing.B) {
 	benchmarkMicroservice(
 		b,
 		func() {
-			q = new(deque.Deque)
+			q = deque.New()
 		},
 		func(v interface{}) {
 			q.PushBack(v)

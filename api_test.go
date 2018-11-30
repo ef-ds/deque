@@ -83,8 +83,31 @@ func TestWithZeroValueAndEmptyShouldReturnAsEmpty(t *testing.T) {
 	}
 }
 
+func TestInitShouldReturnEmptyDeque(t *testing.T) {
+	var d deque.Deque
+	d.PushBack(1)
+
+	d.Init()
+
+	if _, ok := d.Front(); ok {
+		t.Error("Expected: false as the queue is empty; Got: true")
+	}
+	if _, ok := d.Back(); ok {
+		t.Error("Expected: false as the queue is empty; Got: true")
+	}
+	if _, ok := d.PopFront(); ok {
+		t.Error("Expected: false as the queue is empty; Got: true")
+	}
+	if _, ok := d.PopBack(); ok {
+		t.Error("Expected: false as the queue is empty; Got: true")
+	}
+	if l := d.Len(); l != 0 {
+		t.Errorf("Expected: 0 as the queue is empty; Got: %d", l)
+	}
+}
+
 func TestPopFrontWithNilValuesShouldReturnAllValuesInOrder(t *testing.T) {
-	d := new(deque.Deque)
+	d := deque.New()
 	d.PushBack(1)
 	d.PushBack(nil)
 	d.PushBack(2)
@@ -113,7 +136,7 @@ func TestPopFrontWithNilValuesShouldReturnAllValuesInOrder(t *testing.T) {
 }
 
 func TestPopBackWithNilValuesShouldReturnAllValuesInOrder(t *testing.T) {
-	d := new(deque.Deque)
+	d := deque.New()
 	d.PushBack(1)
 	d.PushBack(nil)
 	d.PushBack(2)

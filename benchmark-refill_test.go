@@ -246,7 +246,7 @@ func BenchmarkRefillDequeQueue(b *testing.B) {
 	benchmarkRefill(
 		b,
 		func() {
-			q = new(deque.Deque)
+			q = deque.New()
 		},
 		func(v interface{}) {
 			q.PushBack(v)
@@ -265,7 +265,7 @@ func BenchmarkRefillDequeStack(b *testing.B) {
 	benchmarkRefill(
 		b,
 		func() {
-			q = new(deque.Deque)
+			q = deque.New()
 		},
 		func(v interface{}) {
 			q.PushBack(v)

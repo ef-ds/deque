@@ -246,7 +246,7 @@ func BenchmarkSlowDecreaseDequeQueue(b *testing.B) {
 	benchmarkSlowDecrease(
 		b,
 		func() {
-			q = new(deque.Deque)
+			q = deque.New()
 		},
 		func(v interface{}) {
 			q.PushBack(v)
@@ -265,7 +265,7 @@ func BenchmarkSlowDecreaseDequeStack(b *testing.B) {
 	benchmarkSlowDecrease(
 		b,
 		func() {
-			q = new(deque.Deque)
+			q = deque.New()
 		},
 		func(v interface{}) {
 			q.PushBack(v)

@@ -30,8 +30,13 @@ const (
 	pushCount   = maxInternalSliceSize * 3 // Push to fill at least 3 internal slices
 )
 
+func TestNewShouldReturnInitiazedInstanceOfDeque(t *testing.T) {
+	d := New()
+	assertInvariants(t, d, nil)
+}
+
 func TestInvariants(t *testing.T) {
-	d := new(Deque)
+	d := New()
 	assertInvariants(t, d, nil)
 	for i := 0; i < maxInternalSliceSize*10; i++ {
 		d.PushBack(i)
@@ -63,7 +68,7 @@ func TestInvariantsWhenEmptyInMiddleOfSlice(t *testing.T) {
 }
 
 func TestPushFrontPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
-	d := new(Deque)
+	d := New()
 	pushValue, extraAddedItems, spareLinks := 0, 0, 0
 
 	// Push maxFirstSliceSize items to fill the first array
@@ -231,7 +236,7 @@ func TestPushFrontPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 }
 
 func TestPushFrontPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
-	d := new(Deque)
+	d := New()
 	pushValue, spareLinks := 0, 0
 
 	// Push maxFirstSliceSize + maxInternalSliceSize + 1 items to fill the first, second
@@ -351,7 +356,7 @@ func TestPushFrontPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
 }
 
 func TestPushBackPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
-	d := new(Deque)
+	d := New()
 	pushValue, extraAddedItems, spareLinks := 0, 0, 0
 
 	// Push maxFirstSliceSize items to fill the first array
@@ -506,7 +511,7 @@ func TestPushBackPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 }
 
 func TestPushBackPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
-	d := new(Deque)
+	d := New()
 	pushValue, spareLinks := 0, 0
 
 	// Push maxFirstSliceSize + maxInternalSliceSize + 1 items to fill the first, second
@@ -640,7 +645,7 @@ func TestPushBackPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
 }
 
 func TestPushFrontShouldReuseSpareLinks(t *testing.T) {
-	d := new(Deque)
+	d := New()
 	count := maxInternalSliceSize * 3
 	// Fills the deque
 	for i := 0; i < count; i++ {
@@ -666,7 +671,7 @@ func TestPushFrontShouldReuseSpareLinks(t *testing.T) {
 }
 
 func TestPushBackShouldReuseSpareLinks(t *testing.T) {
-	d := new(Deque)
+	d := New()
 	count := maxInternalSliceSize * 3
 	// Fills the deque
 	for i := 0; i < count; i++ {
@@ -692,7 +697,7 @@ func TestPushBackShouldReuseSpareLinks(t *testing.T) {
 }
 
 func TestPopFrontWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
-	d := new(Deque)
+	d := New()
 	count := maxInternalSliceSize * (maxSpareLinks + 2)
 	for i := 0; i < refillCount; i++ {
 		for j := 0; j < count; j++ {
@@ -725,7 +730,7 @@ func TestPopFrontWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
 }
 
 func TestPopBackWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
-	d := new(Deque)
+	d := New()
 	count := maxInternalSliceSize * (maxSpareLinks + 2)
 	for i := 0; i < refillCount; i++ {
 		for j := 0; j < count; j++ {
