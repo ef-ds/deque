@@ -228,8 +228,11 @@ MIT, see [LICENSE](LICENSE).
 
 
 ## Contributions
-See [contributing.md](https://github.com/ef-ds/docs/blob/master/contributing.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+
+## Code of Conduct
+See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ## Contact
 Suggestions, bugs, new queues to benchmark, issues with the deque, please let us know at ef-ds@outlook.com.

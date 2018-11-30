@@ -1,4 +1,4 @@
-Contributions
+# Contributions
 By reading, analysing and using many of the tons of super high quality and amazing open source projects out there, we feel we learned so much from the wonderful open source community that we strongly feel the need to contribute back!
 
 ef-ds is our way to say "Thank you very much open source community for all the support for software development!".

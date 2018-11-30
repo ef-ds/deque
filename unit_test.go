@@ -35,22 +35,32 @@ func TestNewShouldReturnInitiazedInstanceOfDeque(t *testing.T) {
 	assertInvariants(t, d, nil)
 }
 
-func TestInvariants(t *testing.T) {
-	d := New()
-	assertInvariants(t, d, nil)
-	for i := 0; i < maxInternalSliceSize*10; i++ {
-		d.PushBack(i)
-		assertInvariants(t, d, func(i int) interface{} {
-			return i
-		})
-	}
+func pushToDeque(d Deque) {
+	d.PushBack(2)
+}
 
-	for i := 0; i < maxInternalSliceSize*10; i++ {
-		d.PopBack()
-		assertInvariants(t, d, func(i int) interface{} {
-			return i
-		})
-	}
+func TestDeque(t *testing.T) {
+	var d Deque
+	pushToDeque(d)
+	v, ok := d.PopFront()
+	fmt.Println(ok)
+	fmt.Println(v)
+
+	// d := New()
+	// assertInvariants(t, d, nil)
+	// for i := 0; i < maxInternalSliceSize*10; i++ {
+	// 	d.PushBack(i)
+	// 	assertInvariants(t, d, func(i int) interface{} {
+	// 		return i
+	// 	})
+	// }
+
+	// for i := 0; i < maxInternalSliceSize*10; i++ {
+	// 	d.PopBack()
+	// 	assertInvariants(t, d, func(i int) interface{} {
+	// 		return i
+	// 	})
+	// }
 }
 
 func TestInvariantsWhenEmptyInMiddleOfSlice(t *testing.T) {
