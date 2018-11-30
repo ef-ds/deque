@@ -188,7 +188,7 @@ func (d *Deque) PushBack(v interface{}) {
 		d.head = h
 		d.tail = h
 		d.tail.v[0] = v
-		d.tp++
+		d.tp = 1
 	case d.tp < len(d.tail.v):
 		// There's room in the tail slice.
 		d.tail.v[d.tp] = v
