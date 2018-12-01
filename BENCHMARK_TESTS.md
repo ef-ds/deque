@@ -124,7 +124,7 @@ To run the tests multiple times, use the "go test" count parameter as below.
 go test -benchmem -count 10 -timeout 600m -bench=. -run=^$
 ```
 
-As the number of tests and now, test runs as well, is very large, it becomes very difficult to analyse and understand the results. In order to be able to analyse and compare the results between the different queues, the [benchstat](https://godoc.org/golang.org/x/perf/cmd/benchstat) tool can be used to aggregate the test results. But as benchstat was designed to compare the same set of tests, it is necessary to first split all the different tests into separate test files renaming each
+As the number of tests and now, test runs as well, is very large, it becomes very difficult to analyze and understand the results. In order to be able to analyze and compare the results between the different queues, the [benchstat](https://godoc.org/golang.org/x/perf/cmd/benchstat) tool can be used to aggregate the test results. But as benchstat was designed to compare the same set of tests, it is necessary to first split all the different tests into separate test files renaming each
 test with the same name, so benchstat will be able to match the different tests.
 
 First step is to run the test and output the results in a file. Below command can be used to run all tests 10 times.

@@ -3,7 +3,7 @@
 Below compares the deque [benchmark tests](BENCHMARK_TESTS.md) results with the other tested queues.
 
 ## Running the Tests
-In the "testdata" directory, we have included the result of local test runs for all queues. Below uses this run to compare the queues, but it's possible and we higly encourage you to run the tests youself to help validate the results.
+In the "testdata" directory, we have included the result of local test runs for all queues. Below uses this run to compare the queues, but it's possible and we highly encourage you to run the tests yourself to help validate the results.
 
 To run the tests locally, clone the deque repo, cd to the deque main directory and run below command.
 
@@ -12,7 +12,7 @@ go test -benchmem -timeout 60m -bench=. -run=^$
 ```
 
 This command will run all tests for all queues locally once. This should be good enouh to give you a sense of the queues performance, but to
-do a proper comparison, elimating test variations, we recommend you to run the tests as detailed [here](BENCHMARK_TESTS.md) by running the tests with multiple counts, splitting the files with [test-splitter](https://github.com/ef-ds/tools/tree/master/testsplitter) and using the [benchstat](https://godoc.org/golang.org/x/perf/cmd/benchstat) tool to aggeegate the results.
+do a proper comparison, elimating test variations, we recommend you to run the tests as detailed [here](BENCHMARK_TESTS.md) by running the tests with multiple counts, splitting the files with [test-splitter](https://github.com/ef-ds/tools/tree/master/testsplitter) and using the [benchstat](https://godoc.org/golang.org/x/perf/cmd/benchstat) tool to aggregate the results.
 
 
 ## Bottom Line
@@ -104,7 +104,7 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     7.02M ± 0%    14.00M ± 0%   +99.44%  (p=0.000 n=10+10)
 ```
 
-The standlist list package can be used as a deque. However, Deque is much faster and displays a much lower memory footprint.
+The standard list package can be used as a deque. However, Deque is much faster and displays a much lower memory footprint.
 
 
 deque vs [list](https://github.com/golang/go/tree/master/src/container/list) - LIFO stack - [microservice tests](benchmark-microservice_test.go)
@@ -138,7 +138,7 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     7.01M ± 0%    14.00M ± 0%   +99.78%  (p=0.000 n=10+10)
 ```
 
-The standlist list package when used as a stack, displays similar levels of performance when compared to using it as a FIFO queue. However, Deque is much faster and displays a much lower memory footprint when used as a stack as well.
+The standard list package when used as a stack, displays similar levels of performance when compared to using it as a FIFO queue. However, Deque is much faster and displays a much lower memory footprint when used as a stack as well.
 
 
 deque vs [CustomSliceQueue](testdata_test.go) - FIFO queue - [microservice tests](benchmark-microservice_test.go)
