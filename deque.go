@@ -43,18 +43,18 @@ const (
 
 	// maxSpareLinks holds the maximum number of spare slices the deque will keep
 	// when shrinking (items are being removed from the deque).
-	// 4 means a maximum of 4 slices will be kept as spares, meaning, they
+	// 5 means a maximum of 5 slices will be kept as spares, meaning, they
 	// have been used before to store data, but are now no longer used.
 	// Spare slices are useful in refill situations, when the deque was filled
 	// with items and emptied. When the same instance is used to push new items,
 	// the spare slices from the previous pushes are already allocated and ready
 	// to be used. So the first pushes will push the data into these slices,
 	// improving the performance dramatically.
-	// A higher spare links numer means the refills will have a better performance
+	// A higher spare links number means the refills will have a better performance
 	// for larger number of items (as now there's more spare slices ready to be used).
 	// The downside is the extra memory usage when the deque shrinks and is
 	// holding a small amount of items.
-	maxSpareLinks = 4
+	maxSpareLinks = 5
 )
 
 // Deque implements an unbounded, dynamically growing double-ended-queue (deque).
@@ -179,7 +179,6 @@ func (d *Deque) PushFront(v interface{}) {
 // PushBack adds value v to the the back of the deque.
 // The complexity is O(1).
 func (d *Deque) PushBack(v interface{}) {
-	tp := 0
 	switch {
 	case d.head == nil:
 		// No nodes present yet.
@@ -188,20 +187,26 @@ func (d *Deque) PushBack(v interface{}) {
 		h.p = h
 		d.head = h
 		d.tail = h
+		d.tail.v[0] = v
+		d.tp = 1
 	case d.tp < len(d.tail.v):
 		// There's room in the tail slice.
-		tp = d.tp
+		d.tail.v[d.tp] = v
+		d.tp++
 	case d.tp < maxFirstSliceSize:
 		// We're on the first slice and it hasn't grown large enough yet.
 		nv := make([]interface{}, len(d.tail.v)*sliceGrowthFactor)
 		copy(nv, d.tail.v)
 		d.tail.v = nv
-		tp = d.tp
+		d.tail.v[d.tp] = v
+		d.tp++
 	case d.tail.n != d.head:
 		// There's at least one spare link between head and tail nodes.
 		d.spareLinks--
 		n := d.tail.n
 		d.tail = n
+		d.tail.v[0] = v
+		d.tp = 1
 	default:
 		// No available nodes, so make one.
 		n := &node{v: make([]interface{}, maxInternalSliceSize)}
@@ -210,10 +215,10 @@ func (d *Deque) PushBack(v interface{}) {
 		d.tail.n = n
 		d.head.p = n
 		d.tail = n
+		d.tail.v[0] = v
+		d.tp = 1
 	}
 	d.len++
-	d.tail.v[tp] = v
-	d.tp = tp + 1
 }
 
 // PopFront retrieves and removes the current element from the front of the deque.
