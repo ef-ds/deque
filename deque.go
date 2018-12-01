@@ -50,7 +50,7 @@ const (
 	// the spare slices from the previous pushes are already allocated and ready
 	// to be used. So the first pushes will push the data into these slices,
 	// improving the performance dramatically.
-	// A higher spare links numer means the refills will have a better performance
+	// A higher spare links number means the refills will have a better performance
 	// for larger number of items (as now there's more spare slices ready to be used).
 	// The downside is the extra memory usage when the deque shrinks and is
 	// holding a small amount of items.
