@@ -138,7 +138,7 @@ When considering all tests, deque has over 10x more lines of testing code when c
 
 
 ## Performance
-Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [slice based deques](https://en.wikipedia.org/wiki/Dynamic_array#Geometric_expansion_and_amortized_cost) because it never copies more than 4 (maxFirstSliceSize/sliceGrowthFactor) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
+Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [traditional growing array deques](https://en.wikipedia.org/wiki/Double-ended_queue#Complexity) because deque never copies more than 8 (maxFirstSliceSize/2) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
 
 Deque, either used as a FIFO queue or LIFO stack, offers either the best or very competitive performance across all test sets, suites and ranges.
 
