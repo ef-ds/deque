@@ -5,7 +5,7 @@ Below compares the deque [benchmark tests](BENCHMARK_TESTS.md) results with the 
 ## Running the Tests
 In the "testdata" directory, we have included the result of local test runs for all queues. Below uses this run to compare the queues, but it's possible and we higly encourage you to run the tests youself to help validate the results.
 
-To run the tests locally, close the deque repo, cd to the deque main directory and run below command.
+To run the tests locally, clone the deque repo, cd to the deque main directory and run below command.
 
 ```
 go test -benchmem -timeout 60m -bench=. -run=^$
