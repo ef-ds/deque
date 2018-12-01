@@ -43,7 +43,7 @@ const (
 
 	// maxSpareLinks holds the maximum number of spare slices the deque will keep
 	// when shrinking (items are being removed from the deque).
-	// 4 means a maximum of 4 slices will be kept as spares, meaning, they
+	// 5 means a maximum of 5 slices will be kept as spares, meaning, they
 	// have been used before to store data, but are now no longer used.
 	// Spare slices are useful in refill situations, when the deque was filled
 	// with items and emptied. When the same instance is used to push new items,
@@ -54,7 +54,7 @@ const (
 	// for larger number of items (as now there's more spare slices ready to be used).
 	// The downside is the extra memory usage when the deque shrinks and is
 	// holding a small amount of items.
-	maxSpareLinks = 4
+	maxSpareLinks = 5
 )
 
 // Deque implements an unbounded, dynamically growing double-ended-queue (deque).
