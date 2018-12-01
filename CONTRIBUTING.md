@@ -25,6 +25,7 @@ Having said that, there's a number of ways you can contribute to deque:
 - Let others know about it
 - Propose changes by posting [issues](https://github.com/ef-ds/deque/issues)
 - Propose changes by creating [PRs](https://github.com/ef-ds/deque/pulls)
+- Help with issues labeled ["help wanted"](https://github.com/ef-ds/deque/labels/help%20wanted)
 - Support the [proposal](https://github.com/golang/go/issues/27935) to include deque into Go's standard library
 
 Regarding proposing issues, we're not big fans of bureaucracy. If you have suggestions, open issues and do your best to describe your idea. We'll do our best to read and try to understand it. Just make sure to be clear about what you are proposing.
@@ -36,4 +37,4 @@ A big part of the decision whether to accept suggestions and changes through PRs
 - If you don't agree with a suggestion, thumb it down
 - If you feel strongly about a suggestion, please consider leaving comments
 
-We love to get feedback from the community. Our goal is to build the fastest and most efficient deque ever, for you, the deque's users. We need you and your suggestions to get there. Make sure to engage in the discussion if you like deque.
+We love to get feedback from the community. Our goal is to build the fastest and most efficient deque ever, for you, the deque's users. We need you and your suggestions to get there. Make sure to engage in the discussion!
