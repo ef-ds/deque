@@ -11,3 +11,11 @@
 - Benchmark tests: [v1.0.0 vs v1.0.1](testdata/release_v1.0.1.md)
 
 * Mixed Push/Pop/Front/Back is pending more testing and so is not recommended for use in production environment.
+
+
+# 1.0.2
+
+* Many improvements to make the code and the tests more readable and easier to maintain; the deque is also faster and uses less memory now. Amazing job, [Roger](https://github.com/rogpeppe)!
+- Benchmark tests: [v1.0.1 vs v1.0.2](testdata/release_v1.0.2.md)
+
+* Mixed Push/Pop/Front/Back is pending more testing and so is not recommended for use in production environment.
