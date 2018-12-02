@@ -28,6 +28,7 @@ import (
 	"github.com/christianrpetrin/queue-tests/queueimpl7"
 	"github.com/ef-ds/deque"
 	gammazero "github.com/gammazero/deque"
+	juju "github.com/juju/utils/deque"
 	phf "github.com/phf/go-queue/queue"
 	cookiejar "gopkg.in/karalabe/cookiejar.v2/collections/deque"
 )
@@ -218,6 +219,44 @@ func BenchmarkSlowIncreaseCookiejarStack(b *testing.B) {
 		},
 		func() bool {
 			return q.Size() == 0
+		},
+	)
+}
+
+func BenchmarkSlowIncreaseJujuQueue(b *testing.B) {
+	var q *juju.Deque
+	benchmarkSlowIncrease(
+		b,
+		func() {
+			q = juju.New()
+		},
+		func(v interface{}) {
+			q.PushBack(v)
+		},
+		func() (interface{}, bool) {
+			return q.PopFront()
+		},
+		func() bool {
+			return q.Len() == 0
+		},
+	)
+}
+
+func BenchmarkSlowIncreaseJujuStack(b *testing.B) {
+	var q *juju.Deque
+	benchmarkSlowIncrease(
+		b,
+		func() {
+			q = juju.New()
+		},
+		func(v interface{}) {
+			q.PushBack(v)
+		},
+		func() (interface{}, bool) {
+			return q.PopBack()
+		},
+		func() bool {
+			return q.Len() == 0
 		},
 	)
 }
