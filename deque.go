@@ -71,6 +71,9 @@ type Deque struct {
 	// (i.e. first element added in the current deque values).
 	hp int
 
+	// hlp points to the last index in the head slice.
+	hlp int
+
 	// tp is the index pointing one beyond the current last element in the deque
 	// (i.e. last element added in the current deque values).
 	tp int
@@ -144,6 +147,7 @@ func (d *Deque) PushFront(v interface{}) {
 		d.head = h
 		d.tail = h
 		d.tp = 1
+		d.hlp = firstSliceSize - 1
 	case d.hp > 0:
 		// There's already room in the head slice.
 		d.hp--
@@ -151,14 +155,16 @@ func (d *Deque) PushFront(v interface{}) {
 		// There's at least one spare link between head and tail nodes.
 		d.head = d.head.p
 		d.hp = len(d.head.v) - 1
+		d.hlp = d.hp
 		d.spareLinks--
 	case len(d.head.v) < maxFirstSliceSize:
 		// The first slice hasn't grown big enough yet.
 		l := len(d.head.v)
 		nl := l * sliceGrowthFactor
 		n := make([]interface{}, nl)
-		d.hp = nl - l
 		d.tp = nl
+		d.hp = nl - l
+		d.hlp = nl - 1
 		copy(n[d.hp:], d.head.v)
 		d.head.v = n
 		d.hp--
@@ -171,6 +177,7 @@ func (d *Deque) PushFront(v interface{}) {
 		d.tail.n = n
 		d.head = n
 		d.hp = maxInternalSliceSize - 1
+		d.hlp = d.hp
 	}
 	d.len++
 	d.head.v[d.hp] = v
@@ -188,6 +195,7 @@ func (d *Deque) PushBack(v interface{}) {
 		d.head = h
 		d.tail = h
 		d.tail.v[0] = v
+		d.hlp = firstSliceSize - 1
 		d.tp = 1
 	case d.tp < len(d.tail.v):
 		// There's room in the tail slice.
@@ -200,6 +208,7 @@ func (d *Deque) PushBack(v interface{}) {
 		d.tail.v = nv
 		d.tail.v[d.tp] = v
 		d.tp++
+		d.hlp = len(nv) - 1
 	case d.tail.n != d.head:
 		// There's at least one spare link between head and tail nodes.
 		d.spareLinks--
@@ -234,7 +243,7 @@ func (d *Deque) PopFront() (interface{}, bool) {
 	*vp = nil // Avoid memory leaks
 	d.len--
 	switch {
-	case d.hp < len(d.head.v)-1:
+	case d.hp < d.hlp:
 		// The head isn't at the end of the slice, so just
 		// move on one place.
 		d.hp++
@@ -248,11 +257,13 @@ func (d *Deque) PopFront() (interface{}, bool) {
 		d.head.p.n = d.head.n
 		d.head.n.p = d.head.p
 		d.head = d.head.n
+		d.hlp = len(d.head.v) - 1
 	default:
 		// Leave the link spare.
 		d.hp = 0
 		d.head = d.head.n
 		d.spareLinks++
+		d.hlp = len(d.head.v) - 1
 	}
 	return v, true
 }
