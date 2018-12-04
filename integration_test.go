@@ -148,6 +148,25 @@ func TestStableQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 	}
 }
 
+func TestStableQueueFullShouldRetrieveAllElementsInOrder(t *testing.T) {
+	var d deque.Deque
+	for i := 0; i < pushCount; i++ {
+		d.PushBack(i)
+	}
+
+	count := 0
+	for i := 0; i < pushCount-1; i++ {
+		d.PushBack(i)
+		if v, ok := d.PopFront(); !ok || v.(int) != count {
+			t.Errorf("Expected: %d; Got: %d", count, v)
+		}
+		count++
+	}
+	if d.Len() != pushCount {
+		t.Errorf("Expected: %d; Got: %d", pushCount, d.Len())
+	}
+}
+
 func TestFillStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 	var d deque.Deque
 
@@ -257,12 +276,31 @@ func TestStableStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
-		if v, ok := d.PopFront(); !ok || v.(int) != i {
+		if v, ok := d.PopBack(); !ok || v.(int) != i {
 			t.Errorf("Expected: %d; Got: %d", i, v)
 		}
 	}
 	if d.Len() != 0 {
 		t.Errorf("Expected: %d; Got: %d", 0, d.Len())
+	}
+}
+
+func TestStableFullStackShouldRetrieveAllElementsInOrder(t *testing.T) {
+	var d deque.Deque
+	for i := 0; i < pushCount; i++ {
+		d.PushBack(i)
+	}
+
+	count := 0
+	for i := 0; i < pushCount; i++ {
+		d.PushBack(i)
+		if v, ok := d.PopFront(); !ok || v.(int) != count {
+			t.Errorf("Expected: %d; Got: %d", count, v)
+		}
+		count++
+	}
+	if d.Len() != pushCount {
+		t.Errorf("Expected: %d; Got: %d", pushCount, d.Len())
 	}
 }
 
