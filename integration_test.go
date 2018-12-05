@@ -365,6 +365,90 @@ func TestMixedPopFrontBackLenShouldReturnAllValuesInOrder(t *testing.T) {
 	}
 }
 
+func TestPushFrontPopFrontRefillWith0ToPushCountItems(t *testing.T) {
+	var d deque.Deque
+
+	for i := 0; i < refillCount; i++ {
+		for k := 0; k < pushCount; k++ {
+			for j := 0; j < k; j++ {
+				d.PushFront(j)
+			}
+			for j := k; j > 0; j-- {
+				v, ok := d.PopFront()
+				if !ok || v == nil || v.(int) != j-1 {
+					t.Errorf("Expected: %d; Got: %d", j-1, v)
+				}
+			}
+			if d.Len() != 0 {
+				t.Errorf("Expected: %d; Got: %d", 0, d.Len())
+			}
+		}
+	}
+}
+
+func TestPushFrontPopBackRefillWith0ToPushCountItems(t *testing.T) {
+	var d deque.Deque
+
+	for i := 0; i < refillCount; i++ {
+		for k := 0; k < pushCount; k++ {
+			for j := 0; j < k; j++ {
+				d.PushFront(j)
+			}
+			for j := 0; j < k; j++ {
+				v, ok := d.PopBack()
+				if !ok || v == nil || v.(int) != j {
+					t.Errorf("Expected: %d; Got: %d", j, v)
+				}
+			}
+			if d.Len() != 0 {
+				t.Errorf("Expected: %d; Got: %d", 0, d.Len())
+			}
+		}
+	}
+}
+
+func TestPushBackPopFrontRefillWith0ToPushCountItems(t *testing.T) {
+	var d deque.Deque
+
+	for i := 0; i < refillCount; i++ {
+		for k := 1; k < pushCount; k++ {
+			for j := 0; j < k; j++ {
+				d.PushBack(j)
+			}
+			for j := 0; j < k; j++ {
+				v, ok := d.PopFront()
+				if !ok || v == nil || v.(int) != j {
+					t.Errorf("Expected: %d; Got: %d", j, v)
+				}
+			}
+			if d.Len() != 0 {
+				t.Errorf("Expected: %d; Got: %d", 0, d.Len())
+			}
+		}
+	}
+}
+
+func TestPushBackPopBackRefillWith0ToPushCountItems(t *testing.T) {
+	var d deque.Deque
+
+	for i := 0; i < refillCount; i++ {
+		for k := 1; k < pushCount; k++ {
+			for j := 0; j < k; j++ {
+				d.PushBack(j)
+			}
+			for j := k; j > 0; j-- {
+				v, ok := d.PopBack()
+				if !ok || v == nil || v.(int) != j-1 {
+					t.Errorf("Expected: %d; Got: %d", j-1, v)
+				}
+			}
+			if d.Len() != 0 {
+				t.Errorf("Expected: %d; Got: %d", 0, d.Len())
+			}
+		}
+	}
+}
+
 // Helper methods ------------------------------------------------
 
 func pushPopFrontBackShouldRetrieveAllElementsInOrder(t *testing.T, popFunc, frontbackFunc func(*deque.Deque) (interface{}, bool), checkValueFunc func(v, lastGet, lastPut interface{}) bool) {
