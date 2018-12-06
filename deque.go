@@ -24,7 +24,7 @@ package deque
 
 const (
 	// firstSliceSize holds the size of the first slice.
-	firstSliceSize = 1
+	firstSliceSize = 4
 
 	// sliceGrowthFactor determines by how much and how fast the first internal
 	// slice should grow. A growth factor of 4, firstSliceSize = 1 and maxFirstSliceSize = 16,
@@ -36,7 +36,7 @@ const (
 	sliceGrowthFactor = 4
 
 	// maxFirstSliceSize holds the maximum size of the first slice.
-	maxFirstSliceSize = 16
+	maxFirstSliceSize = 64
 
 	// maxInternalSliceSize holds the maximum size of each internal slice.
 	maxInternalSliceSize = 256
@@ -146,8 +146,9 @@ func (d *Deque) PushFront(v interface{}) {
 		h.p = h
 		d.head = h
 		d.tail = h
-		d.tp = 1
-		d.hlp = firstSliceSize - 1
+		d.tp = firstSliceSize
+		d.hp = firstSliceSize - 1
+		d.hlp = d.hp
 	case d.hp > 0:
 		// There's already room in the head slice.
 		d.hp--
@@ -157,13 +158,18 @@ func (d *Deque) PushFront(v interface{}) {
 		d.hp = len(d.head.v) - 1
 		d.hlp = d.hp
 		d.spareLinks--
+		if d.len == 0 {
+			d.tail = d.head
+			d.tp = len(d.head.v)
+		}
 	case len(d.head.v) < maxFirstSliceSize:
 		// The first slice hasn't grown big enough yet.
 		l := len(d.head.v)
 		nl := l * sliceGrowthFactor
 		n := make([]interface{}, nl)
-		d.tp = nl
-		d.hp = nl - l
+		diff := nl - l
+		d.tp += diff
+		d.hp += diff
 		d.hlp = nl - 1
 		copy(n[d.hp:], d.head.v)
 		d.head.v = n

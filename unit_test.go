@@ -35,34 +35,6 @@ func TestNewShouldReturnInitiazedInstanceOfDeque(t *testing.T) {
 	assertInvariants(t, d, nil)
 }
 
-func pushToDeque(d Deque) {
-	d.PushBack(2)
-}
-
-func TestDeque(t *testing.T) {
-	var d Deque
-	pushToDeque(d)
-	v, ok := d.PopFront()
-	fmt.Println(ok)
-	fmt.Println(v)
-
-	// d := New()
-	// assertInvariants(t, d, nil)
-	// for i := 0; i < maxInternalSliceSize*10; i++ {
-	// 	d.PushBack(i)
-	// 	assertInvariants(t, d, func(i int) interface{} {
-	// 		return i
-	// 	})
-	// }
-
-	// for i := 0; i < maxInternalSliceSize*10; i++ {
-	// 	d.PopBack()
-	// 	assertInvariants(t, d, func(i int) interface{} {
-	// 		return i
-	// 	})
-	// }
-}
-
 func TestInvariantsWhenEmptyInMiddleOfSlice(t *testing.T) {
 	d := new(Deque)
 	d.PushBack(0)
@@ -82,7 +54,7 @@ func TestPushFrontPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 	pushValue, extraAddedItems, spareLinks := 0, 0, 0
 
 	// Push maxFirstSliceSize items to fill the first array
-	expectedHeadSliceSize := 1
+	expectedHeadSliceSize := firstSliceSize
 	for i := 1; i <= maxFirstSliceSize; i++ {
 		pushValue++
 		d.PushFront(pushValue)
@@ -370,7 +342,7 @@ func TestPushBackPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 	pushValue, extraAddedItems, spareLinks := 0, 0, 0
 
 	// Push maxFirstSliceSize items to fill the first array
-	expectedHeadSliceSize := 1
+	expectedHeadSliceSize := firstSliceSize
 	for i := 1; i <= maxFirstSliceSize; i++ {
 		pushValue++
 		d.PushBack(pushValue)
@@ -767,7 +739,7 @@ func TestPopBackWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
 			tmp = tmp.n
 		}
 		if actualSpareLinks != maxSpareLinks {
-			t.Errorf("Expected: %d; Got: %d", d.spareLinks, actualSpareLinks)
+			t.Errorf("Expected: %d; Got: %d", maxSpareLinks, actualSpareLinks)
 		}
 	}
 }
