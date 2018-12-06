@@ -334,7 +334,7 @@ func TestPushPopBackShouldRetrieveAllElementsInOrder(t *testing.T) {
 	)
 }
 
-func TestMixedPopFrontBackLenShouldReturnAllValuesInOrder(t *testing.T) {
+func TestMixedPushBackPopFrontBackShouldReturnAllValuesInOrder(t *testing.T) {
 	var d deque.Deque
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
@@ -365,7 +365,108 @@ func TestMixedPopFrontBackLenShouldReturnAllValuesInOrder(t *testing.T) {
 	}
 }
 
-func TestPushFrontPopFrontRefillWith0ToPushCountItems(t *testing.T) {
+func TestMixedPushFrontPopFrontBackShouldReturnAllValuesInOrder(t *testing.T) {
+	var d deque.Deque
+	for i := 0; i < pushCount; i++ {
+		d.PushFront(i)
+	}
+	count, popFrontCount, popBackCount := 0, pushCount-1, 0
+	for d.Len() > 0 {
+		if count%2 == 0 {
+			if v, ok := d.PopFront(); !ok || v != popFrontCount {
+				t.Errorf("Expected: %d; Got: %d", popFrontCount, v)
+			}
+			popFrontCount--
+		} else {
+			if v, ok := d.PopBack(); !ok || v != popBackCount {
+				t.Errorf("Expected: %d; Got: %d", popBackCount, v)
+			}
+			popBackCount++
+		}
+		if d.Len() != pushCount-count-1 {
+			t.Errorf("Expected: %d; Got: %d", pushCount-count-1, d.Len())
+		}
+		count++
+	}
+	if v, ok := d.PopBack(); ok || v != nil {
+		t.Errorf("Expected: nil; Got: %d", v)
+	}
+	if d.Len() != 0 {
+		t.Errorf("Expected: 0; Got: %d", d.Len())
+	}
+}
+
+func TestMixedPushFrontBackPopFrontShouldReturnAllValuesInOrder(t *testing.T) {
+	var d deque.Deque
+
+	for i := 0; i < pushCount; i++ {
+		if i%2 == 0 {
+			d.PushFront(i)
+		} else {
+			d.PushBack(i)
+		}
+	}
+	decValue := true
+	expectedValue := pushCount - 2
+	for d.Len() > 0 {
+		if v, ok := d.PopFront(); !ok || v != expectedValue {
+			t.Errorf("Expected: %d; Got: %d", expectedValue, v)
+		}
+		if decValue {
+			expectedValue -= 2
+		} else {
+			expectedValue += 2
+		}
+		if expectedValue == 0 {
+			decValue = false
+		}
+		if !decValue && expectedValue == 2 {
+			expectedValue = 1
+		}
+	}
+	if v, ok := d.PopFront(); ok || v != nil {
+		t.Errorf("Expected: nil; Got: %d", v)
+	}
+	if d.Len() != 0 {
+		t.Errorf("Expected: 0; Got: %d", d.Len())
+	}
+}
+
+func TestMixedPushFrontBackPopBackShouldReturnAllValuesInOrder(t *testing.T) {
+	var d deque.Deque
+
+	for i := 0; i < pushCount; i++ {
+		if i%2 == 0 {
+			d.PushFront(i)
+		} else {
+			d.PushBack(i)
+		}
+	}
+	decValue := true
+	expectedValue := pushCount - 1
+	for d.Len() > 0 {
+		if v, ok := d.PopBack(); !ok || v != expectedValue {
+			t.Errorf("Expected: %d; Got: %d", expectedValue, v)
+		}
+		if decValue {
+			expectedValue -= 2
+		} else {
+			expectedValue += 2
+		}
+		if expectedValue == -1 {
+			decValue = false
+			expectedValue = 0
+		}
+	}
+	if v, ok := d.PopBack(); ok || v != nil {
+		t.Errorf("Expected: nil; Got: %d", v)
+	}
+	if d.Len() != 0 {
+		t.Errorf("Expected: 0; Got: %d", d.Len())
+	}
+}
+
+func TestPushFrontPopFrontRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder(t *testing.T) {
 	var d deque.Deque
 
 	for i := 0; i < refillCount; i++ {
@@ -386,7 +487,7 @@ func TestPushFrontPopFrontRefillWith0ToPushCountItems(t *testing.T) {
 	}
 }
 
-func TestPushFrontPopBackRefillWith0ToPushCountItems(t *testing.T) {
+func TestPushFrontPopBackRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder(t *testing.T) {
 	var d deque.Deque
 
 	for i := 0; i < refillCount; i++ {
@@ -407,7 +508,7 @@ func TestPushFrontPopBackRefillWith0ToPushCountItems(t *testing.T) {
 	}
 }
 
-func TestPushBackPopFrontRefillWith0ToPushCountItems(t *testing.T) {
+func TestPushBackPopFrontRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder(t *testing.T) {
 	var d deque.Deque
 
 	for i := 0; i < refillCount; i++ {
@@ -428,7 +529,7 @@ func TestPushBackPopFrontRefillWith0ToPushCountItems(t *testing.T) {
 	}
 }
 
-func TestPushBackPopBackRefillWith0ToPushCountItems(t *testing.T) {
+func TestPushBackPopBackRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder(t *testing.T) {
 	var d deque.Deque
 
 	for i := 0; i < refillCount; i++ {
