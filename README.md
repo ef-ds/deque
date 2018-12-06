@@ -88,9 +88,9 @@ Also refer to the [integration](integration_test.go) and [API](api_test.go) test
 
 
 ## Design
-The efficient data structures (ef-ds) deque employs a new, modern deque design: a ring shaped, auto shrinking, linked slices design.
+The Efficient Data Structures (ef-ds) deque employs a new, modern deque design: a ring shaped, auto shrinking, linked slices design.
 
-That means the [double-ended queue](https://en.wikipedia.org/wiki/Double-ended_queue) is a [doubly-linked list](https://en.wikipedia.org/wiki/Doubly_linked_list) where each node value is a fixed size slice. It is ring in shape because the linked list is a [circular one](https://en.wikipedia.org/wiki/Circular_buffer), where the last node always points to the first one in the ring. It also auto shrinks as the values are popped off the deque, keeping itself as a lean and low memory footprint data structure even after heavy use.
+That means the [double-ended queue](https://en.wikipedia.org/wiki/Double-ended_queue) is a [doubly-linked list](https://en.wikipedia.org/wiki/Doubly_linked_list) where each node value is a fixed size [slice](https://tour.golang.org/moretypes/7). It is ring in shape because the linked list is a [circular one](https://en.wikipedia.org/wiki/Circular_buffer), where the last node always points to the first one in the ring. It also auto shrinks as the values are popped off the deque, keeping itself as a lean and low memory footprint data structure even after heavy use.
 
 ![ns/op](testdata/deque.jpg?raw=true "Deque Design")
 
@@ -138,7 +138,7 @@ When considering all tests, deque has over 10x more lines of testing code when c
 
 
 ## Performance
-Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [traditional growing array deques](https://en.wikipedia.org/wiki/Double-ended_queue#Complexity) because deque never copies more than 4 (maxFirstSliceSize/sliceGrowthFactor) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
+Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [traditional growing array deques](https://en.wikipedia.org/wiki/Double-ended_queue#Complexity) because deque never copies more than 16 (maxFirstSliceSize/sliceGrowthFactor) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
 
 Deque, either used as a FIFO queue or LIFO stack, offers either the best or very competitive performance across all test sets, suites and ranges.
 
