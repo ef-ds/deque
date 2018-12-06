@@ -167,8 +167,9 @@ func (d *Deque) PushFront(v interface{}) {
 		l := len(d.head.v)
 		nl := l * sliceGrowthFactor
 		n := make([]interface{}, nl)
-		d.tp += nl - l
-		d.hp += nl - l
+		diff := nl - l
+		d.tp += diff
+		d.hp += diff
 		d.hlp = nl - 1
 		copy(n[d.hp:], d.head.v)
 		d.head.v = n

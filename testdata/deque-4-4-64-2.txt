@@ -1,0 +1,45 @@
+goos: darwin
+goarch: amd64
+pkg: github.com/ef-ds/deque
+BenchmarkMicroserviceDequeQueue/1-4 	 3000000	       464 ns/op	     544 B/op	      11 allocs/op
+BenchmarkMicroserviceDequeQueue/1-4 	 3000000	       459 ns/op	     544 B/op	      11 allocs/op
+BenchmarkMicroserviceDequeQueue/1-4 	 3000000	       457 ns/op	     544 B/op	      11 allocs/op
+BenchmarkMicroserviceDequeQueue/1-4 	 3000000	       456 ns/op	     544 B/op	      11 allocs/op
+BenchmarkMicroserviceDequeQueue/1-4 	 3000000	       456 ns/op	     544 B/op	      11 allocs/op
+BenchmarkMicroserviceDequeQueue/1-4 	 3000000	       462 ns/op	     544 B/op	      11 allocs/op
+BenchmarkMicroserviceDequeQueue/1-4 	 3000000	       461 ns/op	     544 B/op	      11 allocs/op
+BenchmarkMicroserviceDequeQueue/1-4 	 3000000	       461 ns/op	     544 B/op	      11 allocs/op
+BenchmarkMicroserviceDequeQueue/1-4 	 3000000	       458 ns/op	     544 B/op	      11 allocs/op
+BenchmarkMicroserviceDequeQueue/1-4 	 3000000	       458 ns/op	     544 B/op	      11 allocs/op
+BenchmarkMicroserviceDequeQueue/10-4         	  500000	      2749 ns/op	    2576 B/op	      75 allocs/op
+BenchmarkMicroserviceDequeQueue/10-4         	  500000	      2747 ns/op	    2576 B/op	      75 allocs/op
+BenchmarkMicroserviceDequeQueue/10-4         	  500000	      2754 ns/op	    2576 B/op	      75 allocs/op
+BenchmarkMicroserviceDequeQueue/10-4         	  500000	      2745 ns/op	    2576 B/op	      75 allocs/op
+BenchmarkMicroserviceDequeQueue/10-4         	  500000	      2750 ns/op	    2576 B/op	      75 allocs/op
+BenchmarkMicroserviceDequeQueue/10-4         	  500000	      2761 ns/op	    2576 B/op	      75 allocs/op
+BenchmarkMicroserviceDequeQueue/10-4         	  500000	      2775 ns/op	    2576 B/op	      75 allocs/op
+BenchmarkMicroserviceDequeQueue/10-4         	  500000	      2743 ns/op	    2576 B/op	      75 allocs/op
+BenchmarkMicroserviceDequeQueue/10-4         	  500000	      2743 ns/op	    2576 B/op	      75 allocs/op
+BenchmarkMicroserviceDequeQueue/10-4         	  500000	      2791 ns/op	    2576 B/op	      75 allocs/op
+BenchmarkMicroserviceDequeQueue/100-4        	   50000	     24169 ns/op	   20944 B/op	     709 allocs/op
+BenchmarkMicroserviceDequeQueue/100-4        	   50000	     24040 ns/op	   20944 B/op	     709 allocs/op
+BenchmarkMicroserviceDequeQueue/100-4        	   50000	     24012 ns/op	   20944 B/op	     709 allocs/op
+BenchmarkMicroserviceDequeQueue/100-4        	   50000	     24234 ns/op	   20944 B/op	     709 allocs/op
+BenchmarkMicroserviceDequeQueue/100-4        	  100000	     25017 ns/op	   20944 B/op	     709 allocs/op
+BenchmarkMicroserviceDequeQueue/100-4        	   50000	     24170 ns/op	   20944 B/op	     709 allocs/op
+BenchmarkMicroserviceDequeQueue/100-4        	   50000	     24217 ns/op	   20944 B/op	     709 allocs/op
+BenchmarkMicroserviceDequeQueue/100-4        	   50000	     24374 ns/op	   20944 B/op	     709 allocs/op
+BenchmarkMicroserviceDequeQueue/100-4        	   50000	     24296 ns/op	   20944 B/op	     709 allocs/op
+BenchmarkMicroserviceDequeQueue/100-4        	   50000	     25100 ns/op	   20944 B/op	     709 allocs/op
+BenchmarkMicroserviceDequeQueue/1000-4       	    5000	    236083 ns/op	  134176 B/op	    7015 allocs/op
+BenchmarkMicroserviceDequeQueue/1000-4       	   10000	    233844 ns/op	  134176 B/op	    7015 allocs/op
+BenchmarkMicroserviceDequeQueue/1000-4       	   10000	    231650 ns/op	  134176 B/op	    7015 allocs/op
+BenchmarkMicroserviceDequeQueue/1000-4       	   10000	    226825 ns/op	  134176 B/op	    7015 allocs/op
+BenchmarkMicroserviceDequeQueue/1000-4       	   10000	    232071 ns/op	  134176 B/op	    7015 allocs/op
+BenchmarkMicroserviceDequeQueue/1000-4       	   10000	    230777 ns/op	  134176 B/op	    7015 allocs/op
+BenchmarkMicroserviceDequeQueue/1000-4       	   10000	    237242 ns/op	  134176 B/op	    7015 allocs/op
+BenchmarkMicroserviceDequeQueue/1000-4       	   10000	    228305 ns/op	  134176 B/op	    7015 allocs/op
+BenchmarkMicroserviceDequeQueue/1000-4       	   10000	    232503 ns/op	  134176 B/op	    7015 allocs/op
+BenchmarkMicroserviceDequeQueue/1000-4       	   10000	    230257 ns/op	  134176 B/op	    7015 allocs/op
+BenchmarkMicroserviceDequeQueue/10000-4      	signal: interrupt
+FAIL	github.com/ef-ds/deque	71.795s
