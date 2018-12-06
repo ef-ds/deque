@@ -11,8 +11,7 @@ To run the tests locally, clone the deque repo, cd to the deque main directory a
 go test -benchmem -timeout 60m -bench=. -run=^$
 ```
 
-This command will run all tests for all queues locally once. This should be good enouh to give you a sense of the queues performance, but to
-do a proper comparison, elimating test variations, we recommend you to run the tests as detailed [here](BENCHMARK_TESTS.md) by running the tests with multiple counts, splitting the files with [test-splitter](https://github.com/ef-ds/tools/tree/master/testsplitter) and using the [benchstat](https://godoc.org/golang.org/x/perf/cmd/benchstat) tool to aggregate the results.
+This command will run all tests for all queues locally once. This should be good enouh to give you a sense of the queues performance, but to do a proper comparison, elimating test variations, we recommend you to run the tests as detailed [here](BENCHMARK_TESTS.md) by running the tests with multiple counts, splitting the files with [test-splitter](https://github.com/ef-ds/tools/tree/master/testsplitter) and using the [benchstat](https://godoc.org/golang.org/x/perf/cmd/benchstat) tool to aggregate the results.
 
 
 ## Bottom Line

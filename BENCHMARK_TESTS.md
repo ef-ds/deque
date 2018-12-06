@@ -9,8 +9,6 @@ The two test sets, queue and stack, were designed to test the queues main usage 
 - Queue: test the data structures using them as a FIFO queue. PushBack() is used to add items to the queue; PopFront() to remove
 - Stack: test the data structures using them as a LIFO stack. PushBack() is used to add items to the queue; PopBack() to remove
 
-Note: a set of mixed tests (mixed push front and back; mixed pop front and back) will also be implemented.
-
 
 ### Test Suites
 The test suites were designed to test the queues with different push/pop patterns under different scenarios such as low and high stress.
@@ -24,6 +22,7 @@ ability to fill again once it has been filled and emptied.
 ability to slowly expand while removing some elements from the queue.
 - [SlowDecrease](benchmark-slow-decrease_test.go): test the queues performance by filling the queues with n items to fill at least three internal slices, and then sequentially removing 2 items and adding 1. Tests the queues ability to slowly shrink while adding some elements to the queue.
 - [Stable](benchmark-stable_test.go): Add 1 item to the queue and remove it. Tests the queues ability to handle constant push/pop over n iterations.
+
 
 #### The Microservice Test
 It is very common on production [Microservices](https://en.wikipedia.org/wiki/Microservices) and [serverless](https://en.wikipedia.org/wiki/Serverless_computing) systems to use more resources, be it memory or CPU, as the traffic it is serving increases. Keeping this fact in mind, this is a composite test designed to test the queues in a production like microservice scenario. The test idea is that every time the Microservice using the queue receives a request, it would push an item to the queue. As soon as the request is served, the Microservice removes an item from the queue.
@@ -111,6 +110,15 @@ go test -benchmem -timeout 60m -bench="QUEUE_NAME*" -run=^$
 ```
 
 Replace the QUEUE_NAME with the desired queue such as "List", "Slice", "Gammazero", "Phf", "Cookiejar", "Juju", "Impl7", "Deque".
+
+
+To run only a specific test suite, below command can be used.
+
+```
+go test -benchmem -timeout 60m -bench="TEST_SUITE_NAME*" -run=^$
+```
+
+Replace the TEST_SUITE_NAME with the desired test suite such as "Microservice", "Fill", "Refill", "RefillFull", "SlowIncrease", "SlowDecrease", "Stable".
 
 
 ## Test Variations

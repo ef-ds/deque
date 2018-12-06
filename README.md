@@ -179,6 +179,15 @@ for d.Len() > 0 {
 ```
 
 
+## Roadmap
+- Build tool to help find out the combination of firstSliceSize, sliceGrowthFactor, maxFirstSliceSize, maxInternalSliceSize and maxSpareLinks that will yield the best performance
+- Build tool to automatically run and calculate the final score of all tests
+- Write a blog about the different deque designs; the properties that makes deque so fast and well balanced; effective ways to test data structures
+- Find the fastest open source deques and add them the bench tests
+- Improve deque performance and/or efficiency by improving its design and/or implementation
+- Build a high performance safe for concurrent use version of deque
+
+
 ## Why
 We feel like this world needs improving. Our goal is to change the world, for the better, for everyone.
 
