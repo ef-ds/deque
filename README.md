@@ -131,7 +131,7 @@ Having said that, a data structure that completely shrinks after use, when it is
 ## Tests
 Besides having 100% code coverage, deque has an extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
 
-Performance and efficiency is a major concern, so deque has an extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](BENCHMARK_TESTS.md) for details.
+Performance and efficiency is a major concern, so deque has an extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](https://github.com/ef-ds/deque-bench-tests/blob/master/BENCHMARK_TESTS.md) for details.
 
 When considering all tests, deque has over 10x more lines of testing code when compared to the actual, functional code.
 
@@ -144,11 +144,11 @@ Deque, either used as a FIFO queue or LIFO stack, offers either the best or very
 
 As a general purpose FIFO deque or LIFO stack, deque offers, by far, the most balanced and consistent performance of all tested data structures.
 
-See [performance](PERFORMANCE.md) for details.
+See [performance](https://github.com/ef-ds/deque-bench-tests/blob/master/PERFORMANCE.md) for details.
 
 
 ## Supported Data Types
-Similarly to Go's standard library list, [list](https://github.com/golang/go/tree/master/src/container/list), 
+Similarly to Go's standard library list, [list](https://github.com/golang/go/tree/master/src/container/list),
 [ring](https://github.com/golang/go/tree/master/src/container/ring) and [heap](https://github.com/golang/go/blob/master/src/container/heap/heap.go) packages, deque supports "interface{}" as its data type. This means it can be used with any Go data types, including int, float, string and any user defined structs and pointers to interfaces.
 
 The data types pushed into the deque can even be mixed, meaning, it's possible to push ints, floats and struct instances into the same deque.
@@ -159,7 +159,7 @@ Deque is not safe for concurrent use. However, it's very easy to build a safe fo
 
 
 ## Range Support
-Just like the current container data structures such as [list](https://github.com/golang/go/tree/master/src/container/list), 
+Just like the current container data structures such as [list](https://github.com/golang/go/tree/master/src/container/list),
 [ring](https://github.com/golang/go/tree/master/src/container/ring) and [heap](https://github.com/golang/go/blob/master/src/container/heap/heap.go), deque doesn't support the range keyword for navigation.
 
 However, the API offers two ways to iterate over the deque items. Either use "PopFront"/"PopBack" to retrieve the first current element and the second bool parameter to check for an empty queue.
