@@ -231,9 +231,6 @@ MIT, see [LICENSE](LICENSE).
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 
-## Code of Conduct
-See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
-
 ## Roadmap
 - Build tool to help find out the combination of firstSliceSize, sliceGrowthFactor, maxFirstSliceSize, maxInternalSliceSize and maxSpareLinks that will yield the best performance
 - Build tool to automatically run and calculate the final score of all tests
