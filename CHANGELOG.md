@@ -19,3 +19,11 @@
 - Benchmark tests: [v1.0.1 vs v1.0.2](testdata/release_v1.0.2.md)
 
 * Mixed Push/Pop/Front/Back is pending more testing and so is not recommended for use in production environment.
+
+
+# 1.0.3
+- Optimized deque: [here](https://github.com/ef-ds/deque/pull/13) and [here](https://github.com/ef-ds/deque/pull/14)
+- Improved mixed tests: [here](https://github.com/ef-ds/deque/pull/15)
+- Moved comparison benchmark tests to separate repo: [here](https://github.com/ef-ds/deque/pull/15)
+- Benchmark tests: given this is the first release where the comparison tests are now on the new [deque-bench-tests](https://github.com/ef-ds/deque-bench-tests) repository, we won't release a previous vs new version for this release, but we have updated the [comparison bench results](https://github.com/ef-ds/deque-bench-tests/blob/master/PERFORMANCE.md) to reflect the changes for v1.0.3.
+- Mixed Push/Pop/Front/Back is now fully tested and should be fine to be used in production environments
