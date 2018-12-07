@@ -18,9 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-// Below tests are used mostly for comparing the result of changes to deque.
+// Below tests are used mostly for comparing the result of changes to deque and
+// are not necessarily a replication of the comparison tests. For instance,
+// the stack tests here use PushFront/PopFront instead of PushBack/PopBack.
 //
-// For comparing deque performance with other deques, refer to https://github.com/ef-ds/deque-bench-tests
+// For comparing deque performance with other deques, refer to
+// https://github.com/ef-ds/deque-bench-tests
 
 package deque_test
 
@@ -62,7 +65,7 @@ func BenchmarkFillQueue(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				q := deque.New()
 				for i := 0; i < test.count; i++ {
-					q.PushBack(i)
+					q.PushBack(nil)
 				}
 				for q.Len() > 0 {
 					tmp, tmp2 = q.PopFront()
@@ -78,10 +81,10 @@ func BenchmarkFillStack(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				q := deque.New()
 				for i := 0; i < test.count; i++ {
-					q.PushBack(i)
+					q.PushFront(nil)
 				}
 				for q.Len() > 0 {
-					tmp, tmp2 = q.PopBack()
+					tmp, tmp2 = q.PopFront()
 				}
 			}
 		})
@@ -101,7 +104,7 @@ func BenchmarkRefillQueue(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				for n := 0; n < refillCount; n++ {
 					for i := 0; i < test.count; i++ {
-						q.PushBack(i)
+						q.PushBack(nil)
 					}
 					for q.Len() > 0 {
 						tmp, tmp2 = q.PopFront()
@@ -119,10 +122,10 @@ func BenchmarkRefillStack(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				for n := 0; n < refillCount; n++ {
 					for i := 0; i < test.count; i++ {
-						q.PushBack(i)
+						q.PushFront(nil)
 					}
 					for q.Len() > 0 {
-						tmp, tmp2 = q.PopBack()
+						tmp, tmp2 = q.PopFront()
 					}
 				}
 			}
@@ -133,7 +136,7 @@ func BenchmarkRefillStack(b *testing.B) {
 func BenchmarkRefillFullQueue(b *testing.B) {
 	d := deque.New()
 	for i := 0; i < fillCount; i++ {
-		d.PushBack(i)
+		d.PushBack(nil)
 	}
 
 	for i, test := range tests {
@@ -147,7 +150,7 @@ func BenchmarkRefillFullQueue(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				for k := 0; k < refillCount; k++ {
 					for i := 0; i < test.count; i++ {
-						d.PushBack(i)
+						d.PushBack(nil)
 					}
 					for i := 0; i < test.count; i++ {
 						tmp, tmp2 = d.PopFront()
@@ -165,7 +168,7 @@ func BenchmarkRefillFullQueue(b *testing.B) {
 func BenchmarkRefillFullStack(b *testing.B) {
 	d := deque.New()
 	for i := 0; i < fillCount; i++ {
-		d.PushBack(i)
+		d.PushBack(nil)
 	}
 
 	for _, test := range tests {
@@ -173,10 +176,10 @@ func BenchmarkRefillFullStack(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				for k := 0; k < refillCount; k++ {
 					for i := 0; i < test.count; i++ {
-						d.PushBack(i)
+						d.PushFront(nil)
 					}
 					for i := 0; i < test.count; i++ {
-						tmp, tmp2 = d.PopBack()
+						tmp, tmp2 = d.PopFront()
 					}
 				}
 			}
@@ -191,14 +194,14 @@ func BenchmarkRefillFullStack(b *testing.B) {
 func BenchmarkStableQueue(b *testing.B) {
 	d := deque.New()
 	for i := 0; i < fillCount; i++ {
-		d.PushBack(i)
+		d.PushBack(nil)
 	}
 
 	for _, test := range tests {
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
+					d.PushBack(nil)
 					tmp, tmp2 = d.PopFront()
 				}
 			}
@@ -213,22 +216,22 @@ func BenchmarkStableQueue(b *testing.B) {
 func BenchmarkStableStack(b *testing.B) {
 	d := deque.New()
 	for i := 0; i < fillCount; i++ {
-		d.PushBack(i)
+		d.PushBack(nil)
 	}
 
 	for _, test := range tests {
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
-					tmp, tmp2 = d.PopBack()
+					d.PushFront(nil)
+					tmp, tmp2 = d.PopFront()
 				}
 			}
 		})
 	}
 
 	for d.Len() > 0 {
-		tmp, tmp2 = d.PopBack()
+		tmp, tmp2 = d.PopFront()
 	}
 }
 
@@ -238,8 +241,8 @@ func BenchmarkSlowIncreaseQueue(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				d := deque.New()
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
-					d.PushBack(i)
+					d.PushBack(nil)
+					d.PushBack(nil)
 					tmp, tmp2 = d.PopFront()
 				}
 				for d.Len() > 0 {
@@ -256,12 +259,12 @@ func BenchmarkSlowIncreaseStack(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				d := deque.New()
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
-					d.PushBack(i)
-					tmp, tmp2 = d.PopBack()
+					d.PushFront(nil)
+					d.PushFront(nil)
+					tmp, tmp2 = d.PopFront()
 				}
 				for d.Len() > 0 {
-					tmp, tmp2 = d.PopBack()
+					tmp, tmp2 = d.PopFront()
 				}
 			}
 		})
@@ -273,7 +276,7 @@ func BenchmarkSlowDecreaseQueue(b *testing.B) {
 	for _, test := range tests {
 		items := test.count / 2
 		for i := 0; i <= items; i++ {
-			d.PushBack(i)
+			d.PushBack(nil)
 		}
 	}
 
@@ -281,7 +284,7 @@ func BenchmarkSlowDecreaseQueue(b *testing.B) {
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
+					d.PushBack(nil)
 					tmp, tmp2 = d.PopFront()
 					if d.Len() > 0 {
 						tmp, tmp2 = d.PopFront()
@@ -301,7 +304,7 @@ func BenchmarkSlowDecreaseStack(b *testing.B) {
 	for _, test := range tests {
 		items := test.count / 2
 		for i := 0; i <= items; i++ {
-			d.PushBack(i)
+			d.PushFront(nil)
 		}
 	}
 
@@ -309,10 +312,10 @@ func BenchmarkSlowDecreaseStack(b *testing.B) {
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
+					d.PushFront(nil)
 					tmp, tmp2 = d.PopFront()
 					if d.Len() > 0 {
-						tmp, tmp2 = d.PopBack()
+						tmp, tmp2 = d.PopFront()
 					}
 				}
 			}
@@ -320,7 +323,7 @@ func BenchmarkSlowDecreaseStack(b *testing.B) {
 	}
 
 	for d.Len() > 0 {
-		tmp, tmp2 = d.PopBack()
+		tmp, tmp2 = d.PopFront()
 	}
 }
 
@@ -337,14 +340,14 @@ func BenchmarkMicroserviceQueue(b *testing.B) {
 
 				// Simulate stable traffic
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
+					d.PushBack(nil)
 					d.PopFront()
 				}
 
 				// Simulate slowly increasing traffic
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
-					d.PushBack(i)
+					d.PushBack(nil)
+					d.PushBack(nil)
 					d.PopFront()
 				}
 
@@ -354,17 +357,17 @@ func BenchmarkMicroserviceQueue(b *testing.B) {
 					if d.Len() > 0 {
 						d.PopFront()
 					}
-					d.PushBack(i)
+					d.PushBack(nil)
 				}
 
 				// Simulate quick traffic spike (DDOS attack, etc)
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
+					d.PushBack(nil)
 				}
 
 				// Simulate stable traffic while at high traffic
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
+					d.PushBack(nil)
 					d.PopFront()
 				}
 
@@ -375,7 +378,7 @@ func BenchmarkMicroserviceQueue(b *testing.B) {
 
 				// Simulate stable traffic (now that is back to normal)
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
+					d.PushBack(nil)
 					d.PopFront()
 				}
 			}
@@ -396,46 +399,46 @@ func BenchmarkMicroserviceStack(b *testing.B) {
 
 				// Simulate stable traffic
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
-					d.PopBack()
+					d.PushFront(nil)
+					d.PopFront()
 				}
 
 				// Simulate slowly increasing traffic
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
-					d.PushBack(i)
-					d.PopBack()
+					d.PushFront(nil)
+					d.PushFront(nil)
+					d.PopFront()
 				}
 
-				// Simulate slowly decreasing traffic, bringing traffic back to normal
+				// Simulate slowly decreasing traffic, bringing traffic Front to normal
 				for i := 0; i < test.count; i++ {
-					d.PopBack()
+					d.PopFront()
 					if d.Len() > 0 {
-						d.PopBack()
+						d.PopFront()
 					}
-					d.PushBack(i)
+					d.PushFront(nil)
 				}
 
 				// Simulate quick traffic spike (DDOS attack, etc)
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
+					d.PushFront(nil)
 				}
 
 				// Simulate stable traffic while at high traffic
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
-					d.PopBack()
+					d.PushFront(nil)
+					d.PopFront()
 				}
 
-				// Simulate going back to normal (DDOS attack fended off)
+				// Simulate going Front to normal (DDOS attack fended off)
 				for i := 0; i < test.count; i++ {
-					d.PopBack()
+					d.PopFront()
 				}
 
-				// Simulate stable traffic (now that is back to normal)
+				// Simulate stable traffic (now that is Front to normal)
 				for i := 0; i < test.count; i++ {
-					d.PushBack(i)
-					d.PopBack()
+					d.PushFront(nil)
+					d.PopFront()
 				}
 			}
 		})
