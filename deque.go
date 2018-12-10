@@ -18,8 +18,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// Package deque implements a high performance, general purpose, dynamically growing,
-// ring shaped, linked arrays double-ended queue.
+// Package deque implements a general purpose, dynamically growing, ring shaped,
+// linked arrays double-ended queue. As a general purpose queue/stack/deque,
+// deque is the most performant and efficient data structure ever built.
 package deque
 
 const (
