@@ -89,8 +89,8 @@ Also refer to the [integration](integration_test.go) and [API](api_test.go) test
 
 
 ## Main Selling Points
-- deque is the most performant and efficient general purpose queue/stack/deque solution ever implemented
-- deque is for everyone, everywhere: as a general purpose queue/stack/deque solution, deque performs amazingly well on all test scenarios; if you are not sure your usage scenario or your system is subject to many different usage patterns, deque is perfect for you
+- deque is the [most performant and efficient](https://github.com/ef-ds/deque/issues/10) general purpose queue/stack/deque solution ever implemented
+- deque is for everyone, everywhere: as a general purpose queue/stack/deque solution, deque performs amazingly well on all [test scenarios](https://github.com/ef-ds/deque-bench-tests/blob/master/BENCHMARK_TESTS.md); if you are not sure your usage scenario or your system is subject to many different usage patterns, deque is perfect for you
 - deque is supported by a strong [research](https://github.com/golang/go/issues/27935) and its design and implementation has been evaluated by the Go development community
 
 On top of that, we truly believe in and love deque. Deque is the result of an endless amount of brainstorming, prototyping, testing, tweaking, refining. We're actively maintaining it and we're on an endless quest for more performance, better efficiency. Our goal is to build, maintain and evolve the most performant queue/stack/deque solution ever built.
