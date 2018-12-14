@@ -8,18 +8,16 @@ There's a number of ways you can contribute to deque:
 - Help with issues labeled ["help wanted"](https://github.com/ef-ds/deque/labels/help%20wanted)
 - Support the [proposal](https://github.com/golang/go/issues/27935) to include deque into Go's standard library
 
-Regarding proposing issues, we are not big fans of bureaucracy. If you have suggestions, open issues and do your best to describe your idea. We'll do our best to read and try to understand it. Just make sure to be clear about what you are proposing.
+If you have suggestions, open issues and do your best to describe your idea. We'll do our best to read and try to understand it. Just make sure to be clear about what you are proposing.
 
-If you feel confident about the proposed change, and the proposed change requires small changes to deque's package, feel to open PRs directly.
+If you feel confident about the proposed change, and the proposed change require small changes to deque's package, feel free to open PRs directly.
 
 We strongly encourage all changes to be benchmarked before sending PRs/merging. To check the impact of the changes to deque, please refer [here](UPDATING_DEQUE.md).
 
-A big part of the decision whether to accept suggestions and changes through PRs and issues are based on the feedback of the deque's users. The rule is use to gather feedback is below:
+A big part of the decision whether to accept suggestions and changes through PRs and issues are based on the feedback of the deque users. The rule we use to gather feedback is below:
 - If you agree with a suggestion, thumb it up
 - If you don't agree with a suggestion, thumb it down
 - If you feel strongly about a suggestion, please consider leaving comments
-
-We love to get feedback from the community. Our goal is to build the fastest and most efficient deque ever, for you, the deque's users. We need you and your suggestions to get there. Make sure to engage in the discussion!
 
 We're 100% committed to below software development rules:
 
