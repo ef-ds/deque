@@ -4,7 +4,7 @@ If you want to make changes to deque and run the tests to check the effect on pe
 we suggest you run all the benchmark tests locally once using below command.
 
 ```
-go test -benchmem -count 3 -timeout 60m -bench=. -run=^$ > testdata/deque.txt
+go test -benchmem -count 10 -timeout 60m -bench=. -run=^$ > testdata/deque.txt
 ```
 
 Then make the changes and re-run the tests using below command (notice the output file now is deque2.txt).
