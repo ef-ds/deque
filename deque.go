@@ -19,8 +19,10 @@
 // SOFTWARE.
 
 // Package deque implements a general purpose, dynamically growing, ring shaped,
-// linked arrays double-ended queue. As a general purpose queue/stack/deque,
-// deque is the most performant and efficient data structure ever built.
+// linked arrays double-ended queue. Deque is a very fast and efficient general
+// purpose queue/stack/deque data structure and is specifically optimized to
+// perform when used by Microservices and serverless services running in
+// production environments.
 package deque
 
 const (
