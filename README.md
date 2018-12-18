@@ -1,6 +1,6 @@
 # deque [![Build Status](https://travis-ci.com/ef-ds/deque.svg?branch=master)](https://travis-ci.com/ef-ds/deque) [![codecov](https://codecov.io/gh/ef-ds/deque/branch/master/graph/badge.svg)](https://codecov.io/gh/ef-ds/deque) [![Go Report Card](https://goreportcard.com/badge/github.com/ef-ds/deque)](https://goreportcard.com/report/github.com/ef-ds/deque)  [![GoDoc](https://godoc.org/github.com/ef-ds/deque?status.svg)](https://godoc.org/github.com/ef-ds/deque)
 
-Package deque implements a general purpose, dynamically growing, ring shaped, linked arrays double-ended queue. As a general purpose queue/stack/deque, deque is the most performant and efficient data structure ever built.
+Package deque implements a dynamically growing, ring shaped, linked arrays double-ended queue. Deque is a very fast and efficient general purpose queue/stack/deque data structure and is specifically optimized to perform when used by Microservices and serverless services running in production environments.
 
 
 ## Install
@@ -86,14 +86,6 @@ Output:
 ```
 
 Also refer to the [integration](integration_test.go) and [API](api_test.go) tests.
-
-
-## Why Use Deque
-- deque is the [most performant and efficient](https://github.com/ef-ds/deque/issues/10) general purpose queue/stack/deque solution ever implemented in Go
-- deque is for everyone, everywhere: as a general purpose queue/stack/deque solution, deque performs amazingly well on all [test scenarios](https://github.com/ef-ds/deque-bench-tests/blob/master/BENCHMARK_TESTS.md); if you are not sure your usage scenario or your system is subject to many different usage patterns, deque is perfect for you
-- deque is supported by a strong [research](https://github.com/golang/go/issues/27935) and its design and implementation has been evaluated by the Go development community
-
-On top of that, we truly believe in and love deque. Deque is the result of an endless amount of brainstorming, prototyping, testing, tweaking, refining. We're actively maintaining it and we're on an endless quest for more performance, better efficiency. Our goal is to build, maintain and evolve the most performant queue/stack/deque solution ever built.
 
 
 ## Design
