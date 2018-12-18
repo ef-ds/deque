@@ -1,6 +1,6 @@
 # deque [![Build Status](https://travis-ci.com/ef-ds/deque.svg?branch=master)](https://travis-ci.com/ef-ds/deque) [![codecov](https://codecov.io/gh/ef-ds/deque/branch/master/graph/badge.svg)](https://codecov.io/gh/ef-ds/deque) [![Go Report Card](https://goreportcard.com/badge/github.com/ef-ds/deque)](https://goreportcard.com/report/github.com/ef-ds/deque)  [![GoDoc](https://godoc.org/github.com/ef-ds/deque?status.svg)](https://godoc.org/github.com/ef-ds/deque)
 
-Package deque implements a dynamically growing, ring shaped, linked arrays double-ended queue. Deque is a very fast and efficient general purpose queue/stack/deque data structure and is specifically optimized to perform when used by Microservices and serverless services running in production environments.
+Package deque is a very fast and efficient general purpose queue/stack/deque data structure and is specifically optimized to perform when used by Microservices and serverless services running in production environments. Internally, deque stores the elements in a dynamic growing circular doubly linked list of arrays.
 
 
 ## Install
