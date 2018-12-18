@@ -88,6 +88,26 @@ Output:
 Also refer to the [integration](integration_test.go) and [API](api_test.go) tests.
 
 
+
+## Tests
+Besides having 100% code coverage, deque has an extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
+
+Performance and efficiency is a major concern, so deque has an extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](https://github.com/ef-ds/deque-bench-tests/blob/master/BENCHMARK_TESTS.md) for details.
+
+When considering all tests, deque has over 10x more lines of testing code when compared to the actual, functional code.
+
+
+
+## Performance
+Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [traditional growing array deques](https://en.wikipedia.org/wiki/Double-ended_queue#Complexity) because deque never copies more than 16 (maxFirstSliceSize/sliceGrowthFactor) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
+
+Deque, either used as a FIFO queue or LIFO stack, offers either the best or very competitive performance across all test sets, suites and ranges.
+
+As a general purpose FIFO deque or LIFO stack, deque offers, by far, the most balanced and consistent performance of all tested data structures.
+
+See [performance](https://github.com/ef-ds/deque-bench-tests/blob/master/PERFORMANCE.md) for details.
+
+
 ## Design
 The Efficient Data Structures (ef-ds) deque employs a new, modern deque design: a ring shaped, auto shrinking, linked slices design.
 
@@ -129,24 +149,6 @@ To solve this problem, deque employs an automatically shrinking mechanism that w
 Having said that, a data structure that completely shrinks after use, when it is used again, it means it has to expand again to accommodate the new values, hindering performance on refill scenarios (where a number of items is added and removed from the deque successively). To address this scenario, deque keeps a configurable number of internal, empty, slices in its ring. This way in refill scenarios deque is able to scale out very quickly, but still managing to keep the memory footprint very low.
 
 
-## Tests
-Besides having 100% code coverage, deque has an extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
-
-Performance and efficiency is a major concern, so deque has an extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](https://github.com/ef-ds/deque-bench-tests/blob/master/BENCHMARK_TESTS.md) for details.
-
-When considering all tests, deque has over 10x more lines of testing code when compared to the actual, functional code.
-
-
-
-## Performance
-Deque has constant time (O(1)) on all its operations (PushFront/PushBack/PopFront/PopBack/Len). It's not amortized constant as it is with most [traditional growing array deques](https://en.wikipedia.org/wiki/Double-ended_queue#Complexity) because deque never copies more than 16 (maxFirstSliceSize/sliceGrowthFactor) items and when it expands or grow, it never does so by more than 256 (maxInternalSliceSize) items in a single operation.
-
-Deque, either used as a FIFO queue or LIFO stack, offers either the best or very competitive performance across all test sets, suites and ranges.
-
-As a general purpose FIFO deque or LIFO stack, deque offers, by far, the most balanced and consistent performance of all tested data structures.
-
-See [performance](https://github.com/ef-ds/deque-bench-tests/blob/master/PERFORMANCE.md) for details.
-
 
 ## Supported Data Types
 Similarly to Go's standard library list, [list](https://github.com/golang/go/tree/master/src/container/list),
@@ -178,6 +180,7 @@ for d.Len() > 0 {
     // Do something with v
 }
 ```
+
 
 
 ## Why
