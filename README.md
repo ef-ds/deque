@@ -1,6 +1,6 @@
 # deque [![Build Status](https://travis-ci.com/ef-ds/deque.svg?branch=master)](https://travis-ci.com/ef-ds/deque) [![codecov](https://codecov.io/gh/ef-ds/deque/branch/master/graph/badge.svg)](https://codecov.io/gh/ef-ds/deque) [![Go Report Card](https://goreportcard.com/badge/github.com/ef-ds/deque)](https://goreportcard.com/report/github.com/ef-ds/deque)  [![GoDoc](https://godoc.org/github.com/ef-ds/deque?status.svg)](https://godoc.org/github.com/ef-ds/deque)
 
-Package deque is a very fast and efficient general purpose queue/stack/deque data structure and is specifically optimized to perform when used by Microservices and serverless services running in production environments. Internally, deque stores the elements in a dynamic growing circular doubly linked list of arrays.
+Package deque implements a very fast and efficient general purpose queue/stack/deque data structure that is specifically optimized to perform when used by Microservices and serverless services running in production environments. Internally, deque stores the elements in a dynamic growing circular doubly linked list of arrays.
 
 
 ## Install
@@ -92,7 +92,7 @@ Also refer to the [integration](integration_test.go) and [API](api_test.go) test
 ## Tests
 Besides having 100% code coverage, deque has an extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
 
-Performance and efficiency is a major concern, so deque has an extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](https://github.com/ef-ds/deque-bench-tests/blob/master/BENCHMARK_TESTS.md) for details.
+Performance and efficiency are major concerns, so deque has an extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](https://github.com/ef-ds/deque-bench-tests/blob/master/BENCHMARK_TESTS.md) for details.
 
 When considering all tests, deque has over 10x more lines of testing code when compared to the actual, functional code.
 

@@ -18,8 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// Package deque is a very fast and efficient general purpose queue/stack/deque
-// data structure and is specifically optimized to perform when used by
+// Package deque implements a very fast and efficient general purpose queue/stack/deque
+// data structure that is specifically optimized to perform when used by
 // Microservices and serverless services running in production environments.
 package deque
 
@@ -28,8 +28,8 @@ const (
 	firstSliceSize = 4
 
 	// sliceGrowthFactor determines by how much and how fast the first internal
-	// slice should grow. A growth factor of 4, firstSliceSize = 1 and maxFirstSliceSize = 16,
-	// the first slice will start with size 1, then 4 (1*4), then 16 (4*4).
+	// slice should grow. A growth factor of 4, firstSliceSize = 4 and maxFirstSliceSize = 64,
+	// the first slice will start with size 4, then 16 (4*4), then 64 (16*4).
 	// The growth factor should be tweaked together with firstSliceSize and specially,
 	// maxFirstSliceSize for maximum efficiency.
 	// sliceGrowthFactor only applies to the very first slice created. All other
