@@ -92,10 +92,11 @@ Also refer to the [integration](integration_test.go) and [API](api_test.go) test
 ## Tests
 Besides having 100% code coverage, deque has an extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
 
-Performance and efficiency are major concerns, so deque has an extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations. See the [benchmark tests](https://github.com/ef-ds/deque-bench-tests/blob/master/BENCHMARK_TESTS.md) for details.
+Performance and efficiency are major concerns, so deque has an extensive set of benchmark tests as well comparing the deque performance with a variety of high quality open source deque implementations.
+
+See the [benchmark tests](https://github.com/ef-ds/deque-bench-tests/blob/master/BENCHMARK_TESTS.md) for details.
 
 When considering all tests, deque has over 10x more lines of testing code when compared to the actual, functional code.
-
 
 
 ## Performance
