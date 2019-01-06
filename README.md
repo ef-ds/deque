@@ -210,8 +210,7 @@ If you like deque, please help us support it by thumbing up the [proposal](https
 
 
 ## Competition
-We're extremely interested in improving the deque. Please let us know your suggestions for possible improvements and if you know of other high performance
-queues not tested here, let us know and we're very glad to benchmark them.
+We're extremely interested in improving deque and we're on an endless quest for better efficiency and more performance. Please let us know your suggestions for possible improvements and if you know of other high performance queues not tested here, let us know and we're very glad to benchmark them.
 
 
 ## Releases
