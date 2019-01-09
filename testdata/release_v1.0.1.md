@@ -5,66 +5,6 @@ The performance impact is small with a slightly better performance on the queue 
 The overall memory impact is positive with deque now using ~5% less memory for large data sets (>= 10000), but now that the spare slices logic is actually correct, the refill tests for large data sets took a big hit for data sets above 1000 items (deque uses now ~2x as much memory on this scenario). This is expected as with a maxSpareLinks set to 4 and maxInternalSliceSize to 256, the spare slices should be reused only for the first 1000 items or so. Past that, new slices have to be created, which explains the extra memory footprint.
 
 ```
-benchstat testdata/BenchmarkMicroserviceDequeQueue.txt testdata/BenchmarkMicroserviceDequeQueue2.txt
-name        old time/op    new time/op    delta
-/1-4           525ns ± 4%     512ns ± 3%  -2.38%  (p=0.041 n=10+10)
-/10-4         3.66µs ± 5%    3.65µs ± 3%    ~     (p=0.921 n=10+9)
-/100-4        25.9µs ± 2%    25.6µs ± 3%    ~     (p=0.089 n=10+10)
-/1000-4        241µs ± 3%     233µs ± 3%  -3.36%  (p=0.003 n=10+9)
-/10000-4      2.44ms ± 2%    2.47ms ± 6%    ~     (p=0.356 n=10+9)
-/100000-4     27.1ms ± 3%    26.9ms ± 3%    ~     (p=0.460 n=10+8)
-/1000000-4     282ms ± 6%     270ms ± 2%  -4.23%  (p=0.003 n=9+9)
-
-name        old alloc/op   new alloc/op   delta
-/1-4            560B ± 0%      560B ± 0%    ~     (all equal)
-/10-4         5.71kB ± 0%    5.71kB ± 0%    ~     (all equal)
-/100-4        20.9kB ± 0%    20.9kB ± 0%    ~     (all equal)
-/1000-4        138kB ± 0%     134kB ± 0%  -3.00%  (p=0.000 n=10+10)
-/10000-4      1.54MB ± 0%    1.44MB ± 0%  -6.21%  (p=0.000 n=10+10)
-/100000-4     15.3MB ± 0%    14.4MB ± 0%  -5.43%  (p=0.000 n=9+10)
-/1000000-4     152MB ± 0%     144MB ± 0%  -5.32%  (p=0.002 n=8+10)
-
-name        old allocs/op  new allocs/op  delta
-/1-4            12.0 ± 0%      12.0 ± 0%    ~     (all equal)
-/10-4           77.0 ± 0%      77.0 ± 0%    ~     (all equal)
-/100-4           709 ± 0%       709 ± 0%    ~     (all equal)
-/1000-4        7.02k ± 0%     7.01k ± 0%  -0.03%  (p=0.000 n=10+10)
-/10000-4       70.2k ± 0%     70.2k ± 0%  -0.07%  (p=0.000 n=10+10)
-/100000-4       702k ± 0%      702k ± 0%  -0.06%  (p=0.000 n=10+10)
-/1000000-4     7.02M ± 0%     7.02M ± 0%  -0.06%  (p=0.000 n=10+10)
-```
-
-```
-benchstat testdata/BenchmarkMicroserviceDequeStack.txt testdata/BenchmarkMicroserviceDequeStack2.txt
-name        old time/op    new time/op    delta
-/1-4           419ns ± 8%     413ns ± 7%     ~     (p=0.446 n=9+10)
-/10-4         2.61µs ± 6%    2.70µs ± 6%   +3.45%  (p=0.034 n=10+8)
-/100-4        25.2µs ± 5%    26.7µs ± 2%   +5.83%  (p=0.000 n=10+10)
-/1000-4        234µs ± 6%     234µs ± 5%     ~     (p=0.842 n=10+9)
-/10000-4      2.36ms ± 7%    2.34ms ± 4%     ~     (p=0.780 n=10+9)
-/100000-4     24.2ms ± 2%    26.7ms ± 8%  +10.19%  (p=0.000 n=9+10)
-/1000000-4     249ms ± 2%     257ms ± 2%   +3.51%  (p=0.000 n=10+10)
-
-name        old alloc/op   new alloc/op   delta
-/1-4            304B ± 0%      304B ± 0%     ~     (all equal)
-/10-4         1.57kB ± 0%    1.57kB ± 0%     ~     (all equal)
-/100-4        20.9kB ± 0%    20.9kB ± 0%     ~     (all equal)
-/1000-4        130kB ± 0%     130kB ± 0%     ~     (all equal)
-/10000-4      1.29MB ± 0%    1.29MB ± 0%     ~     (all equal)
-/100000-4     12.8MB ± 0%    12.8MB ± 0%     ~     (p=0.173 n=10+9)
-/1000000-4     128MB ± 0%     128MB ± 0%     ~     (all equal)
-
-name        old allocs/op  new allocs/op  delta
-/1-4            11.0 ± 0%      11.0 ± 0%     ~     (all equal)
-/10-4           75.0 ± 0%      75.0 ± 0%     ~     (all equal)
-/100-4           709 ± 0%       709 ± 0%     ~     (all equal)
-/1000-4        7.01k ± 0%     7.01k ± 0%     ~     (all equal)
-/10000-4       70.1k ± 0%     70.1k ± 0%     ~     (all equal)
-/100000-4       701k ± 0%      701k ± 0%     ~     (all equal)
-/1000000-4     7.01M ± 0%     7.01M ± 0%     ~     (all equal)
-```
-
-```
 benchstat testdata/BenchmarkFillDequeQueue.txt testdata/BenchmarkFillDequeQueue2.txt
 name        old time/op    new time/op    delta
 /0-4          39.9ns ± 9%    37.4ns ± 1%   -6.06%  (p=0.000 n=10+9)
@@ -128,6 +68,66 @@ name        old allocs/op  new allocs/op  delta
 /10000-4       10.1k ± 0%     10.1k ± 0%    ~     (all equal)
 /100000-4       101k ± 0%      101k ± 0%    ~     (all equal)
 /1000000-4     1.01M ± 0%     1.01M ± 0%    ~     (all equal)
+```
+
+```
+benchstat testdata/BenchmarkMicroserviceDequeQueue.txt testdata/BenchmarkMicroserviceDequeQueue2.txt
+name        old time/op    new time/op    delta
+/1-4           525ns ± 4%     512ns ± 3%  -2.38%  (p=0.041 n=10+10)
+/10-4         3.66µs ± 5%    3.65µs ± 3%    ~     (p=0.921 n=10+9)
+/100-4        25.9µs ± 2%    25.6µs ± 3%    ~     (p=0.089 n=10+10)
+/1000-4        241µs ± 3%     233µs ± 3%  -3.36%  (p=0.003 n=10+9)
+/10000-4      2.44ms ± 2%    2.47ms ± 6%    ~     (p=0.356 n=10+9)
+/100000-4     27.1ms ± 3%    26.9ms ± 3%    ~     (p=0.460 n=10+8)
+/1000000-4     282ms ± 6%     270ms ± 2%  -4.23%  (p=0.003 n=9+9)
+
+name        old alloc/op   new alloc/op   delta
+/1-4            560B ± 0%      560B ± 0%    ~     (all equal)
+/10-4         5.71kB ± 0%    5.71kB ± 0%    ~     (all equal)
+/100-4        20.9kB ± 0%    20.9kB ± 0%    ~     (all equal)
+/1000-4        138kB ± 0%     134kB ± 0%  -3.00%  (p=0.000 n=10+10)
+/10000-4      1.54MB ± 0%    1.44MB ± 0%  -6.21%  (p=0.000 n=10+10)
+/100000-4     15.3MB ± 0%    14.4MB ± 0%  -5.43%  (p=0.000 n=9+10)
+/1000000-4     152MB ± 0%     144MB ± 0%  -5.32%  (p=0.002 n=8+10)
+
+name        old allocs/op  new allocs/op  delta
+/1-4            12.0 ± 0%      12.0 ± 0%    ~     (all equal)
+/10-4           77.0 ± 0%      77.0 ± 0%    ~     (all equal)
+/100-4           709 ± 0%       709 ± 0%    ~     (all equal)
+/1000-4        7.02k ± 0%     7.01k ± 0%  -0.03%  (p=0.000 n=10+10)
+/10000-4       70.2k ± 0%     70.2k ± 0%  -0.07%  (p=0.000 n=10+10)
+/100000-4       702k ± 0%      702k ± 0%  -0.06%  (p=0.000 n=10+10)
+/1000000-4     7.02M ± 0%     7.02M ± 0%  -0.06%  (p=0.000 n=10+10)
+```
+
+```
+benchstat testdata/BenchmarkMicroserviceDequeStack.txt testdata/BenchmarkMicroserviceDequeStack2.txt
+name        old time/op    new time/op    delta
+/1-4           419ns ± 8%     413ns ± 7%     ~     (p=0.446 n=9+10)
+/10-4         2.61µs ± 6%    2.70µs ± 6%   +3.45%  (p=0.034 n=10+8)
+/100-4        25.2µs ± 5%    26.7µs ± 2%   +5.83%  (p=0.000 n=10+10)
+/1000-4        234µs ± 6%     234µs ± 5%     ~     (p=0.842 n=10+9)
+/10000-4      2.36ms ± 7%    2.34ms ± 4%     ~     (p=0.780 n=10+9)
+/100000-4     24.2ms ± 2%    26.7ms ± 8%  +10.19%  (p=0.000 n=9+10)
+/1000000-4     249ms ± 2%     257ms ± 2%   +3.51%  (p=0.000 n=10+10)
+
+name        old alloc/op   new alloc/op   delta
+/1-4            304B ± 0%      304B ± 0%     ~     (all equal)
+/10-4         1.57kB ± 0%    1.57kB ± 0%     ~     (all equal)
+/100-4        20.9kB ± 0%    20.9kB ± 0%     ~     (all equal)
+/1000-4        130kB ± 0%     130kB ± 0%     ~     (all equal)
+/10000-4      1.29MB ± 0%    1.29MB ± 0%     ~     (all equal)
+/100000-4     12.8MB ± 0%    12.8MB ± 0%     ~     (p=0.173 n=10+9)
+/1000000-4     128MB ± 0%     128MB ± 0%     ~     (all equal)
+
+name        old allocs/op  new allocs/op  delta
+/1-4            11.0 ± 0%      11.0 ± 0%     ~     (all equal)
+/10-4           75.0 ± 0%      75.0 ± 0%     ~     (all equal)
+/100-4           709 ± 0%       709 ± 0%     ~     (all equal)
+/1000-4        7.01k ± 0%     7.01k ± 0%     ~     (all equal)
+/10000-4       70.1k ± 0%     70.1k ± 0%     ~     (all equal)
+/100000-4       701k ± 0%      701k ± 0%     ~     (all equal)
+/1000000-4     7.01M ± 0%     7.01M ± 0%     ~     (all equal)
 ```
 
 ```

@@ -1,8 +1,78 @@
 # v1.0.1 vs v1.0.2
+## Fill tests
+### FIFO queue
+```
+benchstat testdata/BenchmarkFillDequeQueuev1.0.1.txt testdata/BenchmarkFillDequeQueuev1.0.2.txt
+name        old time/op    new time/op    delta
+/0-4          38.6ns ± 3%    36.1ns ± 4%   -6.30%  (p=0.000 n=10+10)
+/1-4           149ns ± 6%     143ns ± 5%   -4.23%  (p=0.011 n=10+10)
+/10-4          631ns ± 1%     664ns ± 9%   +5.37%  (p=0.032 n=8+10)
+/100-4        4.68µs ± 5%    4.83µs ± 7%     ~     (p=0.089 n=10+10)
+/1000-4       38.0µs ± 1%    42.4µs ±15%  +11.61%  (p=0.000 n=9+10)
+/10000-4       385µs ± 3%     417µs ±11%   +8.42%  (p=0.002 n=10+10)
+/100000-4     4.00ms ± 1%    4.45ms ±27%  +11.41%  (p=0.002 n=10+10)
+/1000000-4    45.2ms ± 2%    51.9ms ±12%  +14.67%  (p=0.000 n=9+10)
+
+name        old alloc/op   new alloc/op   delta
+/0-4           64.0B ± 0%     48.0B ± 0%  -25.00%  (p=0.000 n=10+10)
+/1-4            144B ± 0%      128B ± 0%  -11.11%  (p=0.000 n=10+10)
+/10-4           608B ± 0%      592B ± 0%   -2.63%  (p=0.000 n=10+10)
+/100-4        6.19kB ± 0%    6.18kB ± 0%   -0.26%  (p=0.000 n=10+10)
+/1000-4       33.0kB ± 0%    33.0kB ± 0%   -0.05%  (p=0.000 n=10+10)
+/10000-4       322kB ± 0%     322kB ± 0%   -0.00%  (p=0.000 n=10+10)
+/100000-4     3.22MB ± 0%    3.22MB ± 0%   -0.00%  (p=0.000 n=10+9)
+/1000000-4    32.2MB ± 0%    32.2MB ± 0%   -0.00%  (p=0.000 n=10+10)
+
+name        old allocs/op  new allocs/op  delta
+/0-4            1.00 ± 0%      1.00 ± 0%     ~     (all equal)
+/1-4            4.00 ± 0%      4.00 ± 0%     ~     (all equal)
+/10-4           15.0 ± 0%      15.0 ± 0%     ~     (all equal)
+/100-4           107 ± 0%       107 ± 0%     ~     (all equal)
+/1000-4        1.01k ± 0%     1.01k ± 0%     ~     (all equal)
+/10000-4       10.1k ± 0%     10.1k ± 0%     ~     (all equal)
+/100000-4       101k ± 0%      101k ± 0%     ~     (all equal)
+/1000000-4     1.01M ± 0%     1.01M ± 0%     ~     (all equal)
+```
+
+### LIFO stack
+```
+benchstat testdata/BenchmarkFillDequeStackv1.0.1.txt testdata/BenchmarkFillDequeStackv1.0.2.txt
+name        old time/op    new time/op    delta
+/0-4          38.2ns ± 6%    38.3ns ± 3%     ~     (p=0.712 n=10+8)
+/1-4           146ns ± 8%     148ns ± 9%     ~     (p=0.645 n=9+10)
+/10-4          636ns ± 3%     662ns ±13%     ~     (p=0.288 n=10+10)
+/100-4        4.70µs ± 4%    4.99µs ± 6%   +6.13%  (p=0.000 n=10+9)
+/1000-4       38.5µs ± 9%    39.5µs ± 8%     ~     (p=0.353 n=10+10)
+/10000-4       382µs ± 5%     387µs ± 9%     ~     (p=0.739 n=10+10)
+/100000-4     3.95ms ± 3%    4.13ms ± 9%   +4.35%  (p=0.015 n=10+10)
+/1000000-4    45.2ms ± 3%    46.8ms ± 4%   +3.41%  (p=0.010 n=8+8)
+
+name        old alloc/op   new alloc/op   delta
+/0-4           64.0B ± 0%     48.0B ± 0%  -25.00%  (p=0.000 n=10+10)
+/1-4            144B ± 0%      128B ± 0%  -11.11%  (p=0.000 n=10+10)
+/10-4           608B ± 0%      592B ± 0%   -2.63%  (p=0.000 n=10+10)
+/100-4        6.19kB ± 0%    6.18kB ± 0%   -0.26%  (p=0.000 n=10+10)
+/1000-4       33.0kB ± 0%    33.0kB ± 0%   -0.05%  (p=0.000 n=10+10)
+/10000-4       322kB ± 0%     322kB ± 0%   -0.00%  (p=0.000 n=10+10)
+/100000-4     3.22MB ± 0%    3.22MB ± 0%   -0.00%  (p=0.000 n=10+10)
+/1000000-4    32.2MB ± 0%    32.2MB ± 0%   -0.00%  (p=0.000 n=10+9)
+
+name        old allocs/op  new allocs/op  delta
+/0-4            1.00 ± 0%      1.00 ± 0%     ~     (all equal)
+/1-4            4.00 ± 0%      4.00 ± 0%     ~     (all equal)
+/10-4           15.0 ± 0%      15.0 ± 0%     ~     (all equal)
+/100-4           107 ± 0%       107 ± 0%     ~     (all equal)
+/1000-4        1.01k ± 0%     1.01k ± 0%     ~     (all equal)
+/10000-4       10.1k ± 0%     10.1k ± 0%     ~     (all equal)
+/100000-4       101k ± 0%      101k ± 0%     ~     (all equal)
+/1000000-4     1.01M ± 0%     1.01M ± 0%     ~     (all equal)
+```
+
+
 ## Microservice tests
 ### FIFO queue
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkMicroserviceDequeQueuev1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkMicroserviceDequeQueuev1.0.2.txt
+benchstat testdata/BenchmarkMicroserviceDequeQueuev1.0.1.txt testdata/BenchmarkMicroserviceDequeQueuev1.0.2.txt
 name        old time/op    new time/op    delta
 /1-4           512ns ± 3%     510ns ± 5%     ~     (p=0.401 n=10+10)
 /10-4         3.51µs ± 0%    3.60µs ± 5%     ~     (p=0.062 n=9+10)
@@ -30,9 +100,10 @@ name        old allocs/op  new allocs/op  delta
 /100000-4       702k ± 0%      702k ± 0%   -0.00%  (p=0.000 n=10+10)
 /1000000-4     7.02M ± 0%     7.02M ± 0%   -0.00%  (p=0.000 n=10+10)
 ```
+
 ### LIFO stack
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkMicroserviceDequeStackv1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkMicroserviceDequeStackv1.0.2.txt
+benchstat testdata/BenchmarkMicroserviceDequeStackv1.0.1.txt testdata/BenchmarkMicroserviceDequeStackv1.0.2.txt
 name        old time/op    new time/op    delta
 /1-4           408ns ± 4%     389ns ± 1%   -4.68%  (p=0.000 n=10+10)
 /10-4         2.58µs ± 1%    2.51µs ± 1%   -2.60%  (p=0.000 n=9+10)
@@ -64,39 +135,7 @@ name        old allocs/op  new allocs/op  delta
 ## Other tests
 ### FIFO queue
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkFillDequeQueuev1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkFillDequeQueuev1.0.2.txt
-name        old time/op    new time/op    delta
-/0-4          38.6ns ± 3%    36.1ns ± 4%   -6.30%  (p=0.000 n=10+10)
-/1-4           149ns ± 6%     143ns ± 5%   -4.23%  (p=0.011 n=10+10)
-/10-4          631ns ± 1%     664ns ± 9%   +5.37%  (p=0.032 n=8+10)
-/100-4        4.68µs ± 5%    4.83µs ± 7%     ~     (p=0.089 n=10+10)
-/1000-4       38.0µs ± 1%    42.4µs ±15%  +11.61%  (p=0.000 n=9+10)
-/10000-4       385µs ± 3%     417µs ±11%   +8.42%  (p=0.002 n=10+10)
-/100000-4     4.00ms ± 1%    4.45ms ±27%  +11.41%  (p=0.002 n=10+10)
-/1000000-4    45.2ms ± 2%    51.9ms ±12%  +14.67%  (p=0.000 n=9+10)
-
-name        old alloc/op   new alloc/op   delta
-/0-4           64.0B ± 0%     48.0B ± 0%  -25.00%  (p=0.000 n=10+10)
-/1-4            144B ± 0%      128B ± 0%  -11.11%  (p=0.000 n=10+10)
-/10-4           608B ± 0%      592B ± 0%   -2.63%  (p=0.000 n=10+10)
-/100-4        6.19kB ± 0%    6.18kB ± 0%   -0.26%  (p=0.000 n=10+10)
-/1000-4       33.0kB ± 0%    33.0kB ± 0%   -0.05%  (p=0.000 n=10+10)
-/10000-4       322kB ± 0%     322kB ± 0%   -0.00%  (p=0.000 n=10+10)
-/100000-4     3.22MB ± 0%    3.22MB ± 0%   -0.00%  (p=0.000 n=10+9)
-/1000000-4    32.2MB ± 0%    32.2MB ± 0%   -0.00%  (p=0.000 n=10+10)
-
-name        old allocs/op  new allocs/op  delta
-/0-4            1.00 ± 0%      1.00 ± 0%     ~     (all equal)
-/1-4            4.00 ± 0%      4.00 ± 0%     ~     (all equal)
-/10-4           15.0 ± 0%      15.0 ± 0%     ~     (all equal)
-/100-4           107 ± 0%       107 ± 0%     ~     (all equal)
-/1000-4        1.01k ± 0%     1.01k ± 0%     ~     (all equal)
-/10000-4       10.1k ± 0%     10.1k ± 0%     ~     (all equal)
-/100000-4       101k ± 0%      101k ± 0%     ~     (all equal)
-/1000000-4     1.01M ± 0%     1.01M ± 0%     ~     (all equal)
-```
-```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkRefillDequeQueuev1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkRefillDequeQueuev1.0.2.txt
+benchstat testdata/BenchmarkRefillDequeQueuev1.0.1.txt testdata/BenchmarkRefillDequeQueuev1.0.2.txt
 name       old time/op    new time/op    delta
 /1-4         3.74µs ± 1%    3.97µs ± 6%  +6.10%  (p=0.000 n=10+9)
 /10-4        35.9µs ± 2%    36.8µs ± 5%  +2.45%  (p=0.011 n=10+10)
@@ -122,7 +161,7 @@ name       old allocs/op  new allocs/op  delta
 /100000-4     10.1M ± 0%     10.1M ± 0%  -0.00%  (p=0.000 n=10+9)
 ```
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkRefillFullDequeQueuev1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkRefillFullDequeQueuev1.0.2.txt
+benchstat testdata/BenchmarkRefillFullDequeQueuev1.0.1.txt testdata/BenchmarkRefillFullDequeQueuev1.0.2.txt
 name       old time/op    new time/op    delta
 /1-4         3.90µs ± 4%    3.70µs ± 8%  -5.21%  (p=0.035 n=10+10)
 /10-4        39.4µs ± 8%    37.4µs ± 7%  -5.26%  (p=0.007 n=10+10)
@@ -148,7 +187,7 @@ name       old allocs/op  new allocs/op  delta
 /100000-4     10.1M ± 0%     10.1M ± 0%  -0.00%  (p=0.001 n=8+9)
 ```
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkSlowIncreaseDequeQueuev1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkSlowIncreaseDequeQueuev1.0.2.txt
+benchstat testdata/BenchmarkSlowIncreaseDequeQueuev1.0.1.txt testdata/BenchmarkSlowIncreaseDequeQueuev1.0.2.txt
 name        old time/op    new time/op    delta
 /1-4           254ns ± 4%     248ns ± 5%    ~     (p=0.195 n=9+9)
 /10-4         1.95µs ± 3%    2.09µs ±13%  +7.15%  (p=0.006 n=9+9)
@@ -177,7 +216,7 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     2.01M ± 0%     2.01M ± 0%  -0.00%  (p=0.000 n=10+10)
 ```
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkSlowDecreaseDequeQueuev1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkSlowDecreaseDequeQueuev1.0.2.txt
+benchstat testdata/BenchmarkSlowDecreaseDequeQueuev1.0.1.txt testdata/BenchmarkSlowDecreaseDequeQueuev1.0.2.txt
 name        old time/op    new time/op    delta
 /1-4          35.4ns ± 1%    35.3ns ± 3%    ~     (p=0.956 n=10+10)
 /10-4          364ns ± 3%     353ns ± 2%  -3.06%  (p=0.001 n=10+9)
@@ -206,7 +245,7 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     1.00M ± 0%     1.00M ± 0%    ~     (all equal)
 ```
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkStableDequeQueuev1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkStableDequeQueuev1.0.2.txt
+benchstat testdata/BenchmarkStableDequeQueuev1.0.1.txt testdata/BenchmarkStableDequeQueuev1.0.2.txt
 name        old time/op    new time/op    delta
 /1-4          36.7ns ± 1%    35.1ns ± 2%  -4.47%  (p=0.000 n=10+9)
 /10-4          370ns ± 1%     358ns ± 4%  -3.28%  (p=0.002 n=10+9)
@@ -237,39 +276,7 @@ name        old allocs/op  new allocs/op  delta
 
 ### LIFO stack
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkFillDequeStackv1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkFillDequeStackv1.0.2.txt
-name        old time/op    new time/op    delta
-/0-4          38.2ns ± 6%    38.3ns ± 3%     ~     (p=0.712 n=10+8)
-/1-4           146ns ± 8%     148ns ± 9%     ~     (p=0.645 n=9+10)
-/10-4          636ns ± 3%     662ns ±13%     ~     (p=0.288 n=10+10)
-/100-4        4.70µs ± 4%    4.99µs ± 6%   +6.13%  (p=0.000 n=10+9)
-/1000-4       38.5µs ± 9%    39.5µs ± 8%     ~     (p=0.353 n=10+10)
-/10000-4       382µs ± 5%     387µs ± 9%     ~     (p=0.739 n=10+10)
-/100000-4     3.95ms ± 3%    4.13ms ± 9%   +4.35%  (p=0.015 n=10+10)
-/1000000-4    45.2ms ± 3%    46.8ms ± 4%   +3.41%  (p=0.010 n=8+8)
-
-name        old alloc/op   new alloc/op   delta
-/0-4           64.0B ± 0%     48.0B ± 0%  -25.00%  (p=0.000 n=10+10)
-/1-4            144B ± 0%      128B ± 0%  -11.11%  (p=0.000 n=10+10)
-/10-4           608B ± 0%      592B ± 0%   -2.63%  (p=0.000 n=10+10)
-/100-4        6.19kB ± 0%    6.18kB ± 0%   -0.26%  (p=0.000 n=10+10)
-/1000-4       33.0kB ± 0%    33.0kB ± 0%   -0.05%  (p=0.000 n=10+10)
-/10000-4       322kB ± 0%     322kB ± 0%   -0.00%  (p=0.000 n=10+10)
-/100000-4     3.22MB ± 0%    3.22MB ± 0%   -0.00%  (p=0.000 n=10+10)
-/1000000-4    32.2MB ± 0%    32.2MB ± 0%   -0.00%  (p=0.000 n=10+9)
-
-name        old allocs/op  new allocs/op  delta
-/0-4            1.00 ± 0%      1.00 ± 0%     ~     (all equal)
-/1-4            4.00 ± 0%      4.00 ± 0%     ~     (all equal)
-/10-4           15.0 ± 0%      15.0 ± 0%     ~     (all equal)
-/100-4           107 ± 0%       107 ± 0%     ~     (all equal)
-/1000-4        1.01k ± 0%     1.01k ± 0%     ~     (all equal)
-/10000-4       10.1k ± 0%     10.1k ± 0%     ~     (all equal)
-/100000-4       101k ± 0%      101k ± 0%     ~     (all equal)
-/1000000-4     1.01M ± 0%     1.01M ± 0%     ~     (all equal)
-```
-```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkRefillDequeStackv1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkRefillDequeStackv1.0.2.txt
+benchstat testdata/BenchmarkRefillDequeStackv1.0.1.txt testdata/BenchmarkRefillDequeStackv1.0.2.txt
 name       old time/op    new time/op    delta
 /1-4         3.63µs ± 3%    4.10µs ±15%  +13.16%  (p=0.003 n=9+10)
 /10-4        36.3µs ± 6%    35.7µs ± 2%     ~     (p=0.218 n=10+10)
@@ -295,7 +302,7 @@ name       old allocs/op  new allocs/op  delta
 /100000-4     10.1M ± 0%     10.1M ± 0%     ~     (all equal)
 ```
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkRefillFullDequeStackv1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkRefillFullDequeStackv1.0.2.txt
+benchstat testdata/BenchmarkRefillFullDequeStackv1.0.1.txt testdata/BenchmarkRefillFullDequeStackv1.0.2.txt
 name       old time/op    new time/op    delta
 /1-4         4.09µs ±12%    4.33µs ± 5%  +5.99%  (p=0.016 n=10+9)
 /10-4        35.8µs ± 3%    35.8µs ±11%    ~     (p=0.661 n=9+10)
@@ -321,7 +328,7 @@ name       old allocs/op  new allocs/op  delta
 /100000-4     10.1M ± 0%     10.1M ± 0%  -0.00%  (p=0.000 n=10+10)
 ```
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkSlowIncreaseDequeStackv1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkSlowIncreaseDequeStackv1.0.2.txt
+benchstat testdata/BenchmarkSlowIncreaseDequeStackv1.0.1.txt testdata/BenchmarkSlowIncreaseDequeStackv1.0.2.txt
 name        old time/op    new time/op    delta
 /1-4           258ns ± 1%     252ns ± 5%   -2.38%  (p=0.049 n=9+10)
 /10-4         1.04µs ± 2%    1.02µs ± 5%     ~     (p=0.305 n=10+8)
@@ -350,7 +357,7 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     2.01M ± 0%     2.01M ± 0%     ~     (all equal)
 ```
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkSlowDecreaseDequeStackv1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkSlowDecreaseDequeStackv1.0.2.txt
+benchstat testdata/BenchmarkSlowDecreaseDequeStackv1.0.1.txt testdata/BenchmarkSlowDecreaseDequeStackv1.0.2.txt
 name        old time/op    new time/op    delta
 /1-4          40.4ns ±35%    33.9ns ± 1%  -16.07%  (p=0.000 n=10+8)
 /10-4          374ns ±10%     353ns ± 5%   -5.78%  (p=0.003 n=10+9)
@@ -379,7 +386,7 @@ name        old allocs/op  new allocs/op  delta
 /1000000-4     1.00M ± 0%     1.00M ± 0%     ~     (all equal)
 ```
 ```
-benchstat ./../../../ef-ds/deque/testdata/BenchmarkStableDequeStackv1.0.1.txt ./../../../ef-ds/deque/testdata/BenchmarkStableDequeStackv1.0.2.txt
+benchstat testdata/BenchmarkStableDequeStackv1.0.1.txt testdata/BenchmarkStableDequeStackv1.0.2.txt
 name        old time/op    new time/op    delta
 /1-4          37.1ns ± 1%    39.2ns ± 8%  +5.78%  (p=0.016 n=8+10)
 /10-4          374ns ± 1%     368ns ± 2%  -1.74%  (p=0.004 n=10+9)
