@@ -652,6 +652,26 @@ func TestPushFrontShouldReuseSpareLinks(t *testing.T) {
 	}
 }
 
+func TestPushFrontPopBackStableShouldReuseHeadSlice(t *testing.T) {
+	d := New()
+
+	for i := 0; i < pushCount; i++ {
+		d.PushFront(i)
+		v, ok := d.PopBack()
+		if !ok || v == nil || v.(int) != i {
+			t.Errorf("Expected: %d; Got: %d", i, v)
+		}
+	}
+
+	// The head slice should've been reused, so no additional slices should've been created
+	if d.head != d.tail || d.head.n != d.tail || d.head.p != d.tail {
+		t.Error("Expected to have only one head slice")
+	}
+	if d.spareLinks != 0 {
+		t.Errorf("Expected: %d spareLinks; Got: %d", maxSpareLinks, d.spareLinks)
+	}
+}
+
 func TestPushBackShouldReuseSpareLinks(t *testing.T) {
 	d := New()
 	count := maxInternalSliceSize * 3
