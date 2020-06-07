@@ -175,6 +175,12 @@ func (d *Deque) PushFront(v interface{}) {
 		copy(n[d.hp:], d.head.v)
 		d.head.v = n
 		d.hp--
+	case d.len == 0:
+		// The head slice is empty, so reuse it.
+		d.tail = d.head
+		d.tp = len(d.head.v)
+		d.hp = d.tp - 1
+		d.hlp = d.hp
 	default:
 		// No available nodes, so make one.
 		n := &node{v: make([]interface{}, maxInternalSliceSize)}
