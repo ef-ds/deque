@@ -31,13 +31,13 @@ const (
 )
 
 func TestFillQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
 	}
 	for i := 0; i < pushCount; i++ {
-		if v, ok := d.PopFront(); !ok || v.(int) != i {
+		if v, ok := d.PopFront(); !ok || v != i {
 			t.Errorf("Expected: %d; Got: %d", i, v)
 		}
 	}
@@ -47,14 +47,14 @@ func TestFillQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestRefillQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < refillCount; i++ {
 		for j := 0; j < pushCount; j++ {
 			d.PushBack(j)
 		}
 		for j := 0; j < pushCount; j++ {
-			if v, ok := d.PopFront(); !ok || v.(int) != j {
+			if v, ok := d.PopFront(); !ok || v != j {
 				t.Errorf("Expected: %d; Got: %d", i, v)
 			}
 		}
@@ -65,7 +65,7 @@ func TestRefillQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestRefillFullQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
 	}
@@ -75,7 +75,7 @@ func TestRefillFullQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 			d.PushBack(j)
 		}
 		for j := 0; j < pushCount; j++ {
-			if v, ok := d.PopFront(); !ok || v.(int) != j {
+			if v, ok := d.PopFront(); !ok || v != j {
 				t.Errorf("Expected: %d; Got: %d", j, v)
 			}
 		}
@@ -86,7 +86,7 @@ func TestRefillFullQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestSlowIncreaseQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	count := 0
 	for i := 0; i < pushCount; i++ {
@@ -94,7 +94,7 @@ func TestSlowIncreaseQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 		d.PushBack(count)
 		count++
 		d.PushBack(count)
-		if v, ok := d.PopFront(); !ok || v.(int) != i+1 {
+		if v, ok := d.PopFront(); !ok || v != i+1 {
 			t.Errorf("Expected: %d; Got: %d", i+1, v)
 		}
 	}
@@ -104,7 +104,7 @@ func TestSlowIncreaseQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestSlowDecreaseQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	push := 0
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(push)
@@ -114,11 +114,11 @@ func TestSlowDecreaseQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 	count := -1
 	for i := 0; i < pushCount-1; i++ {
 		count++
-		if v, ok := d.PopFront(); !ok || v.(int) != count {
+		if v, ok := d.PopFront(); !ok || v != count {
 			t.Errorf("Expected: %d; Got: %d", count, v)
 		}
 		count++
-		if v, ok := d.PopFront(); !ok || v.(int) != count {
+		if v, ok := d.PopFront(); !ok || v != count {
 			t.Errorf("Expected: %d; Got: %d", count, v)
 		}
 
@@ -126,7 +126,7 @@ func TestSlowDecreaseQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 		push++
 	}
 	count++
-	if v, ok := d.PopFront(); !ok || v.(int) != count {
+	if v, ok := d.PopFront(); !ok || v != count {
 		t.Errorf("Expected: %d; Got: %d", count, v)
 	}
 	if d.Len() != 0 {
@@ -135,11 +135,11 @@ func TestSlowDecreaseQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestStableQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
-		if v, ok := d.PopFront(); !ok || v.(int) != i {
+		if v, ok := d.PopFront(); !ok || v != i {
 			t.Errorf("Expected: %d; Got: %d", i, v)
 		}
 	}
@@ -149,7 +149,7 @@ func TestStableQueueShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestStableQueueFullShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
 	}
@@ -157,7 +157,7 @@ func TestStableQueueFullShouldRetrieveAllElementsInOrder(t *testing.T) {
 	count := 0
 	for i := 0; i < pushCount-1; i++ {
 		d.PushBack(i)
-		if v, ok := d.PopFront(); !ok || v.(int) != count {
+		if v, ok := d.PopFront(); !ok || v != count {
 			t.Errorf("Expected: %d; Got: %d", count, v)
 		}
 		count++
@@ -168,13 +168,13 @@ func TestStableQueueFullShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestFillStackShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
 	}
 	for i := pushCount - 1; i >= 0; i-- {
-		if v, ok := d.PopBack(); !ok || v.(int) != i {
+		if v, ok := d.PopBack(); !ok || v != i {
 			t.Errorf("Expected: %d; Got: %d", i, v)
 		}
 	}
@@ -184,14 +184,14 @@ func TestFillStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestRefillStackShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < refillCount; i++ {
 		for j := 0; j < pushCount; j++ {
 			d.PushBack(j)
 		}
 		for j := pushCount - 1; j >= 0; j-- {
-			if v, ok := d.PopBack(); !ok || v.(int) != j {
+			if v, ok := d.PopBack(); !ok || v != j {
 				t.Errorf("Expected: %d; Got: %d", i, v)
 			}
 		}
@@ -202,7 +202,7 @@ func TestRefillStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestRefillFullStackShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
 	}
@@ -212,7 +212,7 @@ func TestRefillFullStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 			d.PushBack(j)
 		}
 		for j := pushCount - 1; j >= 0; j-- {
-			if v, ok := d.PopBack(); !ok || v.(int) != j {
+			if v, ok := d.PopBack(); !ok || v != j {
 				t.Errorf("Expected: %d; Got: %d", j, v)
 			}
 		}
@@ -223,7 +223,7 @@ func TestRefillFullStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestSlowIncreaseStackShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	count := 0
 	for i := 0; i < pushCount; i++ {
@@ -231,7 +231,7 @@ func TestSlowIncreaseStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 		d.PushBack(count)
 		count++
 		d.PushBack(count)
-		if v, ok := d.PopBack(); !ok || v.(int) != count {
+		if v, ok := d.PopBack(); !ok || v != count {
 			t.Errorf("Expected: %d; Got: %d", count, v)
 		}
 	}
@@ -241,7 +241,7 @@ func TestSlowIncreaseStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestSlowDecreaseStackShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	push := 0
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(push)
@@ -251,11 +251,11 @@ func TestSlowDecreaseStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 	count := push
 	for i := 0; i < pushCount-1; i++ {
 		count--
-		if v, ok := d.PopBack(); !ok || v.(int) != count {
+		if v, ok := d.PopBack(); !ok || v != count {
 			t.Errorf("Expected: %d; Got: %d", count, v)
 		}
 		count--
-		if v, ok := d.PopBack(); !ok || v.(int) != count {
+		if v, ok := d.PopBack(); !ok || v != count {
 			t.Errorf("Expected: %d; Got: %d", count, v)
 		}
 
@@ -263,7 +263,7 @@ func TestSlowDecreaseStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 		count++
 	}
 	count--
-	if v, ok := d.PopBack(); !ok || v.(int) != count {
+	if v, ok := d.PopBack(); !ok || v != count {
 		t.Errorf("Expected: %d; Got: %d", count, v)
 	}
 	if d.Len() != 0 {
@@ -272,11 +272,11 @@ func TestSlowDecreaseStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestStableStackShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
-		if v, ok := d.PopBack(); !ok || v.(int) != i {
+		if v, ok := d.PopBack(); !ok || v != i {
 			t.Errorf("Expected: %d; Got: %d", i, v)
 		}
 	}
@@ -286,7 +286,7 @@ func TestStableStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 }
 
 func TestStableFullStackShouldRetrieveAllElementsInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
 	}
@@ -294,7 +294,7 @@ func TestStableFullStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 	count := 0
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
-		if v, ok := d.PopFront(); !ok || v.(int) != count {
+		if v, ok := d.PopFront(); !ok || v != count {
 			t.Errorf("Expected: %d; Got: %d", count, v)
 		}
 		count++
@@ -307,13 +307,13 @@ func TestStableFullStackShouldRetrieveAllElementsInOrder(t *testing.T) {
 func TestPushPopFrontShouldRetrieveAllElementsInOrder(t *testing.T) {
 	pushPopFrontBackShouldRetrieveAllElementsInOrder(
 		t,
-		func(d *deque.Deque) (interface{}, bool) {
+		func(d *deque.Deque[int]) (int, bool) {
 			return d.PopFront()
 		},
-		func(d *deque.Deque) (interface{}, bool) {
+		func(d *deque.Deque[int]) (int, bool) {
 			return d.Front()
 		},
-		func(v, lastGet, lastPut interface{}) bool {
+		func(v, lastGet, lastPut int) bool {
 			return v == lastGet
 		},
 	)
@@ -322,20 +322,20 @@ func TestPushPopFrontShouldRetrieveAllElementsInOrder(t *testing.T) {
 func TestPushPopBackShouldRetrieveAllElementsInOrder(t *testing.T) {
 	pushPopFrontBackShouldRetrieveAllElementsInOrder(
 		t,
-		func(d *deque.Deque) (interface{}, bool) {
+		func(d *deque.Deque[int]) (int, bool) {
 			return d.PopBack()
 		},
-		func(d *deque.Deque) (interface{}, bool) {
+		func(d *deque.Deque[int]) (int, bool) {
 			return d.Back()
 		},
-		func(v, lastGet, lastPut interface{}) bool {
+		func(v, lastGet, lastPut int) bool {
 			return v == lastPut
 		},
 	)
 }
 
 func TestMixedPushBackPopFrontBackShouldReturnAllValuesInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	for i := 0; i < pushCount; i++ {
 		d.PushBack(i)
 	}
@@ -357,8 +357,8 @@ func TestMixedPushBackPopFrontBackShouldReturnAllValuesInOrder(t *testing.T) {
 		}
 		count++
 	}
-	if v, ok := d.PopBack(); ok || v != nil {
-		t.Errorf("Expected: nil; Got: %d", v)
+	if _, ok := d.PopBack(); ok {
+		t.Errorf("Expected: !ok; Got: %t", ok)
 	}
 	if d.Len() != 0 {
 		t.Errorf("Expected: 0; Got: %d", d.Len())
@@ -366,7 +366,7 @@ func TestMixedPushBackPopFrontBackShouldReturnAllValuesInOrder(t *testing.T) {
 }
 
 func TestMixedPushFrontPopFrontBackShouldReturnAllValuesInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	for i := 0; i < pushCount; i++ {
 		d.PushFront(i)
 	}
@@ -388,8 +388,8 @@ func TestMixedPushFrontPopFrontBackShouldReturnAllValuesInOrder(t *testing.T) {
 		}
 		count++
 	}
-	if v, ok := d.PopBack(); ok || v != nil {
-		t.Errorf("Expected: nil; Got: %d", v)
+	if _, ok := d.PopBack(); ok {
+		t.Errorf("Expected: !ok; Got: %t", ok)
 	}
 	if d.Len() != 0 {
 		t.Errorf("Expected: 0; Got: %d", d.Len())
@@ -397,7 +397,7 @@ func TestMixedPushFrontPopFrontBackShouldReturnAllValuesInOrder(t *testing.T) {
 }
 
 func TestMixedPushFrontBackPopFrontShouldReturnAllValuesInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < pushCount; i++ {
 		if i%2 == 0 {
@@ -424,8 +424,8 @@ func TestMixedPushFrontBackPopFrontShouldReturnAllValuesInOrder(t *testing.T) {
 			expectedValue = 1
 		}
 	}
-	if v, ok := d.PopFront(); ok || v != nil {
-		t.Errorf("Expected: nil; Got: %d", v)
+	if _, ok := d.PopFront(); ok {
+		t.Errorf("Expected: ok; Got: %t", ok)
 	}
 	if d.Len() != 0 {
 		t.Errorf("Expected: 0; Got: %d", d.Len())
@@ -433,7 +433,7 @@ func TestMixedPushFrontBackPopFrontShouldReturnAllValuesInOrder(t *testing.T) {
 }
 
 func TestMixedPushFrontBackPopBackShouldReturnAllValuesInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < pushCount; i++ {
 		if i%2 == 0 {
@@ -458,8 +458,8 @@ func TestMixedPushFrontBackPopBackShouldReturnAllValuesInOrder(t *testing.T) {
 			expectedValue = 0
 		}
 	}
-	if v, ok := d.PopBack(); ok || v != nil {
-		t.Errorf("Expected: nil; Got: %d", v)
+	if _, ok := d.PopBack(); ok {
+		t.Errorf("Expected: !ok; Got: %t", ok)
 	}
 	if d.Len() != 0 {
 		t.Errorf("Expected: 0; Got: %d", d.Len())
@@ -467,7 +467,7 @@ func TestMixedPushFrontBackPopBackShouldReturnAllValuesInOrder(t *testing.T) {
 }
 
 func TestPushFrontPopFrontRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < refillCount; i++ {
 		for k := 0; k < pushCount; k++ {
@@ -476,7 +476,7 @@ func TestPushFrontPopFrontRefillWith0ToPushCountItemsShouldReturnAllValuesInOrde
 			}
 			for j := k; j > 0; j-- {
 				v, ok := d.PopFront()
-				if !ok || v == nil || v.(int) != j-1 {
+				if !ok || v != j-1 {
 					t.Errorf("Expected: %d; Got: %d", j-1, v)
 				}
 			}
@@ -488,7 +488,7 @@ func TestPushFrontPopFrontRefillWith0ToPushCountItemsShouldReturnAllValuesInOrde
 }
 
 func TestPushFrontPopBackRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < refillCount; i++ {
 		for k := 0; k < pushCount; k++ {
@@ -497,7 +497,7 @@ func TestPushFrontPopBackRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder
 			}
 			for j := 0; j < k; j++ {
 				v, ok := d.PopBack()
-				if !ok || v == nil || v.(int) != j {
+				if !ok || v != j {
 					t.Errorf("Expected: %d; Got: %d", j, v)
 				}
 			}
@@ -509,7 +509,7 @@ func TestPushFrontPopBackRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder
 }
 
 func TestPushBackPopFrontRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < refillCount; i++ {
 		for k := 1; k < pushCount; k++ {
@@ -518,7 +518,7 @@ func TestPushBackPopFrontRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder
 			}
 			for j := 0; j < k; j++ {
 				v, ok := d.PopFront()
-				if !ok || v == nil || v.(int) != j {
+				if !ok || v != j {
 					t.Errorf("Expected: %d; Got: %d", j, v)
 				}
 			}
@@ -530,7 +530,7 @@ func TestPushBackPopFrontRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder
 }
 
 func TestPushBackPopBackRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 0; i < refillCount; i++ {
 		for k := 1; k < pushCount; k++ {
@@ -539,7 +539,7 @@ func TestPushBackPopBackRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder(
 			}
 			for j := k; j > 0; j-- {
 				v, ok := d.PopBack()
-				if !ok || v == nil || v.(int) != j-1 {
+				if !ok || v != j-1 {
 					t.Errorf("Expected: %d; Got: %d", j-1, v)
 				}
 			}
@@ -552,7 +552,7 @@ func TestPushBackPopBackRefillWith0ToPushCountItemsShouldReturnAllValuesInOrder(
 
 // Helper methods ------------------------------------------------
 
-func pushPopFrontBackShouldRetrieveAllElementsInOrder(t *testing.T, popFunc, frontbackFunc func(*deque.Deque) (interface{}, bool), checkValueFunc func(v, lastGet, lastPut interface{}) bool) {
+func pushPopFrontBackShouldRetrieveAllElementsInOrder(t *testing.T, popFunc, frontbackFunc func(*deque.Deque[int]) (int, bool), checkValueFunc func(v, lastGet, lastPut int) bool) {
 	tests := map[string]struct {
 		putCount []int
 		getCount []int
@@ -585,11 +585,11 @@ func pushPopFrontBackShouldRetrieveAllElementsInOrder(t *testing.T, popFunc, fro
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			d := deque.New()
+			d := deque.New[int]()
 			lastPut := 0
 			lastGet := 0
 			var ok bool
-			var v interface{}
+			var v int
 			for count := 0; count < len(test.getCount); count++ {
 				for i := 1; i <= test.putCount[count]; i++ {
 					lastPut++
@@ -602,11 +602,11 @@ func pushPopFrontBackShouldRetrieveAllElementsInOrder(t *testing.T, popFunc, fro
 				for i := 1; i <= test.getCount[count]; i++ {
 					lastGet++
 					v, ok = frontbackFunc(d)
-					if !ok || !checkValueFunc(v.(int), lastGet, lastPut-lastGet+1) {
+					if !ok || !checkValueFunc(v, lastGet, lastPut-lastGet+1) {
 						t.Errorf("Expected: %d; Got: %d or %d", lastGet, lastPut-lastGet+1, v)
 					}
 					v, ok = popFunc(d)
-					if !ok || !checkValueFunc(v.(int), lastGet, lastPut-lastGet+1) {
+					if !ok || !checkValueFunc(v, lastGet, lastPut-lastGet+1) {
 						t.Errorf("Expected: %d; Got: %d or %d", lastGet, lastPut-lastGet+1, v)
 					}
 				}
@@ -615,11 +615,11 @@ func pushPopFrontBackShouldRetrieveAllElementsInOrder(t *testing.T, popFunc, fro
 			if d.Len() != 0 {
 				t.Errorf("Expected: %d; Got: %d", 0, d.Len())
 			}
-			if v, ok = frontbackFunc(d); ok || v != nil {
-				t.Errorf("Expected: nil as the queue should be empty; Got: %d", v)
+			if v, ok = frontbackFunc(d); ok {
+				t.Errorf("Expected: !ok as the queue should be empty; Got: %t", ok)
 			}
-			if v, ok = popFunc(d); ok || v != nil {
-				t.Errorf("Expected: nil as the queue should be empty; Got: %d", v)
+			if v, ok = popFunc(d); ok {
+				t.Errorf("Expected: !ok as the queue should be empty; Got: %t", ok)
 			}
 		})
 	}

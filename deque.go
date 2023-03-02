@@ -60,13 +60,13 @@ const (
 
 // Deque implements an unbounded, dynamically growing double-ended-queue (deque).
 // The zero value for deque is an empty deque ready to use.
-type Deque struct {
+type Deque[T any] struct {
 	// Head points to the first node of the linked list.
-	head *node
+	head *node[T]
 
 	// Tail points to the last node of the linked list.
 	// In an empty deque, head and tail points to the same node.
-	tail *node
+	tail *node[T]
 
 	// Hp is the index pointing to the current first element in the deque
 	// (i.e. first element added in the current deque values).
@@ -84,43 +84,45 @@ type Deque struct {
 
 	// spareLinks holds the number of already used, but now empty, ready-to-be-reused, slices.
 	spareLinks int
+
+	tZero T
 }
 
 // Node represents a deque node.
 // Each node holds a slice of user managed values.
-type node struct {
+type node[T any] struct {
 	// v holds the list of user added values in this node.
-	v []interface{}
+	v []T
 
 	// n points to the next node in the linked list.
-	n *node
+	n *node[T]
 
 	// p points to the previous node in the linked list.
-	p *node
+	p *node[T]
 }
 
 // New returns an initialized deque.
-func New() *Deque {
-	return new(Deque)
+func New[T any]() *Deque[T] {
+	return new(Deque[T])
 }
 
 // Init initializes or clears deque d.
-func (d *Deque) Init() *Deque {
-	*d = Deque{}
+func (d *Deque[T]) Init() *Deque[T] {
+	*d = Deque[T]{}
 	return d
 }
 
 // Len returns the number of elements of deque d.
 // The complexity is O(1).
-func (d *Deque) Len() int { return d.len }
+func (d *Deque[T]) Len() int { return d.len }
 
 // Front returns the first element of deque d or nil if the deque is empty.
 // The second, bool result indicates whether a valid value was returned;
 // if the deque is empty, false will be returned.
 // The complexity is O(1).
-func (d *Deque) Front() (interface{}, bool) {
+func (d *Deque[T]) Front() (T, bool) {
 	if d.len == 0 {
-		return nil, false
+		return d.tZero, false
 	}
 	return d.head.v[d.hp], true
 }
@@ -129,20 +131,20 @@ func (d *Deque) Front() (interface{}, bool) {
 // The second, bool result indicates whether a valid value was returned;
 // if the deque is empty, false will be returned.
 // The complexity is O(1).
-func (d *Deque) Back() (interface{}, bool) {
+func (d *Deque[T]) Back() (T, bool) {
 	if d.len == 0 {
-		return nil, false
+		return d.tZero, false
 	}
 	return d.tail.v[d.tp-1], true
 }
 
 // PushFront adds value v to the the front of the deque.
 // The complexity is O(1).
-func (d *Deque) PushFront(v interface{}) {
+func (d *Deque[T]) PushFront(v T) {
 	switch {
 	case d.head == nil:
 		// No nodes present yet.
-		h := &node{v: make([]interface{}, firstSliceSize)}
+		h := &node[T]{v: make([]T, firstSliceSize)}
 		h.n = h
 		h.p = h
 		d.head = h
@@ -167,7 +169,7 @@ func (d *Deque) PushFront(v interface{}) {
 		// The first slice hasn't grown big enough yet.
 		l := len(d.head.v)
 		nl := l * sliceGrowthFactor
-		n := make([]interface{}, nl)
+		n := make([]T, nl)
 		diff := nl - l
 		d.tp += diff
 		d.hp += diff
@@ -183,7 +185,7 @@ func (d *Deque) PushFront(v interface{}) {
 		d.hlp = d.hp
 	default:
 		// No available nodes, so make one.
-		n := &node{v: make([]interface{}, maxInternalSliceSize)}
+		n := &node[T]{v: make([]T, maxInternalSliceSize)}
 		n.n = d.head
 		n.p = d.tail
 		d.head.p = n
@@ -198,11 +200,11 @@ func (d *Deque) PushFront(v interface{}) {
 
 // PushBack adds value v to the the back of the deque.
 // The complexity is O(1).
-func (d *Deque) PushBack(v interface{}) {
+func (d *Deque[T]) PushBack(v T) {
 	switch {
 	case d.head == nil:
 		// No nodes present yet.
-		h := &node{v: make([]interface{}, firstSliceSize)}
+		h := &node[T]{v: make([]T, firstSliceSize)}
 		h.n = h
 		h.p = h
 		d.head = h
@@ -216,7 +218,7 @@ func (d *Deque) PushBack(v interface{}) {
 		d.tp++
 	case d.tp < maxFirstSliceSize:
 		// We're on the first slice and it hasn't grown large enough yet.
-		nv := make([]interface{}, len(d.tail.v)*sliceGrowthFactor)
+		nv := make([]T, len(d.tail.v)*sliceGrowthFactor)
 		copy(nv, d.tail.v)
 		d.tail.v = nv
 		d.tail.v[d.tp] = v
@@ -231,7 +233,7 @@ func (d *Deque) PushBack(v interface{}) {
 		d.tp = 1
 	default:
 		// No available nodes, so make one.
-		n := &node{v: make([]interface{}, maxInternalSliceSize)}
+		n := &node[T]{v: make([]T, maxInternalSliceSize)}
 		n.n = d.head
 		n.p = d.tail
 		d.tail.n = n
@@ -247,13 +249,13 @@ func (d *Deque) PushBack(v interface{}) {
 // The second, bool result indicates whether a valid value was returned;
 // if the deque is empty, false will be returned.
 // The complexity is O(1).
-func (d *Deque) PopFront() (interface{}, bool) {
+func (d *Deque[T]) PopFront() (T, bool) {
 	if d.len == 0 {
-		return nil, false
+		return d.tZero, false
 	}
 	vp := &d.head.v[d.hp]
 	v := *vp
-	*vp = nil // Avoid memory leaks
+	*vp = d.tZero // Avoid memory leaks
 	d.len--
 	switch {
 	case d.hp < d.hlp:
@@ -285,15 +287,15 @@ func (d *Deque) PopFront() (interface{}, bool) {
 // The second, bool result indicates whether a valid value was returned;
 // if the deque is empty, false will be returned.
 // The complexity is O(1).
-func (d *Deque) PopBack() (interface{}, bool) {
+func (d *Deque[T]) PopBack() (T, bool) {
 	if d.len == 0 {
-		return nil, false
+		return d.tZero, false
 	}
 	d.len--
 	d.tp--
 	vp := &d.tail.v[d.tp]
 	v := *vp
-	*vp = nil // Avoid memory leaks
+	*vp = d.tZero // Avoid memory leaks
 	switch {
 	case d.tp > 0:
 		// There's space before tp.

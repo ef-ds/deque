@@ -1,3 +1,3 @@
 module github.com/ef-ds/deque
 
-go 1.15
+go 1.18

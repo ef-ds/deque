@@ -31,3 +31,8 @@
 # 1.0.4
 - Fixed bug related to PushFront/PopBack: [here](https://github.com/ef-ds/deque/pull/21)
 - The minor change had no significant performance impact
+
+# 2.0.0
+- Updated Deque to support generics!
+- This is a breaking change and will require users to specify the desired data type used with Deque (such as Deque[int]). We recommend the users to update their existing code to use the specific data type the Deque needs to handle (such as int, string, etc), but the interface type can still be used. Just declare Deque as "var d deque.Deque[interface{}]" and use it normally. No other changes should be required to use Deque v2.0.0.
+- Deque v2 is up to 10% faster and uses up to 35% less memory it used to use in most test cases! Benchmark tests: [v1.0.3 vs v2.0.0](testdata/release_v2.0.0.md); [comparison tests](https://github.com/ef-ds/deque-bench-tests/blob/master/PERFORMANCE.md)

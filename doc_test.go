@@ -7,7 +7,7 @@ import (
 )
 
 func Example_fIFOQueue() {
-	var d deque.Deque
+	var d deque.Deque[int]
 	for i := 1; i <= 5; i++ {
 		d.PushBack(i)
 	}
@@ -19,7 +19,7 @@ func Example_fIFOQueue() {
 }
 
 func Example_stack() {
-	var d deque.Deque
+	var d deque.Deque[int]
 	for i := 1; i <= 5; i++ {
 		d.PushBack(i)
 	}
