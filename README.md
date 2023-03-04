@@ -6,7 +6,7 @@ Package deque implements a very fast and efficient general purpose queue/stack/d
 ## Install
 From a configured [Go environment](https://golang.org/doc/install#testing):
 ```sh
-go get -u github.com/ef-ds/deque
+go get -u github.com/ef-ds/deque/v2
 ```
 
 We recommend to target only released versions for production use.
