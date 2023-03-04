@@ -3,7 +3,7 @@ package deque_test
 import (
 	"fmt"
 
-	"github.com/ef-ds/deque"
+	deque "github.com/ef-ds/deque/v2"
 )
 
 func Example_fIFOQueue() {

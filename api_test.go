@@ -23,7 +23,7 @@ package deque_test
 import (
 	"testing"
 
-	"github.com/ef-ds/deque"
+	deque "github.com/ef-ds/deque/v2"
 )
 
 func TestPopFrontWithZeroValueShouldReturnReadyToUseDeque(t *testing.T) {

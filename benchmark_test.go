@@ -31,7 +31,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/ef-ds/deque"
+	deque "github.com/ef-ds/deque/v2"
 )
 
 // testData contains the number of items to add to the queues in each test.

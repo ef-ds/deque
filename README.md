@@ -21,7 +21,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/ef-ds/deque"
+	deque "github.com/ef-ds/deque/v2"
 )
 
 func main() {
@@ -55,7 +55,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/ef-ds/deque"
+	deque "github.com/ef-ds/deque/v2"
 )
 
 func main() {
