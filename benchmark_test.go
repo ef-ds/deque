@@ -52,7 +52,7 @@ var (
 	}
 
 	// Used to store temp values, avoiding any compiler optimizations.
-	tmp  interface{}
+	tmp  *testData
 	tmp2 bool
 
 	fillCount   = 10000
@@ -63,7 +63,7 @@ func BenchmarkFillQueue(b *testing.B) {
 	for _, test := range tests {
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				q := deque.New()
+				q := deque.New[*testData]()
 				for i := 0; i < test.count; i++ {
 					q.PushBack(nil)
 				}
@@ -79,7 +79,7 @@ func BenchmarkFillStack(b *testing.B) {
 	for _, test := range tests {
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				q := deque.New()
+				q := deque.New[*testData]()
 				for i := 0; i < test.count; i++ {
 					q.PushFront(nil)
 				}
@@ -100,7 +100,7 @@ func BenchmarkRefillQueue(b *testing.B) {
 		}
 
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-			q := deque.New()
+			q := deque.New[*testData]()
 			for n := 0; n < b.N; n++ {
 				for n := 0; n < refillCount; n++ {
 					for i := 0; i < test.count; i++ {
@@ -118,7 +118,7 @@ func BenchmarkRefillQueue(b *testing.B) {
 func BenchmarkRefillStack(b *testing.B) {
 	for _, test := range tests {
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
-			q := deque.New()
+			q := deque.New[*testData]()
 			for n := 0; n < b.N; n++ {
 				for n := 0; n < refillCount; n++ {
 					for i := 0; i < test.count; i++ {
@@ -134,7 +134,7 @@ func BenchmarkRefillStack(b *testing.B) {
 }
 
 func BenchmarkRefillFullQueue(b *testing.B) {
-	d := deque.New()
+	d := deque.New[*testData]()
 	for i := 0; i < fillCount; i++ {
 		d.PushBack(nil)
 	}
@@ -166,7 +166,7 @@ func BenchmarkRefillFullQueue(b *testing.B) {
 }
 
 func BenchmarkRefillFullStack(b *testing.B) {
-	d := deque.New()
+	d := deque.New[*testData]()
 	for i := 0; i < fillCount; i++ {
 		d.PushBack(nil)
 	}
@@ -192,7 +192,7 @@ func BenchmarkRefillFullStack(b *testing.B) {
 }
 
 func BenchmarkStableQueue(b *testing.B) {
-	d := deque.New()
+	d := deque.New[*testData]()
 	for i := 0; i < fillCount; i++ {
 		d.PushBack(nil)
 	}
@@ -214,7 +214,7 @@ func BenchmarkStableQueue(b *testing.B) {
 }
 
 func BenchmarkStableStack(b *testing.B) {
-	d := deque.New()
+	d := deque.New[*testData]()
 	for i := 0; i < fillCount; i++ {
 		d.PushBack(nil)
 	}
@@ -239,7 +239,7 @@ func BenchmarkSlowIncreaseQueue(b *testing.B) {
 	for _, test := range tests {
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				d := deque.New()
+				d := deque.New[*testData]()
 				for i := 0; i < test.count; i++ {
 					d.PushBack(nil)
 					d.PushBack(nil)
@@ -257,7 +257,7 @@ func BenchmarkSlowIncreaseStack(b *testing.B) {
 	for _, test := range tests {
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				d := deque.New()
+				d := deque.New[*testData]()
 				for i := 0; i < test.count; i++ {
 					d.PushFront(nil)
 					d.PushFront(nil)
@@ -272,7 +272,7 @@ func BenchmarkSlowIncreaseStack(b *testing.B) {
 }
 
 func BenchmarkSlowDecreaseQueue(b *testing.B) {
-	d := deque.New()
+	d := deque.New[*testData]()
 	for _, test := range tests {
 		items := test.count / 2
 		for i := 0; i <= items; i++ {
@@ -300,7 +300,7 @@ func BenchmarkSlowDecreaseQueue(b *testing.B) {
 }
 
 func BenchmarkSlowDecreaseStack(b *testing.B) {
-	d := deque.New()
+	d := deque.New[*testData]()
 	for _, test := range tests {
 		items := test.count / 2
 		for i := 0; i <= items; i++ {
@@ -336,7 +336,7 @@ func BenchmarkMicroserviceQueue(b *testing.B) {
 
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				d := deque.New()
+				d := deque.New[*testData]()
 
 				// Simulate stable traffic
 				for i := 0; i < test.count; i++ {
@@ -395,7 +395,7 @@ func BenchmarkMicroserviceStack(b *testing.B) {
 
 		b.Run(strconv.Itoa(test.count), func(b *testing.B) {
 			for n := 0; n < b.N; n++ {
-				d := deque.New()
+				d := deque.New[*testData]()
 
 				// Simulate stable traffic
 				for i := 0; i < test.count; i++ {

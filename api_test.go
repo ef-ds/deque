@@ -27,16 +27,16 @@ import (
 )
 
 func TestPopFrontWithZeroValueShouldReturnReadyToUseDeque(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	d.PushBack(1)
 	d.PushBack(2)
 
 	v, ok := d.PopFront()
-	if !ok || v.(int) != 1 {
+	if !ok || v != 1 {
 		t.Errorf("Expected: 1; Got: %d", v)
 	}
 	v, ok = d.PopFront()
-	if !ok || v.(int) != 2 {
+	if !ok || v != 2 {
 		t.Errorf("Expected: 2; Got: %d", v)
 	}
 	_, ok = d.PopFront()
@@ -46,16 +46,16 @@ func TestPopFrontWithZeroValueShouldReturnReadyToUseDeque(t *testing.T) {
 }
 
 func TestPopBackWithZeroValueShouldReturnReadyToUseDeque(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	d.PushBack(1)
 	d.PushBack(2)
 
 	v, ok := d.PopBack()
-	if !ok || v.(int) != 2 {
+	if !ok || v != 2 {
 		t.Errorf("Expected: 2; Got: %d", v)
 	}
 	v, ok = d.PopBack()
-	if !ok || v.(int) != 1 {
+	if !ok || v != 1 {
 		t.Errorf("Expected: 1; Got: %d", v)
 	}
 	_, ok = d.PopBack()
@@ -65,7 +65,7 @@ func TestPopBackWithZeroValueShouldReturnReadyToUseDeque(t *testing.T) {
 }
 
 func TestWithZeroValueAndEmptyShouldReturnAsEmpty(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	if _, ok := d.Front(); ok {
 		t.Error("Expected: false as the queue is empty; Got: true")
 	}
@@ -84,7 +84,7 @@ func TestWithZeroValueAndEmptyShouldReturnAsEmpty(t *testing.T) {
 }
 
 func TestInitShouldReturnEmptyDeque(t *testing.T) {
-	var d deque.Deque
+	var d deque.Deque[int]
 	d.PushBack(1)
 
 	d.Init()
@@ -107,7 +107,7 @@ func TestInitShouldReturnEmptyDeque(t *testing.T) {
 }
 
 func TestPopFrontWithNilValuesShouldReturnAllValuesInOrder(t *testing.T) {
-	d := deque.New()
+	d := deque.New[interface{}]()
 	d.PushBack(1)
 	d.PushBack(nil)
 	d.PushBack(2)
@@ -136,7 +136,7 @@ func TestPopFrontWithNilValuesShouldReturnAllValuesInOrder(t *testing.T) {
 }
 
 func TestPopBackWithNilValuesShouldReturnAllValuesInOrder(t *testing.T) {
-	d := deque.New()
+	d := deque.New[interface{}]()
 	d.PushBack(1)
 	d.PushBack(nil)
 	d.PushBack(2)

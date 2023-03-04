@@ -9,11 +9,6 @@ From a configured [Go environment](https://golang.org/doc/install#testing):
 go get -u github.com/ef-ds/deque
 ```
 
-If you are using dep:
-```sh
-dep ensure -add github.com/ef-ds/deque@1.0.4
-```
-
 We recommend to target only released versions for production use.
 
 
@@ -30,7 +25,7 @@ import (
 )
 
 func main() {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 1; i <= 5; i++ {
 		d.PushBack(i)
@@ -64,7 +59,7 @@ import (
 )
 
 func main() {
-	var d deque.Deque
+	var d deque.Deque[int]
 
 	for i := 1; i <= 5; i++ {
 		d.PushBack(i)
@@ -87,6 +82,9 @@ Output:
 
 Also refer to the [integration](integration_test.go) and [API](api_test.go) tests.
 
+## Generics
+
+Starting with v2.0.0, Deque supports generics. Looking for a previous non-generic stable release? Check out version [1.0.4](https://github.com/ef-ds/deque/releases/tag/v1.0.4).
 
 
 ## Tests

@@ -31,12 +31,12 @@ const (
 )
 
 func TestNewShouldReturnInitiazedInstanceOfDeque(t *testing.T) {
-	d := New()
+	d := New[interface{}]()
 	assertInvariants(t, d, nil)
 }
 
 func TestInvariantsWhenEmptyInMiddleOfSlice(t *testing.T) {
-	d := new(Deque)
+	d := new(Deque[interface{}])
 	d.PushBack(0)
 	assertInvariants(t, d, nil)
 	d.PushBack(1)
@@ -50,7 +50,7 @@ func TestInvariantsWhenEmptyInMiddleOfSlice(t *testing.T) {
 }
 
 func TestPushFrontPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
-	d := New()
+	d := New[interface{}]()
 	pushValue, extraAddedItems, spareLinks := 0, 0, 0
 
 	// Push maxFirstSliceSize items to fill the first array
@@ -218,7 +218,7 @@ func TestPushFrontPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 }
 
 func TestPushFrontPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
-	d := New()
+	d := New[interface{}]()
 	pushValue, spareLinks := 0, 0
 
 	// Push maxFirstSliceSize + maxInternalSliceSize + 1 items to fill the first, second
@@ -338,7 +338,7 @@ func TestPushFrontPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
 }
 
 func TestPushBackPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
-	d := New()
+	d := New[interface{}]()
 	pushValue, extraAddedItems, spareLinks := 0, 0, 0
 
 	// Push maxFirstSliceSize items to fill the first array
@@ -493,7 +493,7 @@ func TestPushBackPopBackShouldHaveAllInternalLinksInARing(t *testing.T) {
 }
 
 func TestPushBackPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
-	d := New()
+	d := New[interface{}]()
 	pushValue, spareLinks := 0, 0
 
 	// Push maxFirstSliceSize + maxInternalSliceSize + 1 items to fill the first, second
@@ -627,7 +627,7 @@ func TestPushBackPopFrontShouldHaveAllInternalLinksInARing(t *testing.T) {
 }
 
 func TestPushFrontShouldReuseSpareLinks(t *testing.T) {
-	d := New()
+	d := New[interface{}]()
 	count := maxInternalSliceSize * 3
 	// Fills the deque
 	for i := 0; i < count; i++ {
@@ -653,7 +653,7 @@ func TestPushFrontShouldReuseSpareLinks(t *testing.T) {
 }
 
 func TestPushFrontPopBackStableShouldReuseHeadSlice(t *testing.T) {
-	d := New()
+	d := New[interface{}]()
 
 	for i := 0; i < pushCount; i++ {
 		d.PushFront(i)
@@ -673,7 +673,7 @@ func TestPushFrontPopBackStableShouldReuseHeadSlice(t *testing.T) {
 }
 
 func TestPushBackShouldReuseSpareLinks(t *testing.T) {
-	d := New()
+	d := New[interface{}]()
 	count := maxInternalSliceSize * 3
 	// Fills the deque
 	for i := 0; i < count; i++ {
@@ -699,7 +699,7 @@ func TestPushBackShouldReuseSpareLinks(t *testing.T) {
 }
 
 func TestPopFrontWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
-	d := New()
+	d := New[interface{}]()
 	count := maxInternalSliceSize * (maxSpareLinks + 2)
 	for i := 0; i < refillCount; i++ {
 		for j := 0; j < count; j++ {
@@ -732,7 +732,7 @@ func TestPopFrontWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
 }
 
 func TestPopBackWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
-	d := New()
+	d := New[interface{}]()
 	count := maxInternalSliceSize * (maxSpareLinks + 2)
 	for i := 0; i < refillCount; i++ {
 		for j := 0; j < count; j++ {
@@ -767,7 +767,7 @@ func TestPopBackWithRefillShouldKeepMaxSpareLinks(t *testing.T) {
 // Helper methods-----------------------------------------------------------------------------------
 
 // Checks the internal slices and its links.
-func checkLinks(t *testing.T, d *Deque, length, headSliceSize, tailSliceSize, spareLinks int, headNext, headPrevious, tailNext, tailPrevious *node) {
+func checkLinks(t *testing.T, d *Deque[interface{}], length, headSliceSize, tailSliceSize, spareLinks int, headNext, headPrevious, tailNext, tailPrevious *node[interface{}]) {
 	t.Helper()
 	if d.Len() != length {
 		t.Errorf("unexpected length; Expected: %d; Got: %d", length, d.Len())
@@ -801,7 +801,7 @@ func checkLinks(t *testing.T, d *Deque, length, headSliceSize, tailSliceSize, sp
 // assertInvariants checks all the invariant conditions in d that we can think of.
 // If val is non-nil it is used to find the expected value for an item at index
 // i measured from the head of the queue.
-func assertInvariants(t *testing.T, d *Deque, val func(i int) interface{}) {
+func assertInvariants(t *testing.T, d *Deque[interface{}], val func(i int) interface{}) {
 	t.Helper()
 	fail := func(what string, got, want interface{}) {
 		t.Errorf("invariant fail: %s; got %v want %v", what, got, want)
@@ -851,7 +851,7 @@ func assertInvariants(t *testing.T, d *Deque, val func(i int) interface{}) {
 	elemCount := 0
 	smallNodeCount := 0
 	index := 0
-	walkLinks(t, d, func(n *node) {
+	walkLinks(t, d, func(n *node[interface{}]) {
 		if len(n.v) < maxInternalSliceSize {
 			smallNodeCount++
 			if len(n.v) > maxFirstSliceSize {
@@ -928,7 +928,7 @@ func assertInvariants(t *testing.T, d *Deque, val func(i int) interface{}) {
 
 // walkLinks calls f for each node in the linked list.
 // It also checks link invariants:
-func walkLinks(t *testing.T, d *Deque, f func(n *node)) {
+func walkLinks(t *testing.T, d *Deque[interface{}], f func(n *node[interface{}])) {
 	t.Helper()
 	fail := func(what string, got, want interface{}) {
 		t.Errorf("link invariant %s fail; got %v want %v", what, got, want)
