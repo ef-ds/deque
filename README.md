@@ -86,6 +86,8 @@ Also refer to the [integration](integration_test.go) and [API](api_test.go) test
 
 Starting with v2.0.0, Deque supports generics. Looking for a previous non-generic stable release? Check out version [1.0.4](https://github.com/ef-ds/deque/releases/tag/v1.0.4).
 
+Looking to migrate from v1 to v2? Check [this](MIGRATE_V1_TO_V2.md) out!
+
 
 ## Tests
 Besides having 100% code coverage, deque has an extensive set of [unit](unit_test.go), [integration](integration_test.go) and [API](api_test.go) tests covering all happy, sad and edge cases.
